@@ -186,6 +186,7 @@ string getDenumireHotel()
 
 string getAdresaHotel()
 {
+
 	return this->adresaHotel;
 }
 
