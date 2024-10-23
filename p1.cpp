@@ -11,6 +11,7 @@ class Hotel
 private:
 
 	string denumireHotel;
+
 	string adresaHotel;
 	int numarAngajati;
 	int numarCamere;
