@@ -55,6 +55,31 @@ public:
 		return this->contineAlergeni;
 	}
 
+	void setDenumirePreparat(string DenumireNouaPreparat)
+	{
+		this->denumirePreparat = DenumireNouaPreparat;
+	}
+
+	void setTipMancare(char TipNouMancare)
+	{
+		this->tipMancare = TipNouMancare;
+	}
+
+	void setNumarIngrediente(int NumarNouIngrediente)
+	{
+		this->numarIngrediente = NumarNouIngrediente;
+	}
+
+	void setPretpreparat(float PretNouPreparat)
+	{
+		this->pretPreparat = PretNouPreparat;
+	}
+
+	void setContineAlergeni(bool ContineAlergeniValoareNOUA)
+	{
+		this->contineAlergeni = ContineAlergeniValoareNOUA;
+	}
+
 	void afisare()
 	{
 		cout << "Denumirea Preparatului este: " << this->denumirePreparat << endl;
@@ -78,5 +103,13 @@ void main()
 	m1.afisare();
 	m2.afisare();
 	m3.afisare();
+
+	m1.setPretpreparat(30);
+	m1.setContineAlergeni(1);
+	m1.setDenumirePreparat("Omleta cu cascaval");
+	m1.setNumarIngrediente(6);
+	m1.setTipMancare('A');
+	cout << "......Valoare modificata m1..............." << endl;
+	m1.afisare();
 
 }
