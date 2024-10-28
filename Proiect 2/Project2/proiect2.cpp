@@ -125,7 +125,7 @@ public:
 		return this->lungimeKmTraseu;
 	}
 
-	int getDurataTraseuOre()
+	float getDurataTraseuOre()
 	{
 		return this->durataTraseuOre;
 	}
