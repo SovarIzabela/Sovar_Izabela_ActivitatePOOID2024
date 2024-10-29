@@ -143,6 +143,123 @@ public:
 		cout << endl << endl;
 	}
 
+	void setNumeRestaurant(const char* numeRestaurantNou)
+	{
+		if (this->numeRestaurant != NULL)
+		{
+			delete[]this->numeRestaurant;
+		}
+		this->numeRestaurant = new char[strlen(numeRestaurantNou) + 1];
+		strcpy(this->numeRestaurant, numeRestaurantNou);
+	}
+
+	void setIngrediente(int numarIngredienteNou, string* listaIngredienteNou, float* pretIngredienteNou)
+	{
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->pretIngrediente != NULL)
+		{
+			delete[]this->pretIngrediente;
+		}
+
+
+		this->numarIngrediente = numarIngredienteNou;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->pretIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+
+			this->listaIngrediente[i] = listaIngredienteNou[i];
+			this->pretIngrediente[i] = pretIngredienteNou[i];
+		}
+
+
+	}
+
+	~Preparat()
+	{
+		if (this->numeRestaurant != NULL)
+		{
+			delete[]this->numeRestaurant;
+		}
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->pretIngrediente != NULL)
+		{
+			delete[]this->pretIngrediente;
+		}
+
+
+	}
+
+	//constructorul de copiere
+	Preparat(Preparat&obiectExistent) :codPreparat(codPreparat)
+	{
+		this->denumirePreparat = obiectExistent.denumirePreparat;
+		this->tipMancare = obiectExistent.tipMancare;
+		this->pretPreparat = obiectExistent.pretPreparat;
+		this->contineAlergeni = obiectExistent.contineAlergeni;
+		this->numeRestaurant = new char[strlen(obiectExistent.numeRestaurant) + 1];
+		strcpy(this->numeRestaurant, obiectExistent.numeRestaurant);
+		this->numarIngrediente = obiectExistent.numarIngrediente;
+		this->listaIngrediente = new string[obiectExistent.numarIngrediente];
+		this->pretIngrediente = new float[obiectExistent.numarIngrediente];
+
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+
+			this->listaIngrediente[i] = obiectExistent.listaIngrediente[i];
+			this->pretIngrediente[i] = obiectExistent.pretIngrediente[i];
+		}
+	}
+	 //operatorul =
+
+	Preparat& operator=(Preparat& obiectMatrice)
+	{
+
+		if (this->numeRestaurant != NULL)
+		{
+			delete[]this->numeRestaurant;
+		}
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->pretIngrediente != NULL)
+		{
+			delete[]this->pretIngrediente;
+		}
+
+		this->denumirePreparat = obiectMatrice.denumirePreparat;
+		this->tipMancare = obiectMatrice.tipMancare;
+		this->pretPreparat = obiectMatrice.pretPreparat;
+		this->contineAlergeni = obiectMatrice.contineAlergeni;
+		this->numeRestaurant = new char[strlen(obiectMatrice.numeRestaurant) + 1];
+		strcpy(this->numeRestaurant, obiectMatrice.numeRestaurant);
+		this->numarIngrediente = obiectMatrice.numarIngrediente;
+		this->listaIngrediente = new string[obiectMatrice.numarIngrediente];
+		this->pretIngrediente = new float[obiectMatrice.numarIngrediente];
+
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+
+			this->listaIngrediente[i] = obiectMatrice.listaIngrediente[i];
+			this->pretIngrediente[i] = obiectMatrice.pretIngrediente[i];
+		}
+
+		return *this;
+
+
+	}
 
 
 };
@@ -185,7 +302,23 @@ void main()
 	m1.setContineAlergeni(1);
 	m1.setDenumirePreparat("Omleta cu cascaval");
 	m1.setTipMancare('A');
-	cout << "......Valoare modificata m1..............." << endl;
+	m1.setNumeRestaurant("Duman");
+	string lista1[] = { "oua", "cascaval", "sare", "condimente" };
+	float pret1[] = { 2,1,0.5,0.5 };
+	m1.setIngrediente(4, lista1, pret1);
+	cout << "......Valoare modificata m1..............." << endl<<endl;
 	m1.afisare();
 
+	Preparat m4(m1);
+	
+	cout << "......Valoare m4..............." << endl<<endl;
+	m4.afisare();
+	
+	cout << "......Valoare m1..............." << endl << endl;
+	m1.afisare();
+	cout << "......Valoare m3 inainte..............." << endl << endl;
+	m3.afisare();
+	m3 = m1;
+	cout << "......Valoare m3 dupa modificare..............." << endl << endl;
+	m3.afisare();
 }
