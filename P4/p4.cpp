@@ -141,6 +141,44 @@ public:
 		this->adaugatiAromaCafea = AdaugatiAromaCafeaValNoua;
 	}
 
+
+	void setNumeCafenea(const char* numeCafeneaNou)
+	{
+		if (this->numeCafenea != NULL)
+		{
+			delete[]this->numeCafenea;
+		}
+		this->numeCafenea = new char[strlen(numeCafeneaNou) + 1];
+		strcpy(this->numeCafenea, numeCafeneaNou);
+
+	}
+
+	void setIngrediente(int numarIngredienteValNoua, string* listaIngredienteNou, float* gramajIngredienteNou)
+	{
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->gramajIngrediente != NULL)
+		{
+			delete[]this->gramajIngrediente;
+		}
+
+
+		this->numarIngrediente = numarIngredienteValNoua;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->gramajIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = listaIngredienteNou[i];
+			this->gramajIngrediente[i] = gramajIngredienteNou[i];
+		}
+
+	}
+
 	void afiseaza() 
 	{
 		cout << "Tipul de cafea este: " << this->tipCafea << endl;
@@ -156,12 +194,95 @@ public:
 		for (int i = 0; i < numarIngrediente; i++)
 		{
 			cout << "Ingrediente: " << this->listaIngrediente[i] << endl;
-			cout << "GramajIngrediente:  " << this->gramajIngrediente[i] << endl;
+			cout << "GramajIngrediente:  " << this->gramajIngrediente[i] << " ml " <<endl;
 		} 
 
 		cout << endl << endl;
 
 	}
+
+	~preparatCafea()
+	{
+		if (this->numeCafenea != NULL)
+		{
+			delete[]this->numeCafenea;
+		}
+
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->gramajIngrediente != NULL)
+		{
+			delete[]this->gramajIngrediente;
+		}
+
+	}
+
+	// cosntructorul de copiere
+
+	preparatCafea(preparatCafea& obiectExistent):monedaPlata("RON")
+	{
+
+		this->tipCafea = obiectExistent.tipCafea;
+		this->cantitateZahar = obiectExistent.cantitateZahar;
+		this->marimePahar = obiectExistent. marimePahar;
+		this->pretCafea = obiectExistent.pretCafea;
+		this->adaugatiAromaCafea = obiectExistent.adaugatiAromaCafea;
+		this->numeCafenea = new char[strlen(obiectExistent.numeCafenea) + 1];
+		strcpy(this->numeCafenea, obiectExistent.numeCafenea);
+		this->numarIngrediente = obiectExistent.numarIngrediente;
+		this->listaIngrediente = new string[obiectExistent.numarIngrediente];
+		this->gramajIngrediente = new float[obiectExistent.numarIngrediente];
+
+		for (int i = 0; i < numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = obiectExistent.listaIngrediente[i];
+			this->gramajIngrediente[i] = obiectExistent.gramajIngrediente[i];
+		}
+
+	}
+	//operatorul =
+
+	preparatCafea& operator=(preparatCafea& obiectMatrice)
+	{
+		if (this->numeCafenea != NULL)
+		{
+			delete[]this->numeCafenea;
+		}
+
+		if (this->listaIngrediente != NULL)
+		{
+			delete[]this->listaIngrediente;
+		}
+
+		if (this->gramajIngrediente != NULL)
+		{
+			delete[]this->gramajIngrediente;
+		}
+		this->tipCafea = obiectMatrice.tipCafea;
+		this->cantitateZahar = obiectMatrice.cantitateZahar;
+		this->marimePahar = obiectMatrice.marimePahar;
+		this->pretCafea = obiectMatrice.pretCafea;
+		this->adaugatiAromaCafea = obiectMatrice.adaugatiAromaCafea;
+		this->numeCafenea = new char[strlen(obiectMatrice.numeCafenea) + 1];
+		strcpy(this->numeCafenea, obiectMatrice.numeCafenea);
+		this->numarIngrediente = obiectMatrice.numarIngrediente;
+		this->listaIngrediente = new string[obiectMatrice.numarIngrediente];
+		this->gramajIngrediente = new float[obiectMatrice.numarIngrediente];
+
+		for (int i = 0; i < numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = obiectMatrice.listaIngrediente[i];
+			this->gramajIngrediente[i] = obiectMatrice.gramajIngrediente[i];
+		}
+
+		return *this;
+
+	}
+
+
 
 };
 
@@ -199,7 +320,7 @@ void main()
 
 
 
-
+	cout << "............Obiectul p2 inainte de modificari.............." << endl;
 
 	p2.afiseaza();
 	
@@ -209,13 +330,30 @@ void main()
 	p2.setMarimePahar('M');
 	p2.setPretCafea(10.00);
 	p2.setAdaugatiAromaCafea(0);
+	p2.setNumeCafenea("tucano");
+	string ingrediente3[] = { "cafea", "apa" };
+	float gramaj3[] = { 50,50 };
+	p2.setIngrediente(2, ingrediente3, gramaj3);
 
 	cout << "............Obiectul p2 dupa modificari.............." << endl;
 
 	p2.afiseaza();
 
 
+	preparatCafea p4(p2);
 
+	cout << "............Obiectul p4...................." << endl;
+	p4.afiseaza();
 
+	cout << "............Obiectul p2...................." << endl;
+	
+	p2.afiseaza();
+	cout << "............Obiectul p1...................." << endl;
+	p1.afiseaza();
+	
+	p2 = p1;
+
+	cout << "............Obiectul p2...................." << endl;
+	p2.afiseaza();
 
 }
