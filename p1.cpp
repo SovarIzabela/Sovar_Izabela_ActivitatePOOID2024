@@ -449,7 +449,40 @@ Hotel(const Hotel& obiectExistent):anDeschidereHotel(obiectExistent.anDeschidere
 		
 	}
 
+	// sa se implementeze o metoda care ofera un discount ales pentru toate serviciile disponibile dintr-un hotel.
 
+	void discountIntegral(float discount)
+	{
+		if (numarServiciiDisponibile != 0)
+		{
+			for (int i = 0; i < numarServiciiDisponibile; i++)
+			{
+				this->preturiServicii[i] = preturiServicii[i] - discount * preturiServicii[i];
+			}
+		}
+		
+
+	
+	}
+	//sa se implementeze o metoda care sa calculeze profitul total estimat pe un anumit interval de timp avand un grad de ocuparee de 100%
+
+	float ProfitEstimat(int numarZile)
+	{
+		float cifra = 0;
+		cifra = numarCamere * numarZile * pretCameraPeZi;
+		float profit = 0;
+		profit = cifra * 0.16;
+		return profit;
+	}
+	//sa se implementeze o metoda care sa calculeze profitul total estimat pe un anumit interval de timp avand un anumit grad de ocupare estimat
+	float ProfitEstimatGrad(int numarZile, float gradOcupare)
+	{
+		float cifra = 0;
+		cifra = numarCamere * numarZile * pretCameraPeZi * gradOcupare;
+		float profit = 0;
+		profit = cifra * 0.16;
+		return profit;
+	}
 };
 
 int Hotel::clasaCAENHotel = 55;
@@ -744,5 +777,31 @@ void main() {
 		cout << "Denumire Servicii: " << h1.getNumeServicii()[i] << endl;
 	}
 	cout << endl << endl;
+
+
+
+	h1.discountIntegral(0.50);
+
+	cout << "...................Obiectul h1........................" << endl << endl;
+	cout << "Denumirea hotelului este: " << h1.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << h1.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << h1.getNumarAngajati() << endl;
+	cout << "Numar camere :" << h1.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << h1.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << h1.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate:" << h1.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << h1.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << h1.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < h1.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << h1.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << h1.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+
+	cout << "Profitul estimat al h1 pe 7 zile este: " << h1.ProfitEstimat(7) << endl;
+
+	cout << "Profitul estimat al h1 pe 7 zile si un grad de ocupare de 70 % este: " << h1.ProfitEstimatGrad(7, 0.7) << endl;
 
 }
