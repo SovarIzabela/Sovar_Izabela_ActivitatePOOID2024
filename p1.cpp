@@ -333,7 +333,7 @@ void setServicii(int numarServiciiDisponibileNou, float* preturiServiciiNoi, str
 } 
 
   //constructorul de copiere
-Hotel(Hotel& obiectExistent):anDeschidereHotel(obiectExistent.anDeschidereHotel)
+Hotel(const Hotel& obiectExistent):anDeschidereHotel(obiectExistent.anDeschidereHotel)
 {   
 
 	this->denumireHotel = obiectExistent.denumireHotel;
@@ -366,51 +366,52 @@ Hotel(Hotel& obiectExistent):anDeschidereHotel(obiectExistent.anDeschidereHotel)
 	
 	//operatorul = (ia 2 obiecte si pe unul il modifica pe baza celuilalt ex: h1 obiect macheta, h4 obiect ce va fi modificat pe baza h1)
 
-	Hotel&operator=(Hotel& obiectMacheta)
+	Hotel&operator=( Hotel& obiectMacheta)
 	{
-		//1.destructor
-		if (this->numeManagerHotel != NULL)
-		{
-			delete[] this->numeManagerHotel;
+		if (this != &obiectMacheta)
+		{//1.destructor
+			if (this->numeManagerHotel != NULL)
+			{
+				delete[] this->numeManagerHotel;
+			}
+
+			if (this->preturiServicii != NULL)
+			{
+				delete[] this->preturiServicii;
+			}
+
+			if (this->numeServicii != NULL)
+
+			{
+				delete[] this->numeServicii;
+			}
+
+			//2.constructorul de copiere
+
+			this->denumireHotel = obiectMacheta.denumireHotel;
+			this->adresaHotel = obiectMacheta.adresaHotel;
+			this->numarAngajati = obiectMacheta.numarAngajati;
+			this->numarCamere = obiectMacheta.numarCamere;
+			this->areMicDejunInclus = obiectMacheta.areMicDejunInclus;
+			this->pretCameraPeZi = obiectMacheta.pretCameraPeZi;
+
+			this->numeManagerHotel = new char[strlen(obiectMacheta.numeManagerHotel) + 1];
+
+			strcpy(this->numeManagerHotel, obiectMacheta.numeManagerHotel);
+
+			this->numarServiciiDisponibile = obiectMacheta.numarServiciiDisponibile;
+
+			this->preturiServicii = new float[obiectMacheta.numarServiciiDisponibile];
+			this->numeServicii = new string[obiectMacheta.numarServiciiDisponibile];
+
+
+			for (int i = 0; i < this->numarServiciiDisponibile; i++)
+			{
+				this->preturiServicii[i] = obiectMacheta.preturiServicii[i];
+				this->numeServicii[i] = obiectMacheta.numeServicii[i];
+
+			}
 		}
-
-		if (this->preturiServicii != NULL)
-		{
-			delete[] this->preturiServicii;
-		}
-
-		if (this->numeServicii != NULL)
-
-		{
-			delete[] this->numeServicii;
-		}
-
-		//2.constructorul de copiere
-
-		this->denumireHotel = obiectMacheta.denumireHotel;
-		this->adresaHotel = obiectMacheta.adresaHotel;
-		this->numarAngajati = obiectMacheta.numarAngajati;
-		this->numarCamere = obiectMacheta.numarCamere;
-		this->areMicDejunInclus = obiectMacheta.areMicDejunInclus;
-		this->pretCameraPeZi = obiectMacheta.pretCameraPeZi;
-
-		this->numeManagerHotel = new char[strlen(obiectMacheta.numeManagerHotel) + 1];
-
-		strcpy(this->numeManagerHotel, obiectMacheta.numeManagerHotel);
-
-		this->numarServiciiDisponibile = obiectMacheta.numarServiciiDisponibile;
-
-		this->preturiServicii = new float[obiectMacheta.numarServiciiDisponibile];
-		this->numeServicii = new string[obiectMacheta.numarServiciiDisponibile];
-
-
-		for (int i = 0; i < this->numarServiciiDisponibile; i++)
-		{
-			this->preturiServicii[i] = obiectMacheta.preturiServicii[i];
-			this->numeServicii[i] = obiectMacheta.numeServicii[i];
-
-		}
-
 		//3. dam return
 
 		return*this;
@@ -418,6 +419,36 @@ Hotel(Hotel& obiectExistent):anDeschidereHotel(obiectExistent.anDeschidereHotel)
 
 
 	}
+
+	//sa se implementeze o metoda proprie clasei care sa determine serviciul cu pretul cel mai mic
+
+	float PretMinim()
+	{
+		float rezultat;
+		rezultat = this->preturiServicii[0];
+		for (int i = 1; i < numarServiciiDisponibile; i++)
+		{
+			if (this->preturiServicii[i] < rezultat)
+			{
+				rezultat = this->preturiServicii[i];
+			}
+		}
+		return rezultat;
+
+	}
+
+
+	//sa se implementeze o metoda proprie clasei care sa aplice un discount de 20% pe unul din servicii disponibile.
+
+	void discount(float ProcentDiscount, int pozitieProdus)
+	{
+		if (pozitieProdus >= 0 && pozitieProdus<this->numarServiciiDisponibile)
+		{
+			this->preturiServicii[pozitieProdus] = this->preturiServicii[pozitieProdus] - ProcentDiscount * this->preturiServicii[pozitieProdus];
+		}
+		
+	}
+
 
 };
 
@@ -569,7 +600,7 @@ void main() {
 	h1.setAreMicDejunInclus(0);
 	h1.setNumeManagerHotel("Ionescu Maria");
 
-	float preturi2[] = { 450.20, 100.0, 200.0 };
+	float preturi2[] = { 450.20, 100.5, 200.0 };
 	string nume2[] = { "manichiura", "masaj", "jacuzzi"};
 
 	h1.setServicii(3, preturi2, nume2);
@@ -688,6 +719,29 @@ void main() {
 	for (int i = 0; i < h4.getnumarServiciiDisponibile(); i++) {
 		cout << "Pret<" << h4.getpreturiServicii()[i] << endl;
 		cout << "Denumire Servicii" << h4.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+
+	cout << "Pretul minim al h1 este: "<<h1.PretMinim() << endl;
+
+
+	h1.discount(0.2, 0);
+
+	cout << "...................Obiectul h1........................" << endl << endl;
+	cout << "Denumirea hotelului este: " << h1.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << h1.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << h1.getNumarAngajati() << endl;
+	cout << "Numar camere :" << h1.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << h1.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << h1.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate:" << h1.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << h1.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << h1.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < h1.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << h1.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << h1.getNumeServicii()[i] << endl;
 	}
 	cout << endl << endl;
 
