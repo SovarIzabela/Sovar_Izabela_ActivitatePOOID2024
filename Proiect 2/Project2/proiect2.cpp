@@ -257,7 +257,7 @@ public:
 
 
 	//constructorul de copiere
-	TraseuMontan(TraseuMontan& obiectExistent) :altitudineMaxima(altitudineMaxima)
+	TraseuMontan(const TraseuMontan& obiectExistent) :altitudineMaxima(altitudineMaxima)
 	{
 		this->denumireTraseu = obiectExistent.denumireTraseu;
 		this->lungimeKmTraseu = obiectExistent.lungimeKmTraseu;
@@ -289,49 +289,133 @@ public:
 
 	TraseuMontan&operator=(TraseuMontan&obiectMatrice)
 	{
-		if (this->dificultateTraseu != NULL)
+		if(this!= &obiectMatrice)
 		{
-			delete[]this->dificultateTraseu;
+			if (this->dificultateTraseu != NULL)
+			{
+				delete[]this->dificultateTraseu;
+			}
+
+			if (this->echipeSalvare != NULL)
+			{
+				delete[]this->echipeSalvare;
+			}
+
+			if (this->altitudini != NULL)
+			{
+				delete[]this->altitudini;
+			}
+
+			this->denumireTraseu = obiectMatrice.denumireTraseu;
+			this->lungimeKmTraseu = obiectMatrice.lungimeKmTraseu;
+			this->durataTraseuOre = obiectMatrice.durataTraseuOre;
+			this->prezintaRiscAvalansa = obiectMatrice.prezintaRiscAvalansa;
+			this->dificultateTraseu = new char[strlen(obiectMatrice.dificultateTraseu) + 1];
+			strcpy(this->dificultateTraseu, obiectMatrice.dificultateTraseu);
+
+			this->nrEchipeSalvare = obiectMatrice.nrEchipeSalvare;
+
+
+			this->echipeSalvare = new string[obiectMatrice.nrEchipeSalvare];
+			for (int i = 0; i < this->nrEchipeSalvare; i++)
+			{
+				this->echipeSalvare[i] = obiectMatrice.echipeSalvare[i];
+			}
+
+			this->numarPuncteAltitudine = obiectMatrice.numarPuncteAltitudine;
+			this->altitudini = new int[obiectMatrice.numarPuncteAltitudine];
+
+			for (int i = 0; i < this->numarPuncteAltitudine; i++)
+			{
+				this->altitudini[i] = obiectMatrice.altitudini[i];
+			}
 		}
-
-		if (this->echipeSalvare != NULL)
-		{
-			delete[]this->echipeSalvare;
-		}
-
-		if (this->altitudini != NULL)
-		{
-			delete[]this->altitudini;
-		}
-
-		this->denumireTraseu = obiectMatrice.denumireTraseu;
-		this->lungimeKmTraseu = obiectMatrice.lungimeKmTraseu;
-		this->durataTraseuOre = obiectMatrice.durataTraseuOre;
-		this->prezintaRiscAvalansa = obiectMatrice.prezintaRiscAvalansa;
-		this->dificultateTraseu = new char[strlen(obiectMatrice.dificultateTraseu) + 1];
-		strcpy(this->dificultateTraseu, obiectMatrice.dificultateTraseu);
-
-		this->nrEchipeSalvare = obiectMatrice.nrEchipeSalvare;
-
-
-		this->echipeSalvare = new string[obiectMatrice.nrEchipeSalvare];
-		for (int i = 0; i < this->nrEchipeSalvare; i++)
-		{
-			this->echipeSalvare[i] = obiectMatrice.echipeSalvare[i];
-		}
-
-		this->numarPuncteAltitudine = obiectMatrice.numarPuncteAltitudine;
-		this->altitudini = new int[obiectMatrice.numarPuncteAltitudine];
-
-		for (int i = 0; i < this->numarPuncteAltitudine; i++)
-		{
-			this->altitudini[i] = obiectMatrice.altitudini[i];
-		}
+		
 
 		return *this;
 
 	}
 
+	void afiseaza()
+	{
+		cout << "Denumirea traseului este : " << this->denumireTraseu << endl;
+		cout << "Lungimea traseului in km este : " << this->lungimeKmTraseu << endl;
+		cout << "Durata traseului / ore : " << this->durataTraseuOre << endl;
+		cout << " Traseul prezinta risc de avalansa? " << (this->prezintaRiscAvalansa ? "DA" : "NU") << endl;
+		cout << "Altitidinea maxima este : " << this->altitudineMaxima << endl;
+		cout << "Dificultatea traseului este : " << this->dificultateTraseu << endl;
+		cout << "Numarul echipelor de salvare este : " << this->nrEchipeSalvare << endl;
+		cout << "Echipele de salvare sunt " << endl;
+			for (int i = 0; i < nrEchipeSalvare; i++)
+			{
+				cout << "Echipa : " << this->echipeSalvare[i] << endl;
+			}
+		cout << " Numarul de puncte altitudine este : " <<this->numarPuncteAltitudine<< endl;
+		for (int i = 0; i < numarPuncteAltitudine; i++)
+		{
+			cout << "Altitudini: " << this->altitudini[i] << endl;
+		   }
+
+		cout << endl << endl;
+
+	}
+
+	//sa se creeze o metoda care identifica care este altitudinea medie a unui traseu;
+
+	int altitudineMedie()
+	{
+
+		if (numarPuncteAltitudine == 0)
+		{
+			return 0;
+		}
+		int suma = 0;
+		
+		for (int i = 0; i < this->numarPuncteAltitudine; i++)
+		{
+			suma = suma + this->altitudini[i];
+		}
+
+		int media = suma /this-> numarPuncteAltitudine;
+
+		return media;
+	}
+	// sa se calculeze o metoda care calculeaza durata medie pe km tinand cont de lungimea traseului
+
+	float duratamedieKM()
+	{
+		if (lungimeKmTraseu == 0)
+		{
+			return 0;
+		}
+
+		float medie = durataTraseuOre / lungimeKmTraseu;
+		return medie;
+	}
+
+	//sa se implementeze o metoda care va identifica daca s-a depasit o anumita altitudine pe un traseu montan
+
+	int verificareAltitudine(int pragAltitudine)
+	{
+		
+
+		if (altitudini == NULL||numarPuncteAltitudine==0)
+		{
+			return 0;
+		}
+
+		for (int i = 0; i < this->numarPuncteAltitudine; i++)
+		{
+			if (altitudini[i] > pragAltitudine)
+			{
+				return altitudini[i];
+			}
+
+		}
+
+		return 0;
+
+	}
 
 
 };
@@ -382,28 +466,8 @@ void main()
 
 	cout << "............................Valoare tm1 dupa modificari..........................................." << endl << endl;
 
+	tm1.afiseaza();
 
-	cout << "Denumirea traseului:" << tm1.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm1.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm1.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm1.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm1.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm1.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm1.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm1.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe: " << tm1.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine: " << tm1.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm1.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini: " << tm1.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
 
 	cout << "............................Valoare tm2..........................................." << endl << endl;
 
@@ -411,227 +475,53 @@ void main()
 	int altitudini2[] = { 1200,2000 };
 	TraseuMontan tm2(" Neamt ", 20, 10, 1, 2500, "mica", 2, echipeSalvare2, 2, altitudini2);
 
-	cout << "Denumirea traseului:" << tm2.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm2.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm2.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm2.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm2.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm2.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm2.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm2.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm2.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm2.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm2.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm2.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm2.afiseaza();
 
 	cout << "............................Valoare tm3 d..............................................." << endl << endl;
 	TraseuMontan tm3;
 
-	cout << "Denumirea traseului :" << tm3.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm3.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm3.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm3.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm3.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm3.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm3.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm3.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm3.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm3.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm3.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm3.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm3.afiseaza();
 
 	cout << "............................Valoare tm4...................................................." << endl << endl;
 
 	TraseuMontan tm4("Fagaras");
 
-	cout << "Denumirea traseului :" << tm4.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm4.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm4.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm4.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm4.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm4.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm4.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm4.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm4.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm4.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm4.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm4.getAltitudini()[i] << endl;
-	}
-
-
-	cout << endl << endl;
+	tm4.afiseaza();
 
 	cout << "............................Valoare tm5......................................................" << endl << endl;
 	TraseuMontan tm5("Sinaia", 19);
 
-	cout << "Denumirea traseului :" << tm5.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm5.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm5.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm5.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm5.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm5.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm5.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm5.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm5.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm5.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm5.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm5.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm5.afiseaza();
 
 	cout << "............................Valoare tm6....................................................." << endl << endl;
 
 	TraseuMontan tm6("Bucegi", 25, 10);
 
-	cout << "Denumirea traseului :" << tm6.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm6.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm6.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm6.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm6.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm6.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm6.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm6.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm6.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm6.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm6.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm6.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm6.afiseaza();
 
 	TraseuMontan tm10(tm6);
 
 	cout << ".....................Valoare obiect copiat tm10 dupa tm6............................." << endl<<endl;
 
-	cout << "Denumirea traseului :" << tm10.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm10.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm6.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm10.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm10.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm10.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm10.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm10.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm10.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm10.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm10.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm10.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm10.afiseaza();
 
 	cout << ".......................Obiectul tm1......................................." << endl << endl;
-	cout << "Denumirea traseului:" << tm1.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm1.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm1.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm1.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm1.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm1.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm1.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm1.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe: " << tm1.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine: " << tm1.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm1.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini: " << tm1.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm1.afiseaza();
 
 	cout << ".......................Obiectul tm5 inainte de modificare......................................." << endl << endl;
-	cout << "Denumirea traseului :" << tm5.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm5.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm5.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm5.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm5.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm5.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm5.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm5.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm5.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm5.getNumarPuncteAltitudini() << endl;
-
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm5.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm5.getAltitudini()[i] << endl;
-	}
-
-	cout << endl << endl;
+	tm5.afiseaza();
 
 	tm5 = tm1;
 
 	cout << ".......................Obiectul tm5 dupa modificare ......................................." << endl << endl;
-	cout << "Denumirea traseului :" << tm5.getDenumireTraseu() << endl;
-	cout << "Lungime traseu:" << tm5.getLungimeKmTraseu() << endl;
-	cout << "Durata Traseu ore:" << tm5.getDurataTraseuOre() << endl;
-	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tm5.getPrezintaRiscAvalansa() << endl;
-	cout << "Altitudinea Maxima este " << tm5.getAltitudineMaxima() << endl;
-	cout << "Dificultate traseu" << tm5.getDificultateTraseu() << endl;
-	cout << "Numar echipe Salvare" << tm5.getNrEchipeSalvare() << endl;
-	cout << "Echipe Salvare : " << endl;
-	for (int i = 0; i < tm5.getNrEchipeSalvare(); i++)
-	{
-		cout << "echipe" << tm5.getEchipeSalvare()[i] << endl;
-	}
-	cout << "Numar puncte altitudine" << tm5.getNumarPuncteAltitudini() << endl;
+	tm5.afiseaza();
 
-	cout << "Altitudini " << endl;
-	for (int i = 0; i < tm5.getNumarPuncteAltitudini(); i++)
-	{
-		cout << "Altitudini" << tm5.getAltitudini()[i] << endl;
-	}
+	cout << "Altitudinea medie pentru obiectul tm5 este : " << tm5.altitudineMedie() << endl << endl;
 
-	cout << endl << endl;
+	cout << "Durata medie pe kilometru a traseului tm5 este : " << tm5.duratamedieKM() << endl << endl;
 
+	cout << "Altitudini mai mari de 2000 m : " << tm5.verificareAltitudine(2000) << endl << endl;
+	cout << "Altitudini mai mari de 2500 m : " << tm5.verificareAltitudine(2500) << endl << endl;
+	
 
 }
