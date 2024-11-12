@@ -522,6 +522,100 @@ public:
 		}
 		return ok;
 	}
+
+
+	//operatorul << de afisare obiect pe consola
+
+	 
+
+	friend ostream& operator<<(ostream& out, const TraseuMontan& obj)
+	{
+		out << "Denumirea traseului este : " << obj.denumireTraseu << endl;
+		out << "Lungimea traseului in km este : " << obj.lungimeKmTraseu << endl;
+		out << "Durata traseului / ore : " << obj.durataTraseuOre << endl;
+		out << " Traseul prezinta risc de avalansa? " << (obj.prezintaRiscAvalansa ? "DA" : "NU") << endl;
+		out << "Altitidinea maxima este : " << obj.altitudineMaxima << endl;
+		out << "Dificultatea traseului este : " << obj.dificultateTraseu << endl;
+		out << "Numarul echipelor de salvare este : " << obj.nrEchipeSalvare << endl;
+		out << "Echipele de salvare sunt " << endl;
+		for (int i = 0; i < obj.nrEchipeSalvare; i++)
+		{
+			out << "Echipa : " << obj.echipeSalvare[i] << endl;
+		}
+		out << " Numarul de puncte altitudine este : " << obj.numarPuncteAltitudine << endl;
+		for (int i = 0; i < obj.numarPuncteAltitudine; i++)
+		{
+			out << "Altitudini: " << obj.altitudini[i] << endl;
+		}
+
+		return out;
+	}
+
+	friend istream& operator >>(istream& in, TraseuMontan& obj)
+	{
+		if (obj.dificultateTraseu != NULL)
+		{
+			delete[]obj.dificultateTraseu;
+		}
+
+		if (obj.echipeSalvare != NULL)
+		{
+			delete[]obj.echipeSalvare;
+		}
+
+		if (obj.altitudini != NULL)
+		{
+			delete[]obj.altitudini;
+		}
+
+		cout << "Introduceti de la tastatura denumirea traseului";
+		in >> obj.denumireTraseu;
+
+		cout << "Introduceti lungime km traseu";
+		in >> obj.lungimeKmTraseu;
+
+
+		cout << "Introduceti de la tastatura durata traseu ore";
+		in >> obj.durataTraseuOre;
+
+		cout << "Introduceti de la tastatura daca prezinta risc de avalansa, 1 pentru DA //0 pentru NU: ";
+		in >> obj.prezintaRiscAvalansa;
+
+		cout << "Introduceti dificultatea traseului : ";
+		char aux[100];
+		in >> aux;
+		obj.dificultateTraseu = new char[strlen(aux) + 1];
+		strcpy(obj.dificultateTraseu, aux);
+
+		cout << "Introduceti de la tastatura numarul de echipe salvare:";
+		in >> obj.nrEchipeSalvare;
+		obj.echipeSalvare = new string[obj.nrEchipeSalvare];
+
+		cout << "Introduceti echipele de salvare: ";
+		for (int i = 0; i < obj.nrEchipeSalvare; i++)
+		{
+			in >> obj.echipeSalvare[i];
+		}
+
+		cout << "Introduceti de la tastatura numarul Puncte de Altitudine: ";
+		in >> obj.numarPuncteAltitudine;
+		obj.altitudini = new int[obj.numarPuncteAltitudine];
+
+		cout << "Introduceti altitudinile: ";
+		for (int i = 0; i < obj.numarPuncteAltitudine; i++)
+		{
+			in >> obj.altitudini[i];
+		}
+
+
+		return in;
+		
+	
+
+
+	}
+
+
 };
 
 string TraseuMontan::taraTraseelor = "Romania";
@@ -648,8 +742,10 @@ void main()
 	tm1.afiseaza();
 	cout << endl << endl;
 
-	cout << "Lungimea traseului pentru obiectul tm1 " << tm1.getLungimeKmTraseu() << endl << endl;
-	cout << "Lungimea traseului pentru obiectul tm5 " << tm5.getLungimeKmTraseu() << endl << endl;
+	//operatori
+
+	cout << "Lungimea traseului pentru obiectul tm1: " << tm1.getLungimeKmTraseu() << endl << endl;
+	cout << "Lungimea traseului pentru obiectul tm5 : " << tm5.getLungimeKmTraseu() << endl << endl;
 	cout << "Lungimea traseului pentru Obiectul tm1 <= decat lungimea traseului m5 ? " << ((tm1 <= tm5) ? "DA" : "NU" )<< endl << endl;
 
 
@@ -658,5 +754,11 @@ void main()
 	cout << ".......................Obiectul tm5 ......................................................." << endl << endl;
 	tm1.afiseaza();
 	cout << "Tm1 si tm10 sunt egale ? " << ((tm10 == tm1) ? "DA" : "NU") << endl << endl;
-
+	cout << "...................................operatorul <<........................................................."<<endl<<endl;
+	cout << "Obiectul tm10" << endl << tm10 << endl << endl;
+	cout << "...................................operatorul >>........................................................." << endl << endl;
+	cout << "obiectul tm5 inainte sa fie citit de la tastatura........." << endl;
+	cin >> tm5;
+	cout << "obiectul tm5 dupa ce a fost citit de la tastatura........." <<endl<<tm5<< endl;
 }
+
