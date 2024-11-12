@@ -287,9 +287,9 @@ public:
 
 	//operatorul =
 
-	TraseuMontan&operator=(TraseuMontan&obiectMatrice)
+	TraseuMontan& operator=(TraseuMontan& obiectMatrice)
 	{
-		if(this!= &obiectMatrice)
+		if (this != &obiectMatrice)
 		{
 			if (this->dificultateTraseu != NULL)
 			{
@@ -330,7 +330,7 @@ public:
 				this->altitudini[i] = obiectMatrice.altitudini[i];
 			}
 		}
-		
+
 
 		return *this;
 
@@ -346,15 +346,15 @@ public:
 		cout << "Dificultatea traseului este : " << this->dificultateTraseu << endl;
 		cout << "Numarul echipelor de salvare este : " << this->nrEchipeSalvare << endl;
 		cout << "Echipele de salvare sunt " << endl;
-			for (int i = 0; i < nrEchipeSalvare; i++)
-			{
-				cout << "Echipa : " << this->echipeSalvare[i] << endl;
-			}
-		cout << " Numarul de puncte altitudine este : " <<this->numarPuncteAltitudine<< endl;
+		for (int i = 0; i < nrEchipeSalvare; i++)
+		{
+			cout << "Echipa : " << this->echipeSalvare[i] << endl;
+		}
+		cout << " Numarul de puncte altitudine este : " << this->numarPuncteAltitudine << endl;
 		for (int i = 0; i < numarPuncteAltitudine; i++)
 		{
 			cout << "Altitudini: " << this->altitudini[i] << endl;
-		   }
+		}
 
 		cout << endl << endl;
 
@@ -370,13 +370,13 @@ public:
 			return 0;
 		}
 		int suma = 0;
-		
+
 		for (int i = 0; i < this->numarPuncteAltitudine; i++)
 		{
 			suma = suma + this->altitudini[i];
 		}
 
-		int media = suma /this-> numarPuncteAltitudine;
+		int media = suma / this->numarPuncteAltitudine;
 
 		return media;
 	}
@@ -397,9 +397,9 @@ public:
 
 	int verificareAltitudine(int pragAltitudine)
 	{
-		
 
-		if (altitudini == NULL||numarPuncteAltitudine==0)
+
+		if (altitudini == NULL || numarPuncteAltitudine == 0)
 		{
 			return 0;
 		}
@@ -417,7 +417,111 @@ public:
 
 	}
 
+	// sa se inlocuiasca ultima echipa de salvare din vector cu o echipa noua primita ca parametru
+	void inlocuiesteUltimaEchipaSalvare(string echipaNoua)
+	{
+		//facem o copie a obiectului this
+		TraseuMontan copie(*this);
+		// dezalocam memoria pentru this
+		if (this->echipeSalvare != NULL)
+		{
+			delete[]this->echipeSalvare;
+		}
+		//aloc memorie noua pentru noul vector
+		this->echipeSalvare = new string[this->nrEchipeSalvare];
+		//copiez valorile din copie mai putin ultimul element
 
+		for (int i = 0; i < copie.nrEchipeSalvare - 1; i++)
+		{
+			this->echipeSalvare[i] = copie.echipeSalvare[i];
+		}
+		//atribui ultimul element din noul  vector cu elementul care va fi modificat
+		this->echipeSalvare[this->nrEchipeSalvare - 1] = echipaNoua;
+
+
+	}
+
+	//sa se adauge o noua echipa in vector la inceputul listei
+
+	void adaugaEchipaLaInceput(string echipaNoua)
+	{
+		TraseuMontan copie(*this);
+
+		// dezalocam memoria pentru this
+		if (this->echipeSalvare != NULL)
+		{
+			delete[]this->echipeSalvare;
+		}
+
+		this->nrEchipeSalvare++;
+
+		this->echipeSalvare = new string[this->nrEchipeSalvare];
+
+		for (int i = 0; i < copie.nrEchipeSalvare; i++)
+		{
+			this->echipeSalvare[i + 1] = copie.echipeSalvare[i];
+		}
+
+		this->echipeSalvare[0] = echipaNoua;
+
+
+	}
+	// operator <=
+	// sa compare 2 obiecte pe baza atributului lungimeKmTraseu
+
+	bool operator<=(const TraseuMontan&obj)
+	{
+		if (this->lungimeKmTraseu <= obj.lungimeKmTraseu)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	//operator == // sa se compare 2 obiecte in intregime
+
+	bool operator==(TraseuMontan& obj)
+	{
+
+		bool ok = 1;
+		if ((this->denumireTraseu == obj.denumireTraseu) && (this->lungimeKmTraseu == obj.lungimeKmTraseu) && (this->durataTraseuOre == obj.durataTraseuOre)
+			&& (this->prezintaRiscAvalansa == obj.prezintaRiscAvalansa) && (strcmp(this->dificultateTraseu, obj.dificultateTraseu) == 0)
+			&& (this->nrEchipeSalvare == obj.nrEchipeSalvare) && (this->numarPuncteAltitudine == obj.numarPuncteAltitudine))
+		{
+			for (int i = 0; i < this->nrEchipeSalvare; i++)
+			{
+				if (this->echipeSalvare[i] == obj.echipeSalvare[i])
+				{
+					ok = 1;
+				}
+				else
+				{
+					ok = 0;
+				}
+			}
+
+
+			for (int i = 0; i < this->numarPuncteAltitudine; i++)
+			{
+				if (this->altitudini[i] == obj.altitudini[i])
+				{
+					ok = 1;
+				}
+				else
+				{
+					ok = 0;
+				}
+			}
+		}
+		else
+		{
+			ok = 0;
+		}
+		return ok;
+	}
 };
 
 string TraseuMontan::taraTraseelor = "Romania";
@@ -523,5 +627,36 @@ void main()
 	cout << "Altitudini mai mari de 2000 m : " << tm5.verificareAltitudine(2000) << endl << endl;
 	cout << "Altitudini mai mari de 2500 m : " << tm5.verificareAltitudine(2500) << endl << endl;
 	
+	cout << ".......................Obiectul tm5 inainte de modificare ultimei echipe......................................." << endl << endl;
+	tm5.afiseaza();
+	tm5.inlocuiesteUltimaEchipaSalvare("SALVAMONT NEAMT");
+	cout << endl;
+	cout << ".......................Obiectul tm5 dupa modificarea ultimei echipe......................................." << endl << endl;
+	tm5.afiseaza();
+	cout << endl << endl;
+
+
+	cout << "....tm1 inainte..........." << endl << endl;
+	tm1.afiseaza();
+	cout << endl << endl;
+	tm1.adaugaEchipaLaInceput("SalvamontSinaia");
+
+	cout << ".........tm1 dupa..........." << endl << endl;
+	tm1.afiseaza();
+	cout << endl << endl;
+	tm1.adaugaEchipaLaInceput("SalvamontSinaia");
+	tm1.afiseaza();
+	cout << endl << endl;
+
+	cout << "Lungimea traseului pentru obiectul tm1 " << tm1.getLungimeKmTraseu() << endl << endl;
+	cout << "Lungimea traseului pentru obiectul tm5 " << tm5.getLungimeKmTraseu() << endl << endl;
+	cout << "Lungimea traseului pentru Obiectul tm1 <= decat lungimea traseului m5 ? " << ((tm1 <= tm5) ? "DA" : "NU" )<< endl << endl;
+
+
+	cout << ".......................Obiectul tm10 ......................................................" << endl << endl;
+	tm10.afiseaza();
+	cout << ".......................Obiectul tm5 ......................................................." << endl << endl;
+	tm1.afiseaza();
+	cout << "Tm1 si tm10 sunt egale ? " << ((tm10 == tm1) ? "DA" : "NU") << endl << endl;
 
 }
