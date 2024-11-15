@@ -615,6 +615,83 @@ public:
 
 	}
 
+	//operatorul []
+
+	//sa se afiseza denumirea unui echipe de salvare indicand pozitia vectorului
+
+	string operator[](int pozitieCautata)
+	{
+		if (pozitieCautata >= 0 && pozitieCautata < this->nrEchipeSalvare)
+		{
+			return this->echipeSalvare[pozitieCautata];
+		}
+		else
+		{
+			return "Pozitie gresita";
+		}
+	}
+
+	//operator functie()
+	// sa se implementeze o functie care va afisa pe baza unui prag setat ca parametru daca traseul este periculos
+	bool operator()(int pragAltitudine)
+	{
+		if (altitudineMaxima > pragAltitudine && prezintaRiscAvalansa)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+	//operatorul de negatie !
+	//sa se schimbe starea traseului din 'prezinta' risc de avalansa in 'nu prezinta risc de avalansa' si invers
+
+	friend void operator!(TraseuMontan&obj)
+	{
+		if (obj.prezintaRiscAvalansa == 1)
+		{
+			obj.prezintaRiscAvalansa == 0;
+		
+		}
+		else if (obj.prezintaRiscAvalansa == 0)
+		{
+			obj.prezintaRiscAvalansa == 1;
+
+		}
+	}
+
+	//operator de autoasignare+=
+	//sa se adauge o noua echipa in vector la inceputul listei
+
+	TraseuMontan& operator+=(string echipaNoua)
+	{
+		TraseuMontan copie(*this);
+
+		if (this->echipeSalvare != NULL)
+		{
+			delete[]this->echipeSalvare;
+		}
+
+		this->nrEchipeSalvare++;
+
+		this->echipeSalvare = new string[this->nrEchipeSalvare];
+
+		for (int i = 0; i < copie.nrEchipeSalvare; i++)
+		{
+			this->echipeSalvare[i] = copie.echipeSalvare[i];
+		}
+
+		this->echipeSalvare[0] = echipaNoua;
+
+		return *this;
+
+	}
+
+	//operator -=
+
 
 };
 
@@ -758,7 +835,24 @@ void main()
 	cout << "Obiectul tm10" << endl << tm10 << endl << endl;
 	cout << "...................................operatorul >>........................................................." << endl << endl;
 	cout << "obiectul tm5 inainte sa fie citit de la tastatura........." << endl;
-	cin >> tm5;
+	/*cin >> tm5*/;
 	cout << "obiectul tm5 dupa ce a fost citit de la tastatura........." <<endl<<tm5<< endl;
+
+	cout << "Operator []" << endl << endl;
+
+	cout << tm5 << endl << endl;
+	cout << "Echipa de salvare tm5 de pe pozitia 1 se numeste " << tm5[1] << endl;
+
+	cout << endl;
+
+	cout << ".................................Operator().........................." << endl << endl;
+	cout << tm1 << endl << endl;
+	cout << "Traseul este periculos? " << tm1(2200) << endl;
+
+
+	cout << ".................................Operator!.........................." << endl << endl;
+	!tm1;
+	cout << tm1.getPrezintaRiscAvalansa() << endl;
+	
 }
 
