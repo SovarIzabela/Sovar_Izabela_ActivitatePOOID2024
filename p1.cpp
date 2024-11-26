@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<string>
+#include<fstream>
 
 using namespace std;
 
@@ -312,7 +313,7 @@ public:
 
 	~Hotel()
 	{
-		//dezalocare de memorie+stergerea atributelor
+		
 		if (this->numeManagerHotel != NULL)
 		{
 			delete[] this->numeManagerHotel;
@@ -509,8 +510,8 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 	this->numeServicii[i] = copieObiect.numeServicii[i];
 }
 
-this->preturiServicii[copieObiect.numarServiciiDisponibile] = pretServiciuNou;
-this->numeServicii[copieObiect.numarServiciiDisponibile] = numeServiciuNou;
+	this->preturiServicii[copieObiect.numarServiciiDisponibile] = pretServiciuNou;
+	this->numeServicii[copieObiect.numarServiciiDisponibile] = numeServiciuNou;
 
 
 
@@ -585,7 +586,6 @@ this->numeServicii[copieObiect.numarServiciiDisponibile] = numeServiciuNou;
 
 
 	}
-	// supraincarcarea operatorilor
 
 	bool operator<=(const Hotel& obj)
 	{
@@ -659,6 +659,148 @@ this->numeServicii[copieObiect.numarServiciiDisponibile] = numeServiciuNou;
 
 	}
 
+
+	friend ostream& operator<<(ostream& out, const Hotel& h)
+	{
+		out << "Numele hotelului este : " << h.denumireHotel << endl;
+		out << "Adresa Hotelului este: " << h.adresaHotel << endl;
+		out << "Numarul de angajati este : " << h.numarAngajati << endl;
+		out << " Numarul de camere este : " << h.numarCamere << endl;
+		out << "Hotelul are mic dejun inclus ? " << (h.areMicDejunInclus ? "DA" : "NU") << endl;
+		out << "Pretul unei camere pe zi este: " << h.pretCameraPeZi << endl;
+		out << "Anul deschiderii hotelului este : " << h.anDeschidereHotel << endl;
+		out << "Managerul hotelui este : " << h.numeManagerHotel << endl;
+		out << "Numarul servicii disponibile: " << h.numarServiciiDisponibile << endl;
+
+		out << "Servicii si preturi: " << endl;
+		for (int i = 0; i < h.numarServiciiDisponibile; i++)
+		{
+			out << "Preturile sunt: " << h.preturiServicii[i] << endl;
+			out << "Nume serviciu: " << h.numeServicii[i] << endl;
+		}
+		return out;
+
+	}
+	
+
+	friend istream& operator>>(istream& in, Hotel& h)
+	{
+
+		if (h.numeManagerHotel != NULL)
+		{
+			delete[] h.numeManagerHotel;
+		}
+
+		if (h.preturiServicii != NULL)
+		{
+			delete[] h.preturiServicii;
+		}
+
+		if (h.numeServicii != NULL)
+
+		{
+			delete[] h.numeServicii;
+		}
+
+		cout << "Introduceti denumirea hotelului : " << endl;
+		in >> h.denumireHotel;
+		cout << "introduceti adresa hotelului: " << endl;
+		in >> h.adresaHotel;
+		cout << "Introduceri numarul de angajati: " << endl;
+		in >> h.numarAngajati;
+		cout << "introduceti numarul de camere : " << endl;
+		in >> h.numarCamere;
+		cout << "Are mic dejun inclus?" << endl;
+		in >> h.areMicDejunInclus;
+		cout << "Numele managerului hotelului este  :" << endl;
+		char aux[100];
+		in >> aux;
+		h.numeManagerHotel = new char[strlen(aux)+1];
+		strcpy(h.numeManagerHotel, aux);
+
+		cout << "Numarul de servicii disponibile : " << endl;
+		in >> h.numarServiciiDisponibile;
+		h.preturiServicii = new float[h.numarServiciiDisponibile];
+		h.numeServicii = new string[h.numarServiciiDisponibile];
+		cout << "Introduceti preturile serviciilor: " << endl;
+		for (int i = 0; i < h.numarServiciiDisponibile; i++)
+		{
+			in >> h.preturiServicii[i];
+			
+
+		}
+		cout << "Introduceti Numele serviciilor: " << endl;
+		for (int i = 0; i < h.numarServiciiDisponibile; i++)
+		{
+			in >> h.numeServicii[i];
+		}
+
+		return in;
+
+	}
+
+	friend ofstream& operator<<(ofstream& file, const Hotel& h)
+	{
+		file << h.denumireHotel << endl;
+		file  << h.adresaHotel << endl;
+		file  << h.numarAngajati << endl;
+		file << h.numarCamere << endl;
+		file  << h.areMicDejunInclus << endl;
+		file  << h.pretCameraPeZi << endl;
+		file << h.numeManagerHotel << endl;
+		file  << h.numarServiciiDisponibile << endl;
+		for (int i = 0; i < h.numarServiciiDisponibile; i++)
+		{
+			file  << h.preturiServicii[i] << endl;
+			file  << h.numeServicii[i] << endl;
+		}
+		return file;
+
+	}
+	friend ifstream& operator>>(ifstream& file, Hotel& h)
+	{
+
+		if (h.numeManagerHotel != NULL)
+		{
+			delete[] h.numeManagerHotel;
+		}
+
+		if (h.preturiServicii != NULL)
+		{
+			delete[] h.preturiServicii;
+		}
+
+		if (h.numeServicii != NULL)
+
+		{
+			delete[] h.numeServicii;
+		}
+
+		
+		file >> h.denumireHotel;
+		file >> h.adresaHotel;
+		file >> h.numarAngajati;
+		file >> h.numarCamere;
+		file >> h.areMicDejunInclus;
+		file >> h.pretCameraPeZi;
+		char aux[100];
+		file >> aux;
+		h.numeManagerHotel = new char[strlen(aux) + 1];
+		strcpy(h.numeManagerHotel, aux);
+		file >> h.numarServiciiDisponibile;
+		h.preturiServicii = new float[h.numarServiciiDisponibile];
+		h.numeServicii = new string[h.numarServiciiDisponibile];
+		for (int i = 0; i < h.numarServiciiDisponibile; i++)
+		{
+			file >> h.preturiServicii[i];
+			file >> h.numeServicii[i];
+
+		}
+		
+
+		return file;
+
+	}
 
 
 };
@@ -821,5 +963,27 @@ void main() {
 	cout << endl << endl;
 
 	cout << "Este obiectul h5 identic cu h7? " << ((h5 == h7) ? "DA" : "NU") << endl;
+
+	cout << "--------------------------------------Operator <<----------------------" << endl;
+	cout << h5;
+
+	cout << "--------------------------------------Operator >>----------------------" << endl;
+	/*cin >> h4;*/
+
+	cout << endl << endl << endl;
+
+	cout << "-------------------------------Fisiere text----------------------" << endl;
+
+	ofstream f1("HotelFisierTXT.txt", ios::out);
+	f1 << h1;
+	f1.close();
+
+	ifstream f2("HotelFisierTXT.txt", ios::in);
+	cout << "Obiectul h7 inainte de citirea din fisier" << endl<<h7<<endl;
+	f2 >> h7;
+	cout << "Obiectul h7 dupa citirea din fisier" << endl<<h7<<endl;
+	f2.close();
+
 }
+
 

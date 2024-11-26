@@ -1,0 +1,16 @@
+RAMADA
+bd-ul Unirii, nr5
+55
+150
+0
+2500
+Ionescu Maria
+4
+200
+roomService
+180.08
+manichiura
+50.25
+masaj
+100
+masaj
