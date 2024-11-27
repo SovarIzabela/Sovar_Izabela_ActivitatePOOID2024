@@ -267,22 +267,21 @@ public:
 
 	void setNumeManagerHotel(const char* numeManagerHotelNou)
 	{
-		//1.dezalocam valoarea veche (apelam instr de dezalocare mem din destructor
+		
 		if (this->numeManagerHotel != NULL)
 		{
 			delete[] this->numeManagerHotel;
 		}
 
-		//2.realocam spatiu pentru noua valoare
 		this->numeManagerHotel = new char[strlen(numeManagerHotelNou) + 1];
-		//3.reinitializam cu noua valoare
+		
 		strcpy(this->numeManagerHotel, numeManagerHotelNou);
 
 	}
 	// setter pt vectori si numarator
 	void setServicii(int numarServiciiDisponibileNou, float* preturiServiciiNoi, string* numeServiciiNoi)
 	{
-		//stergem vechea valoare
+		
 		if (this->preturiServicii != NULL)
 		{
 			delete[] this->preturiServicii;
@@ -293,12 +292,12 @@ public:
 		{
 			delete[] this->numeServicii;
 		}
-		//realocam numaratorul cu valoarea noua
+		
 		this->numarServiciiDisponibile = numarServiciiDisponibileNou;
-		//realocam memorie pentru vectori
+		
 		this->preturiServicii = new float[this->numarServiciiDisponibile];
 		this->numeServicii = new string[this->numarServiciiDisponibile];
-		//reinitializam cu noua valoare
+		
 
 		for (int i = 0; i < this->numarServiciiDisponibile; i++)
 		{
@@ -369,7 +368,7 @@ public:
 	Hotel& operator=(Hotel& obiectMacheta)
 	{
 		if (this != &obiectMacheta)
-		{//1.destructor
+		{
 			if (this->numeManagerHotel != NULL)
 			{
 				delete[] this->numeManagerHotel;
@@ -386,7 +385,7 @@ public:
 				delete[] this->numeServicii;
 			}
 
-			//2.constructorul de copiere
+		
 
 			this->denumireHotel = obiectMacheta.denumireHotel;
 			this->adresaHotel = obiectMacheta.adresaHotel;
@@ -412,7 +411,7 @@ public:
 
 			}
 		}
-		//3. dam return
+		
 
 		return*this;
 
