@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 
 class TraseuMontan {
@@ -257,7 +258,7 @@ public:
 
 
 	//constructorul de copiere
-	TraseuMontan(const TraseuMontan& obiectExistent) :altitudineMaxima(altitudineMaxima)
+	TraseuMontan(const TraseuMontan& obiectExistent) :altitudineMaxima(obiectExistent.altitudineMaxima)
 	{
 		this->denumireTraseu = obiectExistent.denumireTraseu;
 		this->lungimeKmTraseu = obiectExistent.lungimeKmTraseu;
@@ -362,7 +363,7 @@ public:
 
 	//sa se creeze o metoda care identifica care este altitudinea medie a unui traseu;
 
-	int altitudineMedie()
+	float altitudineMedie()
 	{
 
 		if (numarPuncteAltitudine == 0)
@@ -395,47 +396,47 @@ public:
 
 	//sa se implementeze o metoda care va identifica daca s-a depasit o anumita altitudine pe un traseu montan
 
-	int verificareAltitudine(int pragAltitudine)
+	bool verificareAltitudine(int pragAltitudine)
 	{
-
+		bool rezultat = 0;
 
 		if (altitudini == NULL || numarPuncteAltitudine == 0)
 		{
-			return 0;
+			return rezultat;
 		}
 
 		for (int i = 0; i < this->numarPuncteAltitudine; i++)
 		{
 			if (altitudini[i] > pragAltitudine)
 			{
-				return altitudini[i];
+				rezultat = 1;
 			}
 
 		}
 
-		return 0;
+		return rezultat;
 
 	}
 
 	// sa se inlocuiasca ultima echipa de salvare din vector cu o echipa noua primita ca parametru
 	void inlocuiesteUltimaEchipaSalvare(string echipaNoua)
 	{
-		//facem o copie a obiectului this
+		
 		TraseuMontan copie(*this);
-		// dezalocam memoria pentru this
+		
 		if (this->echipeSalvare != NULL)
 		{
 			delete[]this->echipeSalvare;
 		}
-		//aloc memorie noua pentru noul vector
+		
 		this->echipeSalvare = new string[this->nrEchipeSalvare];
-		//copiez valorile din copie mai putin ultimul element
+		
 
 		for (int i = 0; i < copie.nrEchipeSalvare - 1; i++)
 		{
 			this->echipeSalvare[i] = copie.echipeSalvare[i];
 		}
-		//atribui ultimul element din noul  vector cu elementul care va fi modificat
+		
 		this->echipeSalvare[this->nrEchipeSalvare - 1] = echipaNoua;
 
 
@@ -447,7 +448,7 @@ public:
 	{
 		TraseuMontan copie(*this);
 
-		// dezalocam memoria pentru this
+		
 		if (this->echipeSalvare != NULL)
 		{
 			delete[]this->echipeSalvare;
@@ -551,6 +552,27 @@ public:
 		return out;
 	}
 
+	friend ofstream& operator<<(ofstream& file, const TraseuMontan& obj)
+	{
+		file << obj.denumireTraseu << endl;
+		file << obj.lungimeKmTraseu << endl;
+		file << obj.durataTraseuOre << endl;
+		file << obj.prezintaRiscAvalansa << endl;
+		file << obj.dificultateTraseu << endl;
+		file << obj.nrEchipeSalvare << endl;
+		for (int i = 0; i < obj.nrEchipeSalvare; i++)
+		{
+			file << obj.echipeSalvare[i] << endl;
+		}
+		file << obj.numarPuncteAltitudine << endl;
+		for (int i = 0; i < obj.numarPuncteAltitudine; i++)
+		{
+			file << obj.altitudini[i] << endl;
+		}
+
+		return file;
+	}
+
 	friend istream& operator >>(istream& in, TraseuMontan& obj)
 	{
 		if (obj.dificultateTraseu != NULL)
@@ -612,6 +634,50 @@ public:
 		
 	
 
+
+	}
+
+	friend ifstream& operator >>(ifstream& file, TraseuMontan& obj)
+	{
+		if (obj.dificultateTraseu != NULL)
+		{
+			delete[]obj.dificultateTraseu;
+		}
+
+		if (obj.echipeSalvare != NULL)
+		{
+			delete[]obj.echipeSalvare;
+		}
+
+		if (obj.altitudini != NULL)
+		{
+			delete[]obj.altitudini;
+		}
+		file >> obj.denumireTraseu;
+		file >> obj.lungimeKmTraseu;
+		file >> obj.durataTraseuOre;
+		file >> obj.prezintaRiscAvalansa;
+
+		char aux[100];
+		file >> aux;
+		obj.dificultateTraseu = new char[strlen(aux) + 1];
+		strcpy(obj.dificultateTraseu, aux);
+		file >> obj.nrEchipeSalvare;
+		obj.echipeSalvare = new string[obj.nrEchipeSalvare];
+		for (int i = 0; i < obj.nrEchipeSalvare; i++)
+		{
+			file >> obj.echipeSalvare[i];
+		}
+
+		file >> obj.numarPuncteAltitudine;
+		obj.altitudini = new int[obj.numarPuncteAltitudine];
+
+		for (int i = 0; i < obj.numarPuncteAltitudine; i++)
+		{
+			file >> obj.altitudini[i];
+		}
+
+		return file;
 
 	}
 
@@ -690,7 +756,116 @@ public:
 
 	}
 
-	//operator -=
+	//fisiere binare
+	void scriereBinar(fstream& file)
+	{
+		//string denumireTraseu;
+		int numarLitereDenumireTraseu = this->denumireTraseu.size();
+		file.write((char*)&numarLitereDenumireTraseu, sizeof(int));
+		file.write(this->denumireTraseu.c_str(),numarLitereDenumireTraseu);
+		
+		//int lungimeKmTraseu;
+		file.write((char*)&this->lungimeKmTraseu, sizeof(int));
+
+		//float durataTraseuOre;
+		file.write((char*)&this->durataTraseuOre, sizeof(float));
+
+		//bool prezintaRiscAvalansa;
+		file.write((char*)&this->prezintaRiscAvalansa, sizeof(bool));
+
+		//char* dificultateTraseu;
+		int numarLitere = strlen(this->dificultateTraseu);
+		file.write((char*)&numarLitere, sizeof(int));
+		for (int i = 0; i < numarLitere; i++)
+		{
+			file.write((char*)&this->dificultateTraseu[i], sizeof(char));
+		}
+
+		//int nrEchipeSalvare;
+		file.write((char*)&this->nrEchipeSalvare, sizeof(int));
+
+		//string* echipeSalvare;
+		for(int i=0;i<this->nrEchipeSalvare;i++)
+		{
+			int numarLitereEchipeSalvare = this->echipeSalvare[i].size();
+			file.write((char*)&numarLitereEchipeSalvare, sizeof(int));
+			file.write(this->echipeSalvare[i].c_str(), numarLitereEchipeSalvare);
+		}
+		
+		//int numarPuncteAltitudine;
+		file.write((char*)&this->numarPuncteAltitudine, sizeof(int));
+	
+		//int* altitudini;
+		for (int i = 0; i < numarPuncteAltitudine; i++)
+		{
+			file.write((char*)&this->altitudini[i], sizeof(int));
+		}
+
+	}
+
+	void citireBinar(fstream& binar)
+	{
+		
+			delete[]this->dificultateTraseu;
+			delete[]this->echipeSalvare;
+			delete[]this->altitudini;
+	
+			//string denumireTraseu;
+			int numarLitereDenumireTraseu;
+			binar.read((char*)&numarLitereDenumireTraseu, sizeof(int));
+			string aux;
+			aux.resize(numarLitereDenumireTraseu);
+			binar.read((char*)aux.c_str(), numarLitereDenumireTraseu);
+			this->denumireTraseu = aux;
+
+			//int lungimeKmTraseu;
+			binar.read((char*)&this->lungimeKmTraseu, sizeof(int));
+
+			//float durataTraseuOre;
+			binar.read((char*)&this->durataTraseuOre, sizeof(float));
+
+			//bool prezintaRiscAvalansa;
+			binar.read((char*)&this->prezintaRiscAvalansa, sizeof(bool));
+
+			//char* dificultateTraseu;
+			int numarLitere;
+			binar.read((char*)&numarLitere, sizeof(int));
+			this->dificultateTraseu = new char[numarLitere + 1];
+			for (int i = 0; i < numarLitere; i++)
+			{
+				binar.read((char*)&this->dificultateTraseu[i], sizeof(char));
+			}
+			this->dificultateTraseu[numarLitere] = '\0';
+
+			//int nrEchipeSalvare;
+			binar.read((char*)&this->nrEchipeSalvare, sizeof(int));
+
+			//string* echipeSalvare;
+
+			this->echipeSalvare = new string[nrEchipeSalvare];
+			for (int i = 0; i < this->nrEchipeSalvare; i++)
+			{
+				int numarLitereDenumireTraseu;
+				binar.read((char*)&numarLitereDenumireTraseu, sizeof(int));
+				string aux;
+				aux.resize(numarLitereDenumireTraseu);
+				binar.read((char*)aux.c_str(), numarLitereDenumireTraseu);
+				this->echipeSalvare[i] = aux;
+			}
+
+			//int numarPuncteAltitudine;
+			binar.read((char*)&this->numarPuncteAltitudine, sizeof(int));
+
+			//int* altitudini;
+			this->altitudini = new int[this->numarPuncteAltitudine];
+			for (int i = 0; i < numarPuncteAltitudine; i++)
+			{
+				binar.read((char*)&this->altitudini[i], sizeof(int));
+			}
+
+
+	}
+	
 
 
 };
@@ -795,8 +970,8 @@ void main()
 
 	cout << "Durata medie pe kilometru a traseului tm5 este : " << tm5.duratamedieKM() << endl << endl;
 
-	cout << "Altitudini mai mari de 2000 m : " << tm5.verificareAltitudine(2000) << endl << endl;
-	cout << "Altitudini mai mari de 2500 m : " << tm5.verificareAltitudine(2500) << endl << endl;
+	cout << "Exista altitudini mai mari de 2000 m pe traseul tm5 (1-DA ; 0-NU): " << tm5.verificareAltitudine(2000) << endl << endl;
+	cout << "Exista altitudini mai mari de 2500 m pe traseul tm5 (1-DA ; 0-NU): " << tm5.verificareAltitudine(2500) << endl << endl;
 	
 	cout << ".......................Obiectul tm5 inainte de modificare ultimei echipe......................................." << endl << endl;
 	tm5.afiseaza();
@@ -853,6 +1028,34 @@ void main()
 	cout << ".................................Operator!.........................." << endl << endl;
 	!tm1;
 	cout << tm1.getPrezintaRiscAvalansa() << endl;
+
+	cout << "-------------------------------------Fisiere Text-----------------------------" << endl << endl;
+
+	cout << endl << endl;
 	
+	ofstream f1("FisierTXT", ios::out);
+	f1 << tm2;
+	f1.close();
+	cout << tm2 << endl << endl;
+
+	ifstream f2("FisierTXT", ios::in);
+	f2 >> tm5;
+	cout << "-----traseul tm2 dupa ce a fost modificat--------- " << endl;
+	cout << tm5 << endl << endl;
+
+	cout << "-------------------------------------Fisiere binare-----------------------------" << endl << endl;
+
+	fstream f3("FisierBinar.bin", ios::binary | ios::out);
+	tm2.scriereBinar(f3);
+	f3.close();
+
+	fstream f4("FisierBinar.bin", ios::binary | ios::in);
+	cout << "tm3 inainte " << tm3 << endl << endl;;
+
+	tm3.citireBinar(f4);
+	f4.close();
+	cout << "tm3 dupa " << tm3 << endl<<endl;
+
+
 }
 
