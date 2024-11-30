@@ -667,7 +667,6 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 		out << " Numarul de camere este : " << h.numarCamere << endl;
 		out << "Hotelul are mic dejun inclus ? " << (h.areMicDejunInclus ? "DA" : "NU") << endl;
 		out << "Pretul unei camere pe zi este: " << h.pretCameraPeZi << endl;
-		out << "Anul deschiderii hotelului este : " << h.anDeschidereHotel << endl;
 		out << "Managerul hotelui este : " << h.numeManagerHotel << endl;
 		out << "Numarul servicii disponibile: " << h.numarServiciiDisponibile << endl;
 
@@ -799,6 +798,129 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 
 		return file;
 
+	}
+
+	void scriereBinar(fstream &fb)
+	{
+		//string denumireHotel;
+		int numarLitereDenumire = this->denumireHotel.size();
+		fb.write((char*)&numarLitereDenumire, sizeof(int));
+		fb.write(this->denumireHotel.c_str(), numarLitereDenumire);
+		
+		//string adresaHotel;
+		int numarLitereAdresa = this->adresaHotel.size();
+		fb.write((char*)&numarLitereAdresa, sizeof(int));
+		fb.write(this->adresaHotel.c_str(), numarLitereAdresa);
+
+		//int numarAngajati;
+		fb.write((char*)&this->numarAngajati, sizeof(int));
+		
+		//int numarCamere;
+		fb.write((char*)&this->numarCamere, sizeof(int));
+		//bool areMicDejunInclus;
+		fb.write((char*)&this->areMicDejunInclus, sizeof(bool));
+	
+		//float pretCameraPeZi;
+		fb.write((char*)&this->pretCameraPeZi, sizeof(float));
+		
+
+		//char* numeManagerHotel;
+		int numarLitereMnager = strlen(this->numeManagerHotel);
+		fb.write((char*)&numarLitereMnager, sizeof(int));
+		for (int i = 0; i < numarLitereMnager; i++)
+		{
+			fb.write((char*)&this->numeManagerHotel[i], sizeof(char));
+		}
+
+		//int numarServiciiDisponibile; 
+		fb.write((char*)&this->numarServiciiDisponibile, sizeof(int));
+
+		//float* preturiServicii;
+		
+		for (int i = 0; i < this->numarServiciiDisponibile; i++)
+		{
+			fb.write((char*)&this->preturiServicii[i], sizeof(float));
+		}
+
+		//string* numeServicii;
+
+		for (int i = 0; i < this->numarServiciiDisponibile; i++)
+		{
+			int numarLitereNumeServiccii = this->numeServicii[i].size();
+			fb.write((char*)&numarLitereNumeServiccii, sizeof(float));
+			fb.write(this->numeServicii[i].c_str(), numarLitereNumeServiccii);
+		}
+	}
+
+	void citireBinar(fstream& fb)
+	{
+		delete[] this->numeManagerHotel;
+		delete[] this->preturiServicii;
+		delete[] this->numeServicii;
+		//string denumireHotel;
+
+		int numarLitereDenHotel;
+		fb.read((char*)&numarLitereDenHotel, sizeof(int));
+		string aux;
+		aux.resize(numarLitereDenHotel);
+		fb.read((char*)aux.c_str(), numarLitereDenHotel);
+		this->denumireHotel = aux;
+		
+
+		//string adresaHotel;
+		int numarLitereHotel;
+		fb.read((char*)&numarLitereHotel, sizeof(int));
+		string aux3;
+		aux3.resize(numarLitereHotel);
+		fb.read((char*)aux3.c_str(), numarLitereHotel);
+		this->adresaHotel = aux3;
+
+		//int numarAngajati;
+		fb.read((char*)&this->numarAngajati, sizeof(int));
+
+		//int numarCamere;
+		fb.read((char*)&this->numarCamere, sizeof(int));
+		//bool areMicDejunInclus;
+		fb.read((char*)&this->areMicDejunInclus, sizeof(bool));
+
+		//float pretCameraPeZi;
+		fb.read((char*)&this->pretCameraPeZi, sizeof(float));
+
+
+		//char* numeManagerHotel;
+		int numarLitereManagerHotel;
+		fb.read((char*)&numarLitereManagerHotel, sizeof(int));
+		this->numeManagerHotel = new char[numarLitereManagerHotel+1];
+		for (int i = 0; i < numarLitereManagerHotel; i++)
+		{
+			fb.read((char*)&this->numeManagerHotel[i], sizeof(char));
+		}
+		this->numeManagerHotel[numarLitereManagerHotel] = '\0';
+		
+
+		//int numarServiciiDisponibile; 
+		fb.read((char*)&this->numarServiciiDisponibile, sizeof(int));
+
+		//float* preturiServicii;
+		this->preturiServicii = new float[this->numarServiciiDisponibile];
+		for (int i = 0; i < this->numarServiciiDisponibile; i++)
+		{
+			fb.read((char*)&this->preturiServicii[i], sizeof(float));
+		}
+
+		//string* numeServicii;
+		this->numeServicii = new string[this->numarServiciiDisponibile];
+
+		for (int i = 0; i < this->numarServiciiDisponibile; i++)
+		{
+			int numarLiterenumeServ;
+			fb.read((char*)&numarLiterenumeServ, sizeof(int));
+			string aux1;
+			aux1.resize(numarLiterenumeServ);
+			fb.read((char*)aux1.c_str(), numarLiterenumeServ);
+			this->numeServicii[i] = aux1;
+			
+		}
 	}
 
 
@@ -982,6 +1104,20 @@ void main() {
 	f2 >> h7;
 	cout << "Obiectul h7 dupa citirea din fisier" << endl<<h7<<endl;
 	f2.close();
+
+	cout << "-------------------------------Fisiere binar----------------------" << endl;
+	fstream f3("fisierBIN.bin", ios::binary | ios::out);
+	h1.scriereBinar(f3);
+	f3.close();
+
+	fstream f4("fisierBIN.bin", ios::binary | ios::in);
+	cout << "Obiectul H5 inainte de citire din fisier binar" << endl << h5 << endl << endl;
+	h5.citireBinar(f4);
+
+	cout << "Obiectul H5 dupa citire din fisier binar" << endl << h5 << endl << endl;
+	f4.close();
+
+
 
 }
 
