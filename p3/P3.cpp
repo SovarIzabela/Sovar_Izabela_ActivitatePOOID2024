@@ -308,8 +308,46 @@ public:
 	}
 	
 	//METODA DE ADAUGARE ELEMENT IN VECTOR
+	void adaugaElement(string IngredientNou, float PretNou)
+	{
+		Preparat copie(*this);
+
+		
+		delete[]this->listaIngrediente;
+		delete[] this->pretIngrediente;
+
+		numarIngrediente++;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->pretIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->pretIngrediente[i] = copie.pretIngrediente[i];
+		}
+
+		this->listaIngrediente[numarIngrediente - 1] = IngredientNou;
+		this->pretIngrediente[numarIngrediente - 1] = PretNou;
+
+	}
+
 	//METODA DE ELIMINARE DIN VECTOR
-	//Operatorul <=
+	//Operatorul <= . Sa se verifice daca pretul unui preparat <= decat pretul altui preparat
+
+	bool operator<=(const Preparat& p)
+	{
+		if (this->pretPreparat <= p.pretPreparat)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+
+	}
 	//Operatorul ==
 
 	friend ostream& operator<<(ostream& out, const Preparat& h)
@@ -391,8 +429,36 @@ public:
 
 
 	//Opertaorul [] - de indexare
+	string operator[](int pozitieCautata)
+	{
+		if (pozitieCautata >= 0 && pozitieCautata < this->numarIngrediente)
+		{
+			return this->listaIngrediente[pozitieCautata];
+		}
+		else
+		{
+			return "Pozitia a fost introdusa gresit;";
+		}
+
+
+	}
+
 	//Operatorul () - functie
 	//Operatorul ! - de negatie
+
+	friend void operator!( Preparat& p)
+	{
+		
+		if (p.contineAlergeni == 1)
+		{
+			p.contineAlergeni = 0;
+		}
+		else if(p.contineAlergeni==0)
+		{
+			p.contineAlergeni = 1;
+		}
+	}
+
 	//Operatorul de autoasignare +=
 	//Operatorul -=
 	//Operatorul de cast
@@ -477,4 +543,25 @@ void main()
 	{
 		cout << "eroare" << endl;
 	}
+
+	m1.adaugaElement("marar", 0.5);
+
+	cout << m1 << endl << endl;
+
+	if (m1 <= m2)
+	{
+		cout << "Pretul Preparatului m1<= pretul preparatului m2";
+
+	}
+	else
+	{
+		cout << "Pretul Preparatului m1 > pretul preparatului m2";
+	}
+
+	cout << m1[2] << endl;
+
+	cout << m2.getContineAlergeni() << endl << endl;
+
+	!m2;
+	cout << m2.getContineAlergeni() << endl << endl;
 }
