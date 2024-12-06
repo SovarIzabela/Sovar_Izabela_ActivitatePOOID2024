@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include<string>
+#include<fstream>
 using namespace std;
 
 class preparatCafea
@@ -21,7 +22,7 @@ private:
 
 
 public:
-	//constructor cu toti parametrii
+	
 
 	preparatCafea(string tipCafea, int cantitateZahar, char marimePahar, float pretCafea, bool adaugatiAromaCafea, string monedaPlata, const char* numeCafenea, int numarIngrediente, string*listaIngrediente, float* gramajIngrediente):monedaPlata("RON")
 	{
@@ -45,7 +46,7 @@ public:
 
 	}
 
-	//constructor fara parametri
+	
 
 	preparatCafea():monedaPlata("Necunoscuta")
 	{
@@ -63,7 +64,7 @@ public:
 		
 	}
 
-	//getteri
+	
 
 	string getTipCafea()
 	{
@@ -114,7 +115,7 @@ public:
 	{
 		return this->gramajIngrediente;
 	}
-	//setteri
+	
 
 	void setTipCafea(string TipNouCafea)
 	{
@@ -220,7 +221,7 @@ public:
 
 	}
 
-	// cosntructorul de copiere
+
 
 	preparatCafea(preparatCafea& obiectExistent):monedaPlata("RON")
 	{
@@ -243,7 +244,7 @@ public:
 		}
 
 	}
-	//operatorul =
+	
 
 	preparatCafea& operator=(preparatCafea& obiectMatrice)
 	{
@@ -282,6 +283,204 @@ public:
 
 	}
 
+
+
+//metoda pretminim, maxim, suma, medie
+
+	float gramajMinim()
+	{
+		int gramajMinim = this->gramajIngrediente[0];
+		for (int i = 1; i < this->numarIngrediente; i++)
+		{
+			if (this-> gramajIngrediente[i]<gramajMinim)
+			{
+				gramajMinim = this->gramajIngrediente[i];
+			}
+		}
+		return gramajMinim;
+	}
+
+	float sumaGramajingrediente()
+	{
+
+		float suma = 0;
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+			 suma = suma + this->gramajIngrediente[i];
+		}
+		return suma;
+	}
+
+	float mediagramaj()
+	{
+		float media = this->sumaGramajingrediente() / this->numarIngrediente;
+		return media;
+	}
+
+
+
+//METODA DE ADAUGARE ELEMENT IN VECTOR
+//METODA DE ELIMINARE DIN VECTOR
+//Operatorul <= 
+
+	bool operator<=(const preparatCafea& c)
+	{
+		bool rezultat=0;
+		if (this->pretCafea <= c.pretCafea)
+		{
+			return rezultat;
+		}
+		else
+		{
+			return 0;
+		}
+
+	}
+
+	//string tipCafea;
+	//int cantitateZahar;
+	//char marimePahar; // G pentru Grande , T pentru tall, M pentru Medium si S pentru Short
+	//float pretCafea;
+	//bool adaugatiAromaCafea;
+
+	//char* numeCafenea;
+	//int numarIngrediente;
+	//string* listaIngrediente;
+	//float* gramajIngrediente;
+
+//Operatorul ==
+
+	bool operator==(const preparatCafea& p)
+	{
+		bool ok = 1;
+		if ((this->tipCafea == p.tipCafea) && (this->cantitateZahar == p.cantitateZahar) && (this->marimePahar == p.marimePahar) && (this->pretCafea == p.pretCafea)
+			&& (this->adaugatiAromaCafea == p.adaugatiAromaCafea) && (strcmp(this->numeCafenea ,p.numeCafenea)==0) && (this->numarIngrediente == p.numarIngrediente))
+		{
+			for (int i = 0; i < this->numarIngrediente; i++)
+			{
+				if ((this->listaIngrediente[i] == p.listaIngrediente[i]) && (this->gramajIngrediente[i] == p.gramajIngrediente[i]))
+				{
+
+				}
+				else
+				{
+					ok = 0;
+				}
+				if (ok == 1)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+		}
+	}
+
+
+
+	friend ostream& operator<<(ostream& out, const preparatCafea& p)
+	{
+
+		out << "Tipul de cafea este : " << p.tipCafea << endl;
+		out << "Cantitatea de zahar adaugat este: " << p.cantitateZahar << endl;
+		out << "Marimea paharului de cafea este: " << p.marimePahar << endl;
+		out << "Pretul cafelei este: " << p.pretCafea << endl;
+		out << "Doriti sa adaugati o aroma ? " <<( p.adaugatiAromaCafea ? "DA" : "NU" )<< endl;
+		out << "Moneda de plata este: " << p.monedaPlata << endl;
+		out << "Numele cafenelei este : " << p.numeCafenea << endl;
+		out << "Numarul de ingrediente este : " << p.numarIngrediente << endl;
+		out << "Ingrediente si gramaj: " << endl;
+		for (int i = 0; i < p.numarIngrediente; i++)
+		{
+			out << "Ingredient: " << p.listaIngrediente[i] << endl;
+			out << "Gramaj ingredient:" << p.gramajIngrediente[i] << endl;
+		}
+		out << endl << endl;
+
+		return out;
+
+	}
+
+
+	friend istream& operator>>(istream& in, preparatCafea& p)
+	{
+		if (p.numeCafenea != NULL)
+		{
+			delete[]p.numeCafenea;
+		}
+
+		if (p.listaIngrediente != NULL)
+		{
+			delete[]p.listaIngrediente;
+		}
+
+		if (p.gramajIngrediente != NULL)
+		{
+			delete[]p.gramajIngrediente;
+		}
+
+		cout << "Introduceti tipul cafelei: ";
+		in >> p.tipCafea;
+		cout << "Introduceti cantitatea de zahar: ";
+		in >> p.cantitateZahar;
+		cout << "Introduceti marimea paharului: ";
+		in >> p.marimePahar;
+		cout << "Introduceti pretul cafelei: ";
+		in >> p.pretCafea;
+		cout << "Adaugati aroma cafea? ";
+		in >> p.adaugatiAromaCafea;
+		cout << "Numele cafenelei este : ";
+		char aux[100];
+		in >> aux;
+		p.numeCafenea = new char[strlen(aux) + 1];
+		strcpy(p.numeCafenea, aux);
+
+		cout << "Numarul de ingrediente este : ";
+		in >> p.numarIngrediente;
+		p.listaIngrediente = new string[p.numarIngrediente];
+		p.gramajIngrediente = new float[p.numarIngrediente];
+		for (int i = 0; i < p.numarIngrediente; i++)
+		{
+			cout << "	Introduceti ingrediente : ";
+			in >> p.listaIngrediente[i];
+			
+		}
+
+		for (int i = 0; i < p.numarIngrediente; i++)
+		{
+			cout << "Introduceti gramajul ingrediente=ilui : ";
+			in >> p.gramajIngrediente[i];
+		}
+
+
+		return in;
+
+	}
+
+
+	string operator[](int pozitieCautata)
+	{
+		if (pozitieCautata >= 0 && pozitieCautata < this->numarIngrediente)
+		{
+			return this->listaIngrediente[pozitieCautata];
+		}
+		else
+		{
+			return"Pozitia nu este corecta!";
+		}
+	}
+
+
+
+
+//Operatorul () - functie
+//Operatorul ! - de negatie
+//Operatorul de autoasignare +=
+//Operatorul -=
+//Operatorul de cast
+//FISERE TEXT SI FISIERE BINARE
 
 
 };
@@ -356,4 +555,24 @@ void main()
 	cout << "............Obiectul p2...................." << endl;
 	p2.afiseaza();
 
+	cout << "------Operatorul<<-----------" << endl << endl;
+
+	cout << p2;
+
+	cout << "------Operatorul>>-----------" << endl << endl;
+	//cin >> p4;
+
+	cout << "------Obiectul p4 dupa ce a fost introdus de la tastatura-------" << endl << endl;
+
+	cout << p2[1] << endl;
+
+	cout << "Gramajul minim al obiectului p1 este :" << p1.gramajMinim() << endl;
+	cout << p1;
+	cout << "Suma gramajului ingredientelor obiectului p1 este :" << p1.sumaGramajingrediente() << endl;
+	cout << "Media gramajului ingredientelor obiectului p1 este :" << p1.mediagramaj() << endl;
+	cout << "Este pretul p1<=p2? :" << (p1<=p2) << endl;
+
+	cout << p1;
+	cout << p4;
+	cout << "p1 este egal in totalitate cu p2? :" << (p1==p4) << endl;
 }
