@@ -284,9 +284,6 @@ public:
 	}
 
 
-
-//metoda pretminim, maxim, suma, medie
-
 	float gramajMinim()
 	{
 		int gramajMinim = this->gramajIngrediente[0];
@@ -318,10 +315,62 @@ public:
 	}
 
 
+	void adaugaIngredient(string IngredientNou, float GarmajNou)
+	{
+		preparatCafea copie(*this);
+		
+		
+		delete[]this->listaIngrediente;
+	    delete[]this->gramajIngrediente;
 
-//METODA DE ADAUGARE ELEMENT IN VECTOR
-//METODA DE ELIMINARE DIN VECTOR
-//Operatorul <= 
+		numarIngrediente++;
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->gramajIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->gramajIngrediente[i] = copie.gramajIngrediente[i];
+
+
+		}
+		
+
+		this->listaIngrediente[numarIngrediente - 1] = IngredientNou;
+		this->gramajIngrediente[numarIngrediente - 1] = GarmajNou;
+
+	}
+
+
+
+	void eliminaElement(int pozitie)
+	{
+		preparatCafea copie(*this);
+		delete[]this->listaIngrediente;
+		delete[]this->gramajIngrediente;
+
+		this->numarIngrediente--;
+
+		this->listaIngrediente = new string[copie.numarIngrediente];
+		this->gramajIngrediente = new float[copie.numarIngrediente];
+
+
+		for (int i = 0; i < pozitie; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->gramajIngrediente[i] = copie.gramajIngrediente[i];
+
+		}
+
+		for (int i = pozitie; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i-1] = copie.listaIngrediente[i];
+			this->gramajIngrediente[i-1] = copie.gramajIngrediente[i];
+	   }
+
+
+	}
+
 
 	bool operator<=(const preparatCafea& c)
 	{
@@ -337,18 +386,6 @@ public:
 
 	}
 
-	//string tipCafea;
-	//int cantitateZahar;
-	//char marimePahar; // G pentru Grande , T pentru tall, M pentru Medium si S pentru Short
-	//float pretCafea;
-	//bool adaugatiAromaCafea;
-
-	//char* numeCafenea;
-	//int numarIngrediente;
-	//string* listaIngrediente;
-	//float* gramajIngrediente;
-
-//Operatorul ==
 
 	bool operator==(const preparatCafea& p)
 	{
@@ -473,12 +510,89 @@ public:
 	}
 
 
+	float operator()(float discount)
+	{
+		if (discount <= 0.0f || discount > 1.0f)
+		{
+			throw exception("Discount incorect");
+		}
+
+		this->pretCafea = this->pretCafea - discount * pretCafea;
+		return pretCafea;
+	}
 
 
-//Operatorul () - functie
-//Operatorul ! - de negatie
-//Operatorul de autoasignare +=
-//Operatorul -=
+	friend void operator!(preparatCafea& p)
+	{
+		if (p.adaugatiAromaCafea == 0)
+		{
+			p.adaugatiAromaCafea = 1;
+		}
+		else if (p.adaugatiAromaCafea == 1)
+		{
+			p.adaugatiAromaCafea = 0;
+		}
+
+}
+
+ preparatCafea& operator+=(string IngredientNou)
+	{
+		preparatCafea copie(*this);
+
+
+		delete[]this->listaIngrediente;
+		delete[]this->gramajIngrediente;
+
+		numarIngrediente++;
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->gramajIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->gramajIngrediente[i] = copie.gramajIngrediente[i];
+
+		}
+
+
+		this->listaIngrediente[numarIngrediente - 1] = IngredientNou;
+		this->gramajIngrediente[numarIngrediente - 1] = 0;
+
+		return (*this);
+
+	}
+
+
+ preparatCafea& operator-=(int pozitie)
+ {
+	 preparatCafea copie(*this);
+	 delete[]this->listaIngrediente;
+	 delete[]this->gramajIngrediente;
+
+	 this->numarIngrediente--;
+
+	 this->listaIngrediente = new string[copie.numarIngrediente];
+	 this->gramajIngrediente = new float[copie.numarIngrediente];
+
+
+	 for (int i = 0; i < pozitie; i++)
+	 {
+		 this->listaIngrediente[i] = copie.listaIngrediente[i];
+		 this->gramajIngrediente[i] = copie.gramajIngrediente[i];
+
+	 }
+
+	 for (int i = pozitie; i < copie.numarIngrediente; i++)
+	 {
+		 this->listaIngrediente[i - 1] = copie.listaIngrediente[i];
+		 this->gramajIngrediente[i - 1] = copie.gramajIngrediente[i];
+	 }
+
+	 return (*this);
+ }
+
+
+
 //Operatorul de cast
 //FISERE TEXT SI FISIERE BINARE
 
@@ -575,4 +689,45 @@ void main()
 	cout << p1;
 	cout << p4;
 	cout << "p1 este egal in totalitate cu p2? :" << (p1==p4) << endl;
+
+	p1.adaugaIngredient("scortisoara", 5);
+
+	cout << p1;
+
+	cout << "Obiectul p2 inainte de eliminare ingredient din vector" << endl;
+	cout << p2;
+
+	p2.eliminaElement(3);
+
+	cout << "Obiectul p2 dupa eliminare ingredient din vector" << endl;
+	cout << p2;
+	cout << "------------operator !-----------" << endl << endl;
+	cout << p1;
+	!p1;
+	cout << p1;
+
+	cout << endl << endl;
+	cout << "Inainte de aplicare discount" << p1.getPretCafea() << endl;
+	try
+	{
+		p1(1.5);
+	}
+	catch (exception e)
+	{
+		cout << "eroare";
+	}
+
+	cout << "Aplicare discount" << p1.getPretCafea() << endl;
+
+	cout << p2;
+	p2 += "frisca";
+	cout << p2;
+
+
+
+	cout << p2;
+	p2 -= 1;
+	cout << p2;
 }
+
+
