@@ -9,7 +9,7 @@ using namespace std;
 class Hotel
 {
 
-private:
+protected:
 
 	string denumireHotel;
 	string adresaHotel;
@@ -27,7 +27,6 @@ private:
 
 public:
 
-	//constructorul cu toti parametri
 
 	Hotel(string denumireHotel, string adresaHotel, int numarAngajati, int numarCamere, bool areMicDejunInclus, float pretCameraPeZi, int anDeschidereHotel, int numarServiciiDisponibile, float* preturiServicii, string* numeServicii, const char* numeManagerHotel) :anDeschidereHotel(anDeschidereHotel)
 	{
@@ -38,17 +37,17 @@ public:
 		this->areMicDejunInclus = areMicDejunInclus;
 		this->pretCameraPeZi = pretCameraPeZi;
 
-		//alocare memorie la char*
+		
 		this->numeManagerHotel = new char[strlen(numeManagerHotel) + 1];
-		//initializare la char*
+		
 		strcpy(this->numeManagerHotel, numeManagerHotel);
 
 		this->numarServiciiDisponibile = numarServiciiDisponibile;
-		//alocarea de memorie pentru pointeri
+		
 		this->preturiServicii = new float[this->numarServiciiDisponibile];
 		this->numeServicii = new string[this->numarServiciiDisponibile];
 
-		//initializarea
+		
 		for (int i = 0; i < this->numarServiciiDisponibile; i++)
 		{
 			this->preturiServicii[i] = preturiServicii[i];
@@ -61,7 +60,7 @@ public:
 
 	}
 
-	//constructorul fara parametri
+	
 
 	Hotel() :anDeschidereHotel(0)
 	{
@@ -71,16 +70,16 @@ public:
 		this->numarCamere = 0;
 		this->areMicDejunInclus = 0;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
+		
 		this->numeManagerHotel = new char[strlen("anonim") + 1];
-		//initializare la char*
+		
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
 		this->numeServicii = NULL;
 	}
 
-	//constructorul cu 1 parametru
+	
 	Hotel(string denumireHotel) :anDeschidereHotel(0)
 	{
 		this->denumireHotel = denumireHotel;
@@ -89,9 +88,7 @@ public:
 		this->numarCamere = 0;
 		this->areMicDejunInclus = 0;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
 		this->numeManagerHotel = new char[strlen("anonim") + 1];
-		//initializare la char*
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
@@ -99,7 +96,7 @@ public:
 
 
 	}
-	//constructorul cu 2 parametri
+	
 
 	Hotel(string denumireHotel, string adresaHotel) :anDeschidereHotel(0)
 	{
@@ -109,9 +106,9 @@ public:
 		this->numarCamere = 0;
 		this->areMicDejunInclus = 0;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
+	
 		this->numeManagerHotel = new char[strlen("anonim") + 1];
-		//initializare la char*
+		
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
@@ -119,7 +116,7 @@ public:
 
 
 	}
-	//constructorul cu 3 parametri
+
 	Hotel(string denumireHotel, string adresaHotel, int numarAngajati) :anDeschidereHotel(0)
 	{
 		this->denumireHotel = denumireHotel;
@@ -128,16 +125,15 @@ public:
 		this->numarCamere = 0;
 		this->areMicDejunInclus = 0;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
+		
 		this->numeManagerHotel = new char[strlen("anonim") + 1];
-		//initializare la char*
+	
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
 		this->numeServicii = NULL;
 
 	}
-	//constructorul cu 4 parametri
 
 	Hotel(string denumireHotel, string adresaHotel, int numarAngajati, int numarCamere) :anDeschidereHotel(0)
 	{
@@ -147,9 +143,9 @@ public:
 		this->numarCamere = numarCamere;
 		this->areMicDejunInclus = 0;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
+		
 		this->numeManagerHotel = new char[strlen("anonim") + 1];
-		//initializare la char*
+		
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
@@ -157,7 +153,7 @@ public:
 
 
 	}
-	//constructorul cu 5 parametri
+
 
 	Hotel(string denumireHotel, string adresaHotel, int numarAngajati, int numarCamere, bool areMicDejunInclus) :anDeschidereHotel(0)
 	{
@@ -167,9 +163,9 @@ public:
 		this->numarCamere = numarCamere;
 		this->areMicDejunInclus = areMicDejunInclus;
 		this->pretCameraPeZi = 0;
-		//alocare memorie la char*
+		
 		this->numeManagerHotel = new char[strlen("Anonim") + 1];
-		//initializare la char*
+		
 		strcpy(this->numeManagerHotel, "Anonim");
 		this->numarServiciiDisponibile = 0;
 		this->preturiServicii = NULL;
@@ -178,7 +174,6 @@ public:
 
 	}
 
-	//getteri
 
 	string getDenumireHotel()
 	{
@@ -233,7 +228,7 @@ public:
 	{
 		return this->numeServicii;
 	}
-	// setteri
+
 	void setDenumireHotel(string DenumireNouaHotel)
 	{
 		this->denumireHotel = DenumireNouaHotel;
@@ -263,7 +258,7 @@ public:
 	{
 		this->pretCameraPeZi = PretNouCameraZi;
 	}
-	//setter pentru char*
+	
 
 	void setNumeManagerHotel(const char* numeManagerHotelNou)
 	{
@@ -278,7 +273,7 @@ public:
 		strcpy(this->numeManagerHotel, numeManagerHotelNou);
 
 	}
-	// setter pt vectori si numarator
+	
 	void setServicii(int numarServiciiDisponibileNou, float* preturiServiciiNoi, string* numeServiciiNoi)
 	{
 		
@@ -308,7 +303,7 @@ public:
 	}
 
 
-	//destructor
+
 
 	~Hotel()
 	{
@@ -331,7 +326,7 @@ public:
 		cout << "AICI S-A APELAT DESTRUCTORUL" << endl;
 	}
 
-	//constructorul de copiere
+	
 	Hotel(const Hotel& obiectExistent) :anDeschidereHotel(obiectExistent.anDeschidereHotel)
 	{
 
@@ -928,6 +923,83 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 
 int Hotel::clasaCAENHotel = 55;
 
+class HotelCuAllInclusive:public Hotel 
+{
+
+	int numarMeseIncluse;
+	string* listaMeseIncluse;
+public:
+	HotelCuAllInclusive():Hotel()
+	{
+		this->numarMeseIncluse = 0;
+		this->listaMeseIncluse = NULL;
+	}
+
+	HotelCuAllInclusive(int numarMeseIncluse, string* listaMeseIncluse, string denumireHotel, string adresaHotel, int numarAngajati, int numarCamere, bool areMicDejunInclus, float pretCameraPeZi, int anDeschidereHotel, int numarServiciiDisponibile, float* preturiServicii, string* numeServicii, const char* numeManagerHotel) :Hotel(denumireHotel,adresaHotel, numarAngajati, numarCamere, areMicDejunInclus, pretCameraPeZi, anDeschidereHotel, numarServiciiDisponibile, preturiServicii, numeServicii, numeManagerHotel)
+	{
+		this->numarMeseIncluse = numarMeseIncluse;
+		this->listaMeseIncluse = new string[this->numarMeseIncluse];
+		for (int i = 0; i < this->numarMeseIncluse; i++)
+		{
+			this->listaMeseIncluse[i] = listaMeseIncluse[i];
+		}
+
+
+
+	}
+
+	
+	HotelCuAllInclusive(string denumireHotel, string adresaHotel):Hotel( denumireHotel, adresaHotel)
+	{
+		this->numarMeseIncluse = 0;
+		this->listaMeseIncluse = NULL;
+	}
+
+	HotelCuAllInclusive(int numarMeseIncluse, string* listaMeseIncluse, string denumireHotel, string adresaHotel, int numarAngajati):Hotel( denumireHotel,  adresaHotel, numarAngajati)
+	{
+		this->numarMeseIncluse = numarMeseIncluse;
+		this->listaMeseIncluse = new string[this->numarMeseIncluse];
+		for (int i = 0; i < this->numarMeseIncluse; i++)
+		{
+			this->listaMeseIncluse[i] = listaMeseIncluse[i];
+		}
+	}
+
+	int getNumarMeseIncluse()
+	{
+		return this->numarMeseIncluse;
+	}
+
+	string* getListaMeseIncluse()
+	{
+		return this->listaMeseIncluse;
+	}
+
+	void setMeseIncuse(int numarMeseIncluseNou, string* listaMeseIncluseNou)
+	{
+		if(this->listaMeseIncluse!=NULL)
+		{
+			delete[] this->listaMeseIncluse;
+		}
+		this->numarMeseIncluse = numarMeseIncluseNou;
+		this->listaMeseIncluse = new string[this->numarMeseIncluse];
+		for (int i = 0; i < this->numarMeseIncluse; i++)
+		{
+			this->listaMeseIncluse[i] = listaMeseIncluseNou[i];
+		}
+
+	}
+
+	~HotelCuAllInclusive()
+	{
+		if (this->listaMeseIncluse != nullptr)
+		{
+			delete[]this->listaMeseIncluse;
+		}
+	}
+
+};
+
 void main() {
 
 	float preturi1[] = { 100.20, 50.6 };
@@ -1116,6 +1188,96 @@ void main() {
 
 	cout << "Obiectul H5 dupa citire din fisier binar" << endl << h5 << endl << endl;
 	f4.close();
+
+	cout << "-------------------HotelCuAllInclusive---------------" << endl << endl;
+	HotelCuAllInclusive hai1;
+	cout << "Numarul de mese incluse este : " << hai1.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for(int i=0;i<hai1.getNumarMeseIncluse();i++)
+	{
+		cout<< hai1.getListaMeseIncluse()[i] << endl << endl;
+	}
+
+	string lista1[] = { "micdejun", "pranz", "cina" };
+
+	float preturia1[] = { 100, 50,200,300,55 };
+	string serviciia1[] = { "masaj", "jacuzzi","room service", "spa", "spalatorie" };
+
+
+
+	HotelCuAllInclusive hai2(3, lista1, "RamadaResort", "bdul Unirii", 150, 220, 1, 1100.0, 2010, 5, preturia1, serviciia1,"Popescu Ion");
+	//	string denumireHotel;
+	//string adresaHotel;
+	//int numarAngajati;
+	//int numarCamere;
+	//bool areMicDejunInclus;
+	//float pretCameraPeZi;
+	//const int anDeschidereHotel;
+	//static int clasaCAENHotel; //55
+
+	//char* numeManagerHotel;
+	//int numarServiciiDisponibile; //numarator
+	//float* preturiServicii;
+	//string* numeServicii;
+	cout << "----------------------------Obiectul hai2 ------------------" << endl << endl;
+	cout << "Numarul de mese incluse este : " << hai2.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai2.getNumarMeseIncluse(); i++)
+	{
+		cout << hai2.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai2.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai2.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai2.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai2.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai2.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai2.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai2.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai2.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai2.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai2.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret<" << hai2.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii" << hai2.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+	string listamese[] = { "micdejun", "gustare", "pranz","cina" };
+	hai1.setMeseIncuse(4, listamese);
+	hai1.setDenumireHotel("Lido");
+	hai1.setAdresaHotel("bd Timisoara");
+	hai1.setNumarAngajati(55);
+	hai1.setNumarCamere(100);
+	hai1.setAreMicDejunInclus(1);
+	hai1.setPretCameraZi(1200);
+	hai1.setNumeManagerHotel("Ionescu Maria");
+	float pret[] = { 100 };
+	string nume[] = { "spa" };
+	hai1.setServicii(1, pret, nume);
+
+	cout << "----------------Obiectul hai1 dupa modificare---------" << endl;
+
+	cout << "Numarul de mese incluse este : " << hai1.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai2.getNumarMeseIncluse(); i++)
+	{
+		cout << hai1.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai1.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai1.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai1.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai1.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai1.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai1.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai1.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai1.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai1.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai1.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai1.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai1.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
 
 
 
