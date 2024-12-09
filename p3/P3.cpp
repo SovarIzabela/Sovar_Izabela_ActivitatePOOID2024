@@ -307,7 +307,7 @@ public:
 		pretPreparat = pretPreparat - pretPreparat * discount;
 	}
 	
-	//METODA DE ADAUGARE ELEMENT IN VECTOR
+
 	void adaugaElement(string IngredientNou, float PretNou)
 	{
 		Preparat copie(*this);
@@ -332,8 +332,36 @@ public:
 
 	}
 
-	//METODA DE ELIMINARE DIN VECTOR
-	//Operatorul <= . Sa se verifice daca pretul unui preparat <= decat pretul altui preparat
+
+	void eliminaElement(int pozitie)
+	{
+		Preparat copie(*this);
+
+		delete[]this->listaIngrediente;
+		delete[] this->pretIngrediente;
+
+		numarIngrediente--;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->pretIngrediente = new float[this->numarIngrediente];
+		for (int i = 0; i < pozitie; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->pretIngrediente[i] = copie.pretIngrediente[i];
+
+		}
+
+		for (int i = pozitie; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i - 1] = copie.listaIngrediente[i];
+			this->pretIngrediente[i - 1] = copie.pretIngrediente[i];
+		}
+
+		
+
+
+
+	}
 
 	bool operator<=(const Preparat& p)
 	{
@@ -348,7 +376,38 @@ public:
 
 
 	}
-	//Operatorul ==
+	
+	bool operator==(Preparat& p)
+	{
+		bool ok = 1;
+
+		if ((this->denumirePreparat == p.denumirePreparat) && (this->tipMancare == p.tipMancare) && (this->pretPreparat == p.pretPreparat)
+			&& (this->contineAlergeni == p.contineAlergeni) && (strcmp(this->numeRestaurant, p.numeRestaurant) == 0) && (this->numarIngrediente == p.numarIngrediente))
+		{
+			for (int i = 0; i < this->numarIngrediente; i++)
+			{
+				if ((this->listaIngrediente == p.listaIngrediente) && (this->pretIngrediente == p.pretIngrediente))
+				{
+
+				}
+				else
+				{
+					ok = 0;
+				}
+			}
+			if (ok == 1)
+			{
+				return 1;
+			 }
+			else
+			{
+				return 0;
+			}
+
+		}
+
+
+	}
 
 	friend ostream& operator<<(ostream& out, const Preparat& h)
 	{
@@ -356,7 +415,6 @@ public:
 		out << "Tipul de mancare este : " << h.tipMancare << endl;
 		out << "Pretul preparatului este : " << h.pretPreparat << endl;
 		out << "Contine Alergeni ? " << (h.contineAlergeni ? "DA" : "NU") << endl;
-		out << "Cod preparat: " << h.codPreparat << endl;
 		out << "Numele restaurantului este : " << h.numeRestaurant << endl;
 		out << "Numarul de ingrediente este : " << h.numarIngrediente << endl;
 		out << "Lista de ingrediente si pretul acestora: " << endl;
@@ -365,6 +423,7 @@ public:
 			out << "Ingredient : " << h.listaIngrediente[i] << endl;
 			out << "Pret Ingredient: " << h.pretIngrediente[i] << endl;
 		}
+		
 		out << endl << endl;
 
 		return out;
@@ -428,7 +487,7 @@ public:
 	}
 
 
-	//Opertaorul [] - de indexare
+	
 	string operator[](int pozitieCautata)
 	{
 		if (pozitieCautata >= 0 && pozitieCautata < this->numarIngrediente)
@@ -443,10 +502,16 @@ public:
 
 	}
 
-	//Operatorul () - functie
-	//Operatorul ! - de negatie
 
-	friend void operator!( Preparat& p)
+	float operator()(float TVA)
+	{
+		return this->pretPreparat = pretPreparat + pretPreparat * TVA;
+
+	}
+
+
+
+	friend void operator!(Preparat&p)
 	{
 		
 		if (p.contineAlergeni == 1)
@@ -459,10 +524,133 @@ public:
 		}
 	}
 
-	//Operatorul de autoasignare +=
-	//Operatorul -=
+	
+	Preparat& operator+=(string	ingredientNou)
+	{
+		Preparat copie(*this);
+
+
+		delete[]this->listaIngrediente;
+		delete[] this->pretIngrediente;
+
+		numarIngrediente++;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->pretIngrediente = new float[this->numarIngrediente];
+
+		for (int i = 0; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->pretIngrediente[i] = copie.pretIngrediente[i];
+		}
+
+		this->listaIngrediente[numarIngrediente - 1] = ingredientNou;
+		this->pretIngrediente[numarIngrediente - 1] = 0;
+
+		return(*this);
+
+	}
+
+	
+	Preparat& operator-=(int pozitie)
+	{
+		Preparat copie(*this);
+		
+		delete[]this->listaIngrediente;
+		delete[] this->pretIngrediente;
+
+		numarIngrediente--;
+
+		this->listaIngrediente = new string[this->numarIngrediente];
+		this->pretIngrediente = new float[this->numarIngrediente];
+		for (int i = 0; i < pozitie; i++)
+		{
+			this->listaIngrediente[i] = copie.listaIngrediente[i];
+			this->pretIngrediente[i] = copie.pretIngrediente[i];
+
+		}
+
+		for (int i = pozitie; i < copie.numarIngrediente; i++)
+		{
+			this->listaIngrediente[i-1] = copie.listaIngrediente[i];
+			this->pretIngrediente[i-1] = copie.pretIngrediente[i];
+		}
+
+		return(*this);
+
+
+
+	}
 	//Operatorul de cast
 	//FISERE TEXT SI FISIERE BINARE
+	friend ofstream& operator<<(ofstream& file, const Preparat& h)
+	{
+		file <<  h.denumirePreparat << endl;
+		file <<  h.tipMancare << endl;
+		file << h.pretPreparat << endl;
+		file <<  h.contineAlergeni <<endl;
+		file << h.numeRestaurant << endl;
+		file << h.numarIngrediente << endl;
+		
+		for (int i = 0; i < h.numarIngrediente; i++)
+		{
+			file <<h.listaIngrediente[i] << endl;
+			file << h.pretIngrediente[i] << endl;
+		}
+	
+
+		return file;
+
+
+	}
+
+	friend ifstream& operator>>(ifstream& file, Preparat& p)
+	{
+		if (p.numeRestaurant != NULL)
+		{
+			delete[]p.numeRestaurant;
+		}
+		if (p.listaIngrediente != NULL)
+		{
+			delete[]p.listaIngrediente;
+		}
+
+		if (p.pretIngrediente != NULL)
+		{
+			delete[]p.pretIngrediente;
+		}
+		
+
+		file >> p.denumirePreparat;
+		file >> p.tipMancare;
+		file >> p.pretPreparat;
+		file >> p.contineAlergeni;
+
+		char aux[100];
+		file >> aux;
+		p.numeRestaurant = new char[strlen(aux) + 1];
+		strcpy(p.numeRestaurant, aux);
+
+		file >> p.numarIngrediente;
+
+		p.listaIngrediente = new string[p.numarIngrediente];
+		p.pretIngrediente = new float[p.numarIngrediente];
+
+		for (int i = 0; i < p.numarIngrediente; i++)
+		{
+			file >> p.listaIngrediente[i];
+			file >> p.pretIngrediente[i];
+		}
+
+	
+
+		return file;
+	}
+
+
+
+
+
 };
 
 string Preparat::OriginePreparat = "Romania";
@@ -471,12 +659,12 @@ void main()
 {
 	string listaingrediente1[] = { "oua", "ulei", "sare" };
 	float pretIngredient1[] = { 5.0, 1.0, 0.10 };
-	Preparat m1("Omleta", 'M', 25,0,123, "UrbanHouse", 3,listaingrediente1,pretIngredient1 );
+	Preparat m1("Omleta", 'M', 25, 0, 123, "UrbanHouse", 3, listaingrediente1, pretIngredient1);
 
 
-	string listaingrediente2[] = { "rosii", "castraveti", "pui", "branza", "ceapa", "dressing"};
+	string listaingrediente2[] = { "rosii", "castraveti", "pui", "branza", "ceapa", "dressing" };
 	float pretIngredient2[] = { 1.0, 1.0, 5.10, 2.0, 0.5, 2 };
-	Preparat m2("salata Cesar", 'A', 35,1, 124,"Mahala",6, listaingrediente2, pretIngredient2);
+	Preparat m2("salata Cesar", 'A', 35, 1, 124, "Mahala", 6, listaingrediente2, pretIngredient2);
 	cout << "denumire preparat " << m2.getDenumirePreparat() << endl;
 	cout << "Tip mancare: " << m2.getTipMancare() << endl;
 	cout << "Pretul Preparatului: " << m2.getPretPreparat() << endl;
@@ -487,8 +675,8 @@ void main()
 	cout << "Lista de ingrediente si pretul acestora: " << endl;
 	for (int i = 0; i < m2.getNumarIngrediente(); i++)
 	{
-		cout<<"Ingredient : " << m2.getListaIngrediente()[i] << endl;
-		cout<<"Pret Ingredient: " << m2.getPretIngrediente()[i] << endl;
+		cout << "Ingredient : " << m2.getListaIngrediente()[i] << endl;
+		cout << "Pret Ingredient: " << m2.getPretIngrediente()[i] << endl;
 	}
 
 	cout << endl << endl;
@@ -496,7 +684,7 @@ void main()
 	Preparat m3;
 
 	m1.afisare();
-	
+
 	m3.afisare();
 
 	m1.setPretpreparat(30);
@@ -507,14 +695,14 @@ void main()
 	string lista1[] = { "oua", "cascaval", "sare", "condimente" };
 	float pret1[] = { 2,1,0.5,0.5 };
 	m1.setIngrediente(4, lista1, pret1);
-	cout << "......Valoare modificata m1..............." << endl<<endl;
+	cout << "......Valoare modificata m1..............." << endl << endl;
 	m1.afisare();
 
 	Preparat m4(m1);
-	
-	cout << "......Valoare m4..............." << endl<<endl;
+
+	cout << "......Valoare m4..............." << endl << endl;
 	m4.afisare();
-	
+
 	cout << "......Valoare m1..............." << endl << endl;
 	m1.afisare();
 	cout << "......Valoare m3 inainte..............." << endl << endl;
@@ -523,7 +711,7 @@ void main()
 	cout << "......Valoare m3 dupa modificare..............." << endl << endl;
 	m3.afisare();
 
-	cout << "m1" <<endl<< m1 << endl << endl;
+	cout << "m1" << endl << m1 << endl << endl;
 
 	/*cin >> m4;*/
 
@@ -536,10 +724,11 @@ void main()
 	cout << m1.getPretPreparat() << endl;
 	m1.discount(0.2);
 	cout << m1.getPretPreparat() << endl;
-	try{
-	
-			m1.discount(1.5f);
-	}catch (exception e)
+	try {
+
+		m1.discount(1.5f);
+	}
+	catch (exception e)
 	{
 		cout << "eroare" << endl;
 	}
@@ -564,4 +753,34 @@ void main()
 
 	!m2;
 	cout << m2.getContineAlergeni() << endl << endl;
+
+
+	m2 += ("sare");
+	cout << m2;
+	cout << m1;
+	m1 -= (2);
+	cout << m1;
+
+
+	cout << m4;
+	m4.eliminaElement(1);
+	cout << m4;
+
+	cout << "Obictul m1 este egal in totalitate cu m2? (0-NU, 1-DA)" << (m1 == m2) << endl << endl;
+
+	cout << m4;
+	cout << "Pretul cu TVA al obectului m4 este : " << m4(0.19) << endl;
+
+
+	ofstream f1("FisierText.txt", ios::out);
+	f1 << m2;
+	f1.close();
+
+	cout << m1;
+
+	ifstream f2("FisierText.txt", ios::in);
+	f2 >> m1;
+	f2.close();
+
+	cout << m1;
 }
