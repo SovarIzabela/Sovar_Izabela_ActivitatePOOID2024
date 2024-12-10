@@ -425,7 +425,6 @@ public:
 		out << "Marimea paharului de cafea este: " << p.marimePahar << endl;
 		out << "Pretul cafelei este: " << p.pretCafea << endl;
 		out << "Doriti sa adaugati o aroma ? " <<( p.adaugatiAromaCafea ? "DA" : "NU" )<< endl;
-		out << "Moneda de plata este: " << p.monedaPlata << endl;
 		out << "Numele cafenelei este : " << p.numeCafenea << endl;
 		out << "Numarul de ingrediente este : " << p.numarIngrediente << endl;
 		out << "Ingrediente si gramaj: " << endl;
@@ -596,6 +595,175 @@ public:
 //Operatorul de cast
 //FISERE TEXT SI FISIERE BINARE
 
+ friend ofstream& operator<<(ofstream& file, const preparatCafea& p)
+ {
+	 file << p.tipCafea << endl;
+	 file <<  p.cantitateZahar << endl;
+	 file << p.marimePahar << endl;
+	 file << p.pretCafea << endl;
+	 file << p.adaugatiAromaCafea << endl;
+	 file <<  p.numeCafenea << endl;
+	 file  << p.numarIngrediente << endl;
+	 for (int i = 0; i < p.numarIngrediente; i++)
+	 {
+		 file  << p.listaIngrediente[i] << endl;
+		 file  << p.gramajIngrediente[i] << endl;
+	 }
+	
+
+	 return file;
+ }
+
+ friend ifstream& operator>>(ifstream& file, preparatCafea& p)
+ {
+	 if (p.numeCafenea != NULL)
+	 {
+		 delete[]p.numeCafenea;
+	 }
+
+	 if (p.listaIngrediente != NULL)
+	 {
+		 delete[]p.listaIngrediente;
+	 }
+
+	 if (p.gramajIngrediente != NULL)
+	 {
+		 delete[]p.gramajIngrediente;
+	 }
+
+	 
+	 file >> p.tipCafea;
+	 
+	 file >> p.cantitateZahar;
+	
+	 file >> p.marimePahar;
+	 
+	 file >> p.pretCafea;
+	
+	 file >> p.adaugatiAromaCafea;
+	 
+	 char aux[100];
+	 file >> aux;
+	 p.numeCafenea = new char[strlen(aux) + 1];
+	 strcpy(p.numeCafenea, aux);
+
+	
+	 file >> p.numarIngrediente;
+
+	 p.listaIngrediente = new string[p.numarIngrediente];
+	 p.gramajIngrediente = new float[p.numarIngrediente];
+
+	 for (int i = 0; i < p.numarIngrediente; i++)
+	 {
+		 
+		 file >> p.listaIngrediente[i];
+		 file >> p.gramajIngrediente[i];
+
+	 }
+
+	
+
+	 return file;
+
+ }
+
+ void scriereBinar (fstream& fisierBinar)
+ {
+	 //string tipCafea;
+	 int numarLitereTipCafea = this->tipCafea.size();
+	 fisierBinar.write((char*)&numarLitereTipCafea, sizeof(int));
+	 fisierBinar.write(this->tipCafea.c_str(), numarLitereTipCafea);
+		 
+	//int cantitateZahar;
+	 fisierBinar.write((char*)&this->cantitateZahar, sizeof(int));
+	 //char marimePahar; 
+	 fisierBinar.write((char*)&this->marimePahar, sizeof(char));
+	 //float pretCafea;
+	 fisierBinar.write((char*)&this->pretCafea, sizeof(float));
+	 //bool adaugatiAromaCafea;
+	 fisierBinar.write((char*)&this->adaugatiAromaCafea, sizeof(bool));
+
+	// char* numeCafenea;
+	 int numarLitereNumeCafenea = strlen(this->numeCafenea);
+	 fisierBinar.write((char*)&numarLitereNumeCafenea, sizeof(int));
+	 for (int i = 0; i < numarLitereNumeCafenea; i++)
+	 {
+		 fisierBinar.write((char*)&this->numeCafenea[i], sizeof(char));
+	 }
+
+	 //int numarIngrediente;
+	 fisierBinar.write((char*)&this->numarIngrediente, sizeof(int));
+	 //string* listaIngrediente;
+	 for (int i = 0; i < this->numarIngrediente; i++)
+	 {
+		 int numarLiterelista = this->listaIngrediente[i].size();
+		 fisierBinar.write((char*)&numarLiterelista, sizeof(int));
+		 fisierBinar.write(this->listaIngrediente[i].c_str(), numarLiterelista);
+	 }
+
+	 //float* gramajIngrediente;
+	 for (int i = 0; i < this->numarIngrediente; i++)
+	 {
+		 fisierBinar.write((char*)&this->gramajIngrediente, sizeof(float));
+	 }
+ }
+
+ void citireBinar(fstream& fisierBinar)
+ {
+	 delete[]this->numeCafenea;
+	 delete[]this->listaIngrediente;
+	 delete[]this->gramajIngrediente;
+	// string tipCafea;
+	 int numarLitereCafea;
+	 fisierBinar.read((char*)&numarLitereCafea, sizeof(int));
+	 string aux1;
+	 aux1.resize(numarLitereCafea);
+	 fisierBinar.read((char*)aux1.c_str(), numarLitereCafea);
+	 this->tipCafea = aux1;
+
+	 //int cantitateZahar;
+	 fisierBinar.read((char*)&this->cantitateZahar, sizeof(int));
+	 //char marimePahar;
+	 fisierBinar.read((char*)&this->marimePahar, sizeof(char));
+	 //float pretCafea;
+	 fisierBinar.read((char*)&this->pretCafea, sizeof(float));
+	 //bool adaugatiAromaCafea;
+	 fisierBinar.read((char*)&this->adaugatiAromaCafea, sizeof(bool));
+
+
+	// char* numeCafenea;
+	 int numarLitereCafenea;
+	 fisierBinar.read((char*)&numarLitereCafenea, sizeof(int));
+	 this->numeCafenea = new char[numarLitereCafenea + 1];
+	 for (int i = 0; i < numarLitereCafenea; i++)
+	 {
+		 fisierBinar.read((char*)&this->numeCafenea[i], sizeof(char));
+	 }
+	 this->numeCafenea[numarLitereCafenea] = '\0';
+
+	// int numarIngrediente;
+	 fisierBinar.read((char*)&this->numarIngrediente, sizeof(int));
+	 //string* listaIngrediente;
+	 this->listaIngrediente = new string[this->numarIngrediente];
+	 for (int i = 0; i < this->numarIngrediente; i++)
+	 {
+		 int numarLitereIngrediente;
+		 fisierBinar.read((char*)&numarLitereIngrediente, sizeof(int));
+		 string aux2;
+		 aux2.resize(numarLitereIngrediente);
+		 fisierBinar.read((char*)aux2.c_str(), numarLitereIngrediente);
+		 this->tipCafea = aux2;
+	 }
+
+	// float* gramajIngrediente;
+	 this->gramajIngrediente = new float[this->numarIngrediente];
+	 for (int i = 0; i < this->numarIngrediente; i++)
+	 {
+		 fisierBinar.read((char*)&this->gramajIngrediente[i], sizeof(float));
+	 }
+
+ }
+
 
 };
 
@@ -728,6 +896,30 @@ void main()
 	cout << p2;
 	p2 -= 1;
 	cout << p2;
+
+
+	cout << "-----------------------FisiereTEXT--------------" << endl;
+	ofstream f1("fisierTXT.txt", ios::out);
+	f1 << p2;
+	f1.close();
+	ifstream f2("fisierTXT.txt", ios::in);
+	f2 >> p4;
+	f2.close();
+
+	cout << p4;
+
+	cout << "-----------------------Fisiere binare-------------" << endl << endl;
+
+	fstream f3("fisierBinar.bin", ios::binary | ios::out);
+	p1.scriereBinar(f3);
+	f3.close();
+
+	fstream f4("fisierBinar.bin", ios::binary | ios::in);
+	p4.citireBinar(f4);
+	f4.close();
+
+	cout << p4;
+
 }
 
 
