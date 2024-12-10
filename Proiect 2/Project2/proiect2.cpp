@@ -5,7 +5,7 @@
 using namespace std;
 
 class TraseuMontan {
-private:
+protected:
 	string denumireTraseu;
 	int lungimeKmTraseu;
 	float durataTraseuOre;
@@ -20,7 +20,7 @@ private:
 	int* altitudini;
 
 public:
-	//constructor cu toti parametrii
+	
 
 	TraseuMontan(string denumireTraseu, int lungimeKmTraseu, float durataTraseuOre, bool prezintaRiscAvalansa, int altitudineMaxima, const char* dificultateTraseu, int nrEchipeSalvare, string* echipeSalvare, int numarPuncteAltitudine, int* altitudini) :altitudineMaxima(altitudineMaxima)
 	{
@@ -49,7 +49,7 @@ public:
 		}
 
 	}
-	//constructor fara parametri
+	
 
 	TraseuMontan() :altitudineMaxima(0)
 	{
@@ -67,7 +67,7 @@ public:
 
 
 	}
-	//constructor cu un parametru
+	
 
 	TraseuMontan(string denumireTraseu) :altitudineMaxima(0)
 	{
@@ -82,7 +82,7 @@ public:
 		this->numarPuncteAltitudine = 0;
 		this->altitudini = NULL;
 	}
-	//constructor cu 2 parametri
+	
 
 	TraseuMontan(string denumireTraseu, int lungimeKmTraseu) :altitudineMaxima(0)
 	{
@@ -97,7 +97,7 @@ public:
 		this->numarPuncteAltitudine = 0;
 		this->altitudini = NULL;
 	}
-	//constructor cu 3 parametri
+	
 
 	TraseuMontan(string denumireTraseu, int lungimeKmTraseu, float durataTraseuOre) :altitudineMaxima(0)
 
@@ -114,7 +114,7 @@ public:
 		this->altitudini = NULL;
 	}
 
-	//getteri
+	
 
 	string getDenumireTraseu()
 	{
@@ -164,7 +164,7 @@ public:
 	{
 		return this->altitudini;
 	}
-	//setteri
+	
 
 	void setDenumireTraseu(string DenumireNouaTraseu)
 	{
@@ -237,7 +237,7 @@ public:
 	}
 
 
-	//destructor
+	
 	~TraseuMontan()
 	{
 		if (this->dificultateTraseu != NULL)
@@ -257,7 +257,7 @@ public:
 	}
 
 
-	//constructorul de copiere
+	
 	TraseuMontan(const TraseuMontan& obiectExistent) :altitudineMaxima(obiectExistent.altitudineMaxima)
 	{
 		this->denumireTraseu = obiectExistent.denumireTraseu;
@@ -286,7 +286,7 @@ public:
 
 	}
 
-	//operatorul =
+	
 
 	TraseuMontan& operator=(TraseuMontan& obiectMatrice)
 	{
@@ -467,7 +467,7 @@ public:
 
 
 	}
-	// operator <=
+	
 	// sa compare 2 obiecte pe baza atributului lungimeKmTraseu
 
 	bool operator<=(const TraseuMontan&obj)
@@ -681,7 +681,7 @@ public:
 
 	}
 
-	//operatorul []
+	
 
 	//sa se afiseza denumirea unui echipe de salvare indicand pozitia vectorului
 
@@ -697,7 +697,7 @@ public:
 		}
 	}
 
-	//operator functie()
+	
 	// sa se implementeze o functie care va afisa pe baza unui prag setat ca parametru daca traseul este periculos
 	bool operator()(int pragAltitudine)
 	{
@@ -712,7 +712,7 @@ public:
 	}
 
 
-	//operatorul de negatie !
+	
 	//sa se schimbe starea traseului din 'prezinta' risc de avalansa in 'nu prezinta risc de avalansa' si invers
 
 	friend void operator!(TraseuMontan&obj)
@@ -729,7 +729,7 @@ public:
 		}
 	}
 
-	//operator de autoasignare+=
+	
 	//sa se adauge o noua echipa in vector la inceputul listei
 
 	TraseuMontan& operator+=(string echipaNoua)
@@ -871,6 +871,76 @@ public:
 };
 
 string TraseuMontan::taraTraseelor = "Romania";
+
+
+class TraseuMontanCultural:public TraseuMontan
+{
+	int numarPuncteCulturale;
+	string* denumirePuncteCulturale;
+
+public:
+	TraseuMontanCultural() :TraseuMontan()
+	{
+		this->numarPuncteCulturale  = 0;
+		this->denumirePuncteCulturale = NULL;
+	}
+
+	TraseuMontanCultural(int numarPuncteCulturale, string* denumirePuncteCulturale, string denumireTraseu, int lungimeKmTraseu, float durataTraseuOre, bool prezintaRiscAvalansa, int altitudineMaxima, const char* dificultateTraseu, int nrEchipeSalvare, string* echipeSalvare, int numarPuncteAltitudine, int* altitudini) :TraseuMontan(denumireTraseu, lungimeKmTraseu, durataTraseuOre, prezintaRiscAvalansa, altitudineMaxima, dificultateTraseu, nrEchipeSalvare, echipeSalvare, numarPuncteAltitudine, altitudini)
+	{
+		this->numarPuncteCulturale = numarPuncteCulturale;
+		this->denumirePuncteCulturale = new string[this->numarPuncteCulturale];
+			for (int i = 0; i < this->numarPuncteCulturale; i++)
+			{
+				this->denumirePuncteCulturale[i] = denumirePuncteCulturale[i];
+		    }
+	}
+
+	TraseuMontanCultural(int numarPuncteCulturale, string* denumirePuncteCulturale, string denumireTraseu) :TraseuMontan(denumireTraseu)
+	{
+		this->numarPuncteCulturale = numarPuncteCulturale;
+		this->denumirePuncteCulturale = new string[this->numarPuncteCulturale];
+		for (int i = 0; i < this->numarPuncteCulturale; i++)
+		{
+			this->denumirePuncteCulturale[i] = denumirePuncteCulturale[i];
+		}
+	}
+
+	int getNumarPuncteCulturale()
+	{
+		return this->numarPuncteCulturale;
+	}
+
+	string* getDenumirePuncteCulturale()
+	{
+		return this->denumirePuncteCulturale;
+	}
+
+	void setDenumirePuncteCulturale(int numarPuncteCulturaleNou, string* denumirePuncteCulturaleNou)
+	{
+		if (this->denumirePuncteCulturale != NULL)
+		{
+			delete[]this->denumirePuncteCulturale;
+		}
+
+		this->numarPuncteCulturale = numarPuncteCulturaleNou;
+		this->denumirePuncteCulturale = new string[this->numarPuncteCulturale];
+		for (int i = 0; i < this->numarPuncteCulturale; i++)
+		{
+			this->denumirePuncteCulturale[i] = denumirePuncteCulturaleNou[i];
+		}
+	}
+
+	~TraseuMontanCultural()
+	{
+		if (this->denumirePuncteCulturale != NULL)
+		{
+			delete[]this->denumirePuncteCulturale;
+		}
+	}
+
+
+};
+	
 
 void main()
 {
@@ -1055,6 +1125,110 @@ void main()
 	tm3.citireBinar(f4);
 	f4.close();
 	cout << "tm3 dupa " << tm3 << endl<<endl;
+
+	cout << "-------------------------Traseu montan cultural----------------------" << endl << endl;
+
+	TraseuMontanCultural tmc1;
+	cout << "Numarul de puncte culturale este: " << tmc1.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : ";
+	for (int i = 0; i < tmc1.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc1.getDenumirePuncteCulturale()[i];
+	}
+	cout << "Denumirea traseului:" << tmc1.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc1.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc1.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc1.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc1.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc1.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc1.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc1.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc1.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc1.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc1.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc1.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	string denumiri[] = { "cabana1", "cabana2" };
+	string denumireEchipaSalvare[] = { "salvamont bucegi", "salvamont Fagaras" };
+	int altitudine4[] = { 500, 1000 };
+
+	TraseuMontanCultural tmc2(2, denumiri, "Bucegi", 20, 7, 0, 1000, "mica", 2, denumireEchipaSalvare, 2, altitudine4);
+	cout << "Numarul de puncte culturale este: " << tmc2.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc2.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc2.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc2.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc2.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc2.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc2.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc2.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc2.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc2.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc2.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc2.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc2.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc2.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc2.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+	
+	string puncteCulturale[] = { "castel peles", "castel pelisor" };
+	tmc1.setDenumirePuncteCulturale(2, puncteCulturale);
+	tmc1.setDenumireTraseu("Bucegi");
+	tmc1.setLungimeKmTraseu(12);
+	tmc1.setDurataTraseuOre(5);
+	tmc1.setPrezintaRiscAvalansa(0);
+	tmc1.setDificultateTraseu("Mica");
+	string echipeSalvare4[] = { "SalvamontFagaras", "SalvamontNeamt" };
+	tmc1.setEchipeSalvare(2, echipeSalvare4);
+	int altitudini7[] = { 1200, 2000 };
+	tm1.setAltitudini(2, altitudini7);
+
+	cout << "Numarul de puncte culturale este: " << tmc1.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : ";
+	for (int i = 0; i < tmc1.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc1.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc1.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc1.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc1.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc1.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc1.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc1.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc1.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc1.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc1.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc1.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc1.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc1.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
 
 
 }
