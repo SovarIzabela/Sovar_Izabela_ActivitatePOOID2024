@@ -647,93 +647,103 @@ public:
 		return file;
 	}
 
-	//void scriereBinar(fstream& fisier)
-	//{
-	//	//string denumirePreparat;
-	//	int numereDenumirePreparat = denumirePreparat.size();
-	//	fisier.write((char*)&numereDenumirePreparat, sizeof(int));
-	//	fisier.write(this->denumirePreparat.c_str(), numereDenumirePreparat);
-	//	//char tipMancare; 
-	//	fisier.write((char*)&this->tipMancare, sizeof(char));
-	//	//float pretPreparat;
-	//	fisier.write((char*)&this->pretPreparat, sizeof(float));
-	//	//bool contineAlergeni;
-	//	fisier.write((char*)&this->contineAlergeni, sizeof(bool));
-	//	//char* numeRestaurant;
-	//	int numarNumeRestaurant = strlen(this->numeRestaurant);
-	//	fisier.write((char*)&numarNumeRestaurant, sizeof(int));
-	//	for (int i = 0; i < numarNumeRestaurant; i++)
-	//	{
-	//		fisier.write((char*)&this->numeRestaurant[i], sizeof(char));
-	//	}
+	void scriereBinar(fstream& fisier)
+	{
+		//string denumirePreparat;
+		int numereDenumirePreparat = denumirePreparat.size();
+		fisier.write((char*)&numereDenumirePreparat, sizeof(int));
+		fisier.write(this->denumirePreparat.c_str(), numereDenumirePreparat);
+		//char tipMancare; 
+		fisier.write((char*)&this->tipMancare, sizeof(char));
+		//float pretPreparat;
+		fisier.write((char*)&this->pretPreparat, sizeof(float));
+		//bool contineAlergeni;
+		fisier.write((char*)&this->contineAlergeni, sizeof(bool));
+		//char* numeRestaurant;
+		int numarNumeRestaurant = strlen(this->numeRestaurant);
+		fisier.write((char*)&numarNumeRestaurant, sizeof(int));
+		for (int i = 0; i < numarNumeRestaurant; i++)
+		{
+			fisier.write((char*)&this->numeRestaurant[i], sizeof(char));
+		}
 
-	//	//int numarIngrediente;
-	//	fisier.write((char*)&this->numarIngrediente, sizeof(int));
-	//	//string* listaIngrediente;
-	//	for (int i = 0; i < this->numarIngrediente; i++)
-	//	{
-	//		int numerelistaIng = listaIngrediente[i].size();
-	//		fisier.write((char*)&numerelistaIng, sizeof(int));
-	//		fisier.write(this->listaIngrediente[i].c_str(), numerelistaIng);
-	//	}
-	//	//float* pretIngrediente;
+		//int numarIngrediente;
+		fisier.write((char*)&this->numarIngrediente, sizeof(int));
+		//string* listaIngrediente;
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+			int numerelistaIng = listaIngrediente[i].size();
+			fisier.write((char*)&numerelistaIng, sizeof(int));
+			fisier.write(this->listaIngrediente[i].c_str(), numerelistaIng);
+		}
+		//float* pretIngrediente;
 
-	//	for (int i = 0; i < this->numarIngrediente; i++)
-	//	{
-	//		fisier.write((char*)&this->pretIngrediente[i], sizeof(float));
-	//	}
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+			fisier.write((char*)&this->pretIngrediente[i], sizeof(float));
+		}
 
-	//}
+	}
 
-	//void citireBinar(fstream& fisier)
-	//{
-	//	delete[]this->numeRestaurant;
-	//	delete[]this->listaIngrediente;
-	//	delete[]this->pretIngrediente;
+	void citireBinar(fstream& fisier)
+	{
+		if (this->numeRestaurant != NULL)
+	{
+		delete[]this->numeRestaurant;
+	}
+	if (this->listaIngrediente != NULL)
+	{
+		delete[]this->listaIngrediente;
+	}
 
-	//	//string denumirePreparat;
-	//	int numereDenumirePreparat;
-	//	fisier.read((char*)&numereDenumirePreparat, sizeof(int));
-	//	string aux;
-	//	aux.resize(numereDenumirePreparat);
-	//	fisier.read(&aux[0], numereDenumirePreparat);
-	//	this->denumirePreparat = aux;
-	//	//char tipMancare; 
-	//	fisier.read((char*)&this->tipMancare, sizeof(char));
-	//	//float pretPreparat;
-	//	fisier.read((char*)&this->pretPreparat, sizeof(float));
-	//	//bool contineAlergeni;
-	//	fisier.read((char*)&this->contineAlergeni, sizeof(bool));
-	//	//char* numeRestaurant;
-	//	int numarNumeRestaurant;
-	//	fisier.read((char*)&numarNumeRestaurant, sizeof(int));
-	//	this->numeRestaurant = new char[numarNumeRestaurant + 1];
-	//	for (int i = 0; i < numarNumeRestaurant; i++)
-	//	{
-	//		fisier.read((char*)&this->numeRestaurant[i], sizeof(char));
-	//	}
-	//	this->numeRestaurant[numarNumeRestaurant] = '\0';
-	//	//int numarIngrediente;
-	//	fisier.read((char*)&this->numarIngrediente, sizeof(int));
-	//	//string* listaIngrediente;
-	//	this->listaIngrediente = new string[this->numarIngrediente];
-	//	for (int i = 0; i < this->numarIngrediente; i++)
-	//	{
-	//		int numerelistaing;
-	//		fisier.read((char*)&numerelistaing, sizeof(int));
-	//		string aux;
-	//		aux.resize(numerelistaing);
-	//		fisier.read((char*)aux.c_str(), numerelistaing);
-	//		this->listaIngrediente[i] = aux;
-	//	}
-	//	//float* pretIngrediente;
-	//	this->pretIngrediente = new float[this->numarIngrediente];
-	//	for (int i = 0; i < this->numarIngrediente; i++)
-	//	{
-	//		fisier.read((char*)&this->pretIngrediente, sizeof(float));
-	//	}
+	if (this->pretIngrediente != NULL)
+	{
+		delete[]this->pretIngrediente;
+	}
 
-	//}
+		//string denumirePreparat;
+		int numereDenumirePreparat;
+		fisier.read((char*)&numereDenumirePreparat, sizeof(int));
+		string aux;
+		aux.resize(numereDenumirePreparat);
+		fisier.read(&aux[0], numereDenumirePreparat);
+		this->denumirePreparat = aux;
+		//char tipMancare; 
+		fisier.read((char*)&this->tipMancare, sizeof(char));
+		//float pretPreparat;
+		fisier.read((char*)&this->pretPreparat, sizeof(float));
+		//bool contineAlergeni;
+		fisier.read((char*)&this->contineAlergeni, sizeof(bool));
+		//char* numeRestaurant;
+		int numarNumeRestaurant;
+		fisier.read((char*)&numarNumeRestaurant, sizeof(int));
+		this->numeRestaurant = new char[numarNumeRestaurant + 1];
+		for (int i = 0; i < numarNumeRestaurant; i++)
+		{
+			fisier.read((char*)&this->numeRestaurant[i], sizeof(char));
+		}
+		this->numeRestaurant[numarNumeRestaurant] = '\0';
+		//int numarIngrediente;
+		fisier.read((char*)&this->numarIngrediente, sizeof(int));
+		//string* listaIngrediente;
+		this->listaIngrediente = new string[this->numarIngrediente];
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+			int numerelistaing;
+			fisier.read((char*)&numerelistaing, sizeof(int));
+			string aux;
+			aux.resize(numerelistaing);
+			fisier.read((char*)aux.c_str(), numerelistaing);
+			this->listaIngrediente[i] = aux;
+		}
+		//float* pretIngrediente;
+		this->pretIngrediente = new float[this->numarIngrediente];
+		for (int i = 0; i < this->numarIngrediente; i++)
+		{
+			fisier.read((char*)&this->pretIngrediente[i], sizeof(float));
+		}
+
+	}
 
 
 
@@ -947,15 +957,15 @@ void main()
 
 	cout << m1;
 
-	//fstream f3("fisierBin.bin", ios::binary | ios::out);
-	//m1.scriereBinar(f3);
-	//f3.close();
-	//cout << m1;
+	fstream f3("fisierBin.bin", ios::binary | ios::out);
+	m1.scriereBinar(f3);
+	f3.close();
+	cout << m1;
 
-	//fstream f4("fisierBin.bin", ios::binary | ios::in);
-	//m2.citireBinar(f4);
-	//f4.close();
-	//cout << m2;
+	fstream f4("fisierBin.bin", ios::binary | ios::in);
+	m2.citireBinar(f4);
+	f4.close();
+	cout << m2;
 
 	preparatIndian pi1;
 	cout << "Numarul de ingrediente indiene este : " << pi1.getNumarIngredienteIndiene() << endl;
