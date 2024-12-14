@@ -6,7 +6,7 @@ using namespace std;
 
 class preparatCafea
 {
-private:
+protected:
 	string tipCafea;
 	int cantitateZahar;
 	char marimePahar; // G pentru Grande , T pentru tall, M pentru Medium si S pentru Short
@@ -769,157 +769,261 @@ public:
 
  int preparatCafea::grame_cofeina_standard = 10;
 
-void main()
-{   
-		string ingrediente1[] = {"lapte","expreso","zahar"};
-		float gramaj1[] = { 100.0f, 50.0f,5.0f };
+ class preparatCafeaSpeciala :public preparatCafea
+ {
+	 int numarCafeaSpeciala;
+	 string* denumireCafeaSpeciala;
+ public:
+	 preparatCafeaSpeciala() :preparatCafea()
+	 {
+		 this->numarCafeaSpeciala = 0;
+		 this->denumireCafeaSpeciala = NULL;
+	 }
 
-	preparatCafea p1("latte", 5, 'G', 15, 1, "RON", "5togo",3,ingrediente1,gramaj1 );
-	cout << "Denumire Preparat Cafea : " << p1.getTipCafea() << endl;
-	cout << "Cantitate Zahar: " << p1.getCantitateZahar() << endl;
-	cout << "Marime Pahar: " << p1.getMarimePahar() << endl;
-	cout << " Pret Cafea: " << p1.getPretCafea() << endl;
-	cout << "Adaugati Aroma la Cafea? : " << p1.getAdaugatiAromaCafea()<< endl;
-	cout << " Moneda de plata este: " << p1.getMonedaPlata() << endl;
-	cout << "Nume cafenea : " << p1.getNumeCafenea() << endl;
-	cout << "Numar Ingrediente : " << p1.getNumarIngrediente() << endl;
-	cout << "Ingrediente si gramaje: " << endl << endl;
-	for (int i = 0; i < p1.getNumarIngrediente(); i++)
-	{
-		cout << "Ingrediente: " << p1.getListaIngrediente()[i] << endl;
-		
-		cout << "GramajIngredient:  " << p1.getGramajIngrediente()[i] << endl;
-		
-	}
+	 preparatCafeaSpeciala(int numarCafeaSpeciala, string* denumireCafeaSpeciala, string tipCafea, int cantitateZahar, char marimePahar, float pretCafea, bool adaugatiAromaCafea, string monedaPlata, const char* numeCafenea, int numarIngrediente, string* listaIngrediente, float* gramajIngrediente) :preparatCafea(tipCafea, cantitateZahar, marimePahar, pretCafea, adaugatiAromaCafea, monedaPlata, numeCafenea, numarIngrediente, listaIngrediente, gramajIngrediente)
+	 {
+		 this->numarCafeaSpeciala = numarCafeaSpeciala;
+		 this->denumireCafeaSpeciala = new string[this->numarCafeaSpeciala];
+		 for (int i = 0; i < this->numarCafeaSpeciala; i++)
+		 {
+			 this->denumireCafeaSpeciala[i] = denumireCafeaSpeciala[i];
+		 }
+	 }
 
-	cout << endl << endl;
+	 int getNumarCafeaSpeciala()
+	 {
+		 return this->numarCafeaSpeciala;
+	 }
 
-	string ingrediente2[] = { "lapte","expreso","zahar" };
-	float gramaj2[] = { 100.0f, 50.0f,5.0f };
-
-	preparatCafea p2("expreso", 5, 'T', 10, 0, "RON", "5togo", 2,ingrediente2, gramaj2);
-
-
-
-	cout << "............Obiectul p2 inainte de modificari.............." << endl;
-
-	p2.afiseaza();
-	
-
-	p2.setTipCafea("expresso");
-	p2.setCantitateZahar(0);
-	p2.setMarimePahar('M');
-	p2.setPretCafea(10.00);
-	p2.setAdaugatiAromaCafea(0);
-	p2.setNumeCafenea("tucano");
-	string ingrediente3[] = { "cafea", "apa" };
-	float gramaj3[] = { 50,50 };
-	p2.setIngrediente(2, ingrediente3, gramaj3);
-
-	cout << "............Obiectul p2 dupa modificari.............." << endl;
-
-	p2.afiseaza();
+	 string* getDenumireCafeaSpeciala()
+	 {
+		 return this->denumireCafeaSpeciala;
+	 }
 
 
-	preparatCafea p4(p2);
+	 void setCafeaSpeciala(int numarCafeaSpeciala, string* denumireCafeaSpeciala)
+	 {
+		 delete[] this->denumireCafeaSpeciala;
 
-	cout << "............Obiectul p4...................." << endl;
-	p4.afiseaza();
+		 this-> numarCafeaSpeciala = numarCafeaSpeciala;
+		 this->denumireCafeaSpeciala = new string[this->numarCafeaSpeciala];
+		 for (int i = 0; i < this->numarCafeaSpeciala; i++)
+		 {
+			 this->denumireCafeaSpeciala[i] = denumireCafeaSpeciala[i];
+			 }
+	 }
 
-	cout << "............Obiectul p2...................." << endl;
-	
-	p2.afiseaza();
-	cout << "............Obiectul p1...................." << endl;
-	p1.afiseaza();
-	
-	p2 = p1;
 
-	cout << "............Obiectul p2...................." << endl;
-	p2.afiseaza();
+	 ~preparatCafeaSpeciala()
+	 {
+		 if (this->denumireCafeaSpeciala != NULL)
+		 {
+			 delete[]this->denumireCafeaSpeciala;
+		 }
+	 }
+ };
 
-	cout << "------Operatorul<<-----------" << endl << endl;
+ void main()
+ {
+	 string ingrediente1[] = { "lapte","expreso","zahar" };
+	 float gramaj1[] = { 100.0f, 50.0f,5.0f };
 
-	cout << p2;
+	 preparatCafea p1("latte", 5, 'G', 15, 1, "RON", "5togo", 3, ingrediente1, gramaj1);
+	 cout << "Denumire Preparat Cafea : " << p1.getTipCafea() << endl;
+	 cout << "Cantitate Zahar: " << p1.getCantitateZahar() << endl;
+	 cout << "Marime Pahar: " << p1.getMarimePahar() << endl;
+	 cout << " Pret Cafea: " << p1.getPretCafea() << endl;
+	 cout << "Adaugati Aroma la Cafea? : " << p1.getAdaugatiAromaCafea() << endl;
+	 cout << " Moneda de plata este: " << p1.getMonedaPlata() << endl;
+	 cout << "Nume cafenea : " << p1.getNumeCafenea() << endl;
+	 cout << "Numar Ingrediente : " << p1.getNumarIngrediente() << endl;
+	 cout << "Ingrediente si gramaje: " << endl << endl;
+	 for (int i = 0; i < p1.getNumarIngrediente(); i++)
+	 {
+		 cout << "Ingrediente: " << p1.getListaIngrediente()[i] << endl;
 
-	cout << "------Operatorul>>-----------" << endl << endl;
-	//cin >> p4;
+		 cout << "GramajIngredient:  " << p1.getGramajIngrediente()[i] << endl;
 
-	cout << "------Obiectul p4 dupa ce a fost introdus de la tastatura-------" << endl << endl;
+	 }
 
-	cout << p2[1] << endl;
+	 cout << endl << endl;
 
-	cout << "Gramajul minim al obiectului p1 este :" << p1.gramajMinim() << endl;
-	cout << p1;
-	cout << "Suma gramajului ingredientelor obiectului p1 este :" << p1.sumaGramajingrediente() << endl;
-	cout << "Media gramajului ingredientelor obiectului p1 este :" << p1.mediagramaj() << endl;
-	cout << "Este pretul p1<=p2? :" << (p1<=p2) << endl;
+	 string ingrediente2[] = { "lapte","expreso","zahar" };
+	 float gramaj2[] = { 100.0f, 50.0f,5.0f };
 
-	cout << p1;
-	cout << p4;
-	cout << "p1 este egal in totalitate cu p2? :" << (p1==p4) << endl;
-
-	p1.adaugaIngredient("scortisoara", 5);
-
-	cout << p1;
-
-	cout << "Obiectul p2 inainte de eliminare ingredient din vector" << endl;
-	cout << p2;
-
-	p2.eliminaElement(3);
-
-	cout << "Obiectul p2 dupa eliminare ingredient din vector" << endl;
-	cout << p2;
-	cout << "------------operator !-----------" << endl << endl;
-	cout << p1;
-	!p1;
-	cout << p1;
-
-	cout << endl << endl;
-	cout << "Inainte de aplicare discount" << p1.getPretCafea() << endl;
-	try
-	{
-		p1(1.5);
-	}
-	catch (exception e)
-	{
-		cout << "eroare";
-	}
-
-	cout << "Aplicare discount" << p1.getPretCafea() << endl;
-
-	cout << p2;
-	p2 += "frisca";
-	cout << p2;
+	 preparatCafea p2("expreso", 5, 'T', 10, 0, "RON", "5togo", 2, ingrediente2, gramaj2);
 
 
 
-	cout << p2;
-	p2 -= 1;
-	cout << p2;
+	 cout << "............Obiectul p2 inainte de modificari.............." << endl;
+
+	 p2.afiseaza();
 
 
-	cout << "-----------------------FisiereTEXT--------------" << endl;
-	ofstream f1("fisierTXT.txt", ios::out);
-	f1 << p2;
-	f1.close();
-	ifstream f2("fisierTXT.txt", ios::in);
-	f2 >> p4;
-	f2.close();
+	 p2.setTipCafea("expresso");
+	 p2.setCantitateZahar(0);
+	 p2.setMarimePahar('M');
+	 p2.setPretCafea(10.00);
+	 p2.setAdaugatiAromaCafea(0);
+	 p2.setNumeCafenea("tucano");
+	 string ingrediente3[] = { "cafea", "apa" };
+	 float gramaj3[] = { 50,50 };
+	 p2.setIngrediente(2, ingrediente3, gramaj3);
 
-	cout << p4;
+	 cout << "............Obiectul p2 dupa modificari.............." << endl;
 
-	cout << "-----------------------Fisiere binare-------------" << endl << endl;
-
-	fstream f3("fisierBinar.bin", ios::binary | ios::out);
-	p1.scriereBinar(f3);
-	f3.close();
-
-	fstream f4("fisierBinar.bin", ios::binary | ios::in);
-	p4.citireBinar(f4);
-	f4.close();
-
-	cout << p4;
-
-}
+	 p2.afiseaza();
 
 
+	 preparatCafea p4(p2);
+
+	 cout << "............Obiectul p4...................." << endl;
+	 p4.afiseaza();
+
+	 cout << "............Obiectul p2...................." << endl;
+
+	 p2.afiseaza();
+	 cout << "............Obiectul p1...................." << endl;
+	 p1.afiseaza();
+
+	 p2 = p1;
+
+	 cout << "............Obiectul p2...................." << endl;
+	 p2.afiseaza();
+
+	 cout << "------Operatorul<<-----------" << endl << endl;
+
+	 cout << p2;
+
+	 cout << "------Operatorul>>-----------" << endl << endl;
+	 //cin >> p4;
+
+	 cout << "------Obiectul p4 dupa ce a fost introdus de la tastatura-------" << endl << endl;
+
+	 cout << p2[1] << endl;
+
+	 cout << "Gramajul minim al obiectului p1 este :" << p1.gramajMinim() << endl;
+	 cout << p1;
+	 cout << "Suma gramajului ingredientelor obiectului p1 este :" << p1.sumaGramajingrediente() << endl;
+	 cout << "Media gramajului ingredientelor obiectului p1 este :" << p1.mediagramaj() << endl;
+	 cout << "Este pretul p1<=p2? :" << (p1 <= p2) << endl;
+
+	 cout << p1;
+	 cout << p4;
+	 cout << "p1 este egal in totalitate cu p2? :" << (p1 == p4) << endl;
+
+	 p1.adaugaIngredient("scortisoara", 5);
+
+	 cout << p1;
+
+	 cout << "Obiectul p2 inainte de eliminare ingredient din vector" << endl;
+	 cout << p2;
+
+	 p2.eliminaElement(3);
+
+	 cout << "Obiectul p2 dupa eliminare ingredient din vector" << endl;
+	 cout << p2;
+	 cout << "------------operator !-----------" << endl << endl;
+	 cout << p1;
+	 !p1;
+	 cout << p1;
+
+	 cout << endl << endl;
+	 cout << "Inainte de aplicare discount" << p1.getPretCafea() << endl;
+	 try
+	 {
+		 p1(1.5);
+	 }
+	 catch (exception e)
+	 {
+		 cout << "eroare";
+	 }
+
+	 cout << "Aplicare discount" << p1.getPretCafea() << endl;
+
+	 cout << p2;
+	 p2 += "frisca";
+	 cout << p2;
+
+
+
+	 cout << p2;
+	 p2 -= 1;
+	 cout << p2;
+
+
+	 cout << "-----------------------FisiereTEXT--------------" << endl;
+	 ofstream f1("fisierTXT.txt", ios::out);
+	 f1 << p2;
+	 f1.close();
+	 ifstream f2("fisierTXT.txt", ios::in);
+	 f2 >> p4;
+	 f2.close();
+
+	 cout << p4;
+
+	 cout << "-----------------------Fisiere binare-------------" << endl << endl;
+
+	 fstream f3("fisierBinar.bin", ios::binary | ios::out);
+	 p1.scriereBinar(f3);
+	 f3.close();
+
+	 fstream f4("fisierBinar.bin", ios::binary | ios::in);
+	 p4.citireBinar(f4);
+	 f4.close();
+
+	 cout << p4;
+
+
+	 preparatCafeaSpeciala ps1;
+
+	 cout << "Numarul de preparate cafea speciale este : " << ps1.getNumarCafeaSpeciala() << endl;
+	 cout << "Denumirile preparatelor de cafea speciala sunt : " << endl;
+	 for (int i = 0; i < ps1.getNumarCafeaSpeciala(); i++)
+	 {
+		 cout << "Denumire: " << ps1.getDenumireCafeaSpeciala()[i];
+	 }
+	 cout << endl << endl;
+	 
+	 string denumire1[] = { "Soy Latte", "Frapucino" };
+	 string lista1[] = { "cafea boabe", "lapte soia", "frisca" };
+	 float gramaj4[] = { 50,100,10 };
+	 preparatCafeaSpeciala ps2(2, denumire1, "arabica", 0, 'l', 15, 0, "RON", "Starbucks", 3, lista1, gramaj4);
+
+	 cout << "Numarul de preparate cafea speciale este : " << ps2.getNumarCafeaSpeciala() << endl;
+	 cout << "Denumirile preparatelor de cafea speciala sunt : " << endl;
+	 for (int i = 0; i < ps2.getNumarCafeaSpeciala(); i++)
+	 {
+		 cout << "Denumire: " << ps2.getDenumireCafeaSpeciala()[i];
+	 }
+	 cout << "Denumire Preparat Cafea : " << ps2.getTipCafea() << endl;
+	 cout << "Cantitate Zahar: " << ps2.getCantitateZahar() << endl;
+	 cout << "Marime Pahar: " << ps2.getMarimePahar() << endl;
+	 cout << " Pret Cafea: " << ps2.getPretCafea() << endl;
+	 cout << "Adaugati Aroma la Cafea? : " << ps2.getAdaugatiAromaCafea() << endl;
+	 cout << " Moneda de plata este: " << ps2.getMonedaPlata() << endl;
+	 cout << "Nume cafenea : " << ps2.getNumeCafenea() << endl;
+	 cout << "Numar Ingrediente : " << ps2.getNumarIngrediente() << endl;
+	 cout << "Ingrediente si gramaje: " << endl << endl;
+	 for (int i = 0; i < ps2.getNumarIngrediente(); i++)
+	 {
+		 cout << "Ingrediente: " << ps2.getListaIngrediente()[i] << endl;
+
+		 cout << "GramajIngredient:  " << ps2.getGramajIngrediente()[i] << endl;
+
+	 }
+
+	 cout << endl << endl;
+	 string denCafea[] = { "capucinno caramel", "vegan latte" };
+	 ps1.setCafeaSpeciala(2, denCafea);
+
+	 cout << "Numarul de preparate cafea speciale este : " << ps1.getNumarCafeaSpeciala() << endl;
+	 cout << "Denumirile preparatelor de cafea speciala sunt : " << endl;
+	 for (int i = 0; i < ps1.getNumarCafeaSpeciala(); i++)
+	 {
+		 cout << "Denumire: " << ps1.getDenumireCafeaSpeciala()[i];
+
+	 }
+
+
+ }
