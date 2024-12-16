@@ -358,9 +358,8 @@ public:
 	}
 
 
-	//operatorul = (ia 2 obiecte si pe unul il modifica pe baza celuilalt ex: h1 obiect macheta, h4 obiect ce va fi modificat pe baza h1)
 
-	Hotel& operator=(Hotel& obiectMacheta)
+	Hotel& operator=(const Hotel& obiectMacheta)
 	{
 		if (this != &obiectMacheta)
 		{
@@ -998,6 +997,99 @@ public:
 		}
 	}
 
+	HotelCuAllInclusive(const HotelCuAllInclusive& objA):Hotel(objA)
+	{
+		
+
+		this->numarMeseIncluse = objA.numarMeseIncluse;
+		this->listaMeseIncluse = new string[this->numarMeseIncluse];
+		for (int i = 0; i < this->numarMeseIncluse; i++)
+		{
+			this->listaMeseIncluse[i] = objA.listaMeseIncluse[i];
+		}
+		
+
+
+	}
+
+	HotelCuAllInclusive(const Hotel& obj) :Hotel(obj)
+	{
+
+		this->numarMeseIncluse = 3;
+		this->listaMeseIncluse = new string[3];
+		this->listaMeseIncluse[0] = " mic dejun";
+		this->listaMeseIncluse[1] = " pranz";
+		this->listaMeseIncluse[2] = " cina";
+		
+	}
+
+	HotelCuAllInclusive& operator=(const HotelCuAllInclusive& obj)
+	{
+		if (this != &obj)
+		{
+			Hotel::operator=(obj);
+
+			if (this->listaMeseIncluse != nullptr)
+			{
+				delete[]this->listaMeseIncluse;
+			}
+
+			this->numarMeseIncluse = obj.numarMeseIncluse;
+			this->listaMeseIncluse = new string[this->numarMeseIncluse];
+			for (int i = 0; i < this->numarMeseIncluse; i++)
+			{
+				this->listaMeseIncluse[i] = obj.listaMeseIncluse[i];
+			}
+		}
+
+		return *this;
+	}
+
+
+	friend ostream& operator<<(ostream& out, const HotelCuAllInclusive& h)
+	{
+
+	/*	int numarMeseIncluse;
+		string* listaMeseIncluse;*/
+		out << "Numar mese incluse " << h.numarMeseIncluse << endl;
+		out << "Lista ";
+		for (int i = 0; i < h.numarMeseIncluse; i++)
+		{
+			out << h.listaMeseIncluse[i] << endl;
+		}
+		
+		out << (Hotel&)h;
+
+		return out;
+
+	}
+
+
+	friend istream& operator>>(istream& in, HotelCuAllInclusive& h)
+	{
+		if (h.listaMeseIncluse != nullptr)
+		{
+			delete[]h.listaMeseIncluse;
+		}
+		cout << "Introduceti numarul de mese incluse";
+		in >> h.numarMeseIncluse;
+		h.listaMeseIncluse = new string[h.numarMeseIncluse];
+		cout << "Introduceti lista de mese incluse";
+		for (int i = 0; i < h.numarMeseIncluse; i++)
+		{
+			in >> h.listaMeseIncluse[i];
+		}
+
+		in >> (Hotel&)h;
+
+
+		return in;
+
+	}
+
+
+
+
 };
 
 void main() {
@@ -1206,19 +1298,7 @@ void main() {
 
 
 	HotelCuAllInclusive hai2(3, lista1, "RamadaResort", "bdul Unirii", 150, 220, 1, 1100.0, 2010, 5, preturia1, serviciia1,"Popescu Ion");
-	//	string denumireHotel;
-	//string adresaHotel;
-	//int numarAngajati;
-	//int numarCamere;
-	//bool areMicDejunInclus;
-	//float pretCameraPeZi;
-	//const int anDeschidereHotel;
-	//static int clasaCAENHotel; //55
-
-	//char* numeManagerHotel;
-	//int numarServiciiDisponibile; //numarator
-	//float* preturiServicii;
-	//string* numeServicii;
+	
 	cout << "----------------------------Obiectul hai2 ------------------" << endl << endl;
 	cout << "Numarul de mese incluse este : " << hai2.getNumarMeseIncluse() << endl << endl;
 	cout << "Lista de mese incluse este: " << endl << endl;
@@ -1259,7 +1339,7 @@ void main() {
 
 	cout << "Numarul de mese incluse este : " << hai1.getNumarMeseIncluse() << endl << endl;
 	cout << "Lista de mese incluse este: " << endl << endl;
-	for (int i = 0; i < hai2.getNumarMeseIncluse(); i++)
+	for (int i = 0; i < hai1.getNumarMeseIncluse(); i++)
 	{
 		cout << hai1.getListaMeseIncluse()[i] << endl << endl;
 	}
@@ -1279,8 +1359,222 @@ void main() {
 	}
 	cout << endl << endl;
 
+	cout << "---------------------------Constructor copiere---------------------------" << endl;
+
+	HotelCuAllInclusive hai3 = hai2;
+
+	cout << "----------------------------Obiectul macheta hai2 ------------------" << endl << endl;
+	cout << "Numarul de mese incluse este : " << hai2.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai2.getNumarMeseIncluse(); i++)
+	{
+		cout << hai2.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai2.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai2.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai2.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai2.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai2.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai2.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai2.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai2.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai2.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai2.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret<" << hai2.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii" << hai2.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+	cout << "----------------Obiectul nou hai3 ---------" << endl;
+
+	cout << "Numarul de mese incluse este : " << hai1.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai1.getNumarMeseIncluse(); i++)
+	{
+		cout << hai1.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai1.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai1.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai1.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai1.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai1.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai1.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai1.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai1.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai1.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai1.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai1.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai1.getNumeServicii()[i] << endl;
+	}
+
+	string lista2[] = { "micdejun", "pranz", "cina" };
+	float preturia2[] = { 150, 150,100,500,155 };
+	string serviciia2[] = { "masaj", "jacuzzi","room service", "spa", "spalatorie" };
+	HotelCuAllInclusive hai4(3, lista2, "RamadaLux", "bdul Decebal", 200, 270, 1, 1500.0, 2010, 5, preturia2, serviciia2, "Ionescu Ion");
+
+	cout << "------------------Operatorul = ------------------------" << endl;
+	cout << "Obidctul hai4 inainte de a fi modificat"<< endl << endl;
+	cout << "Numarul de mese incluse este : " << hai4.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai4.getNumarMeseIncluse(); i++)
+	{
+		cout << hai4.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai4.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai4.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai4.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai4.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai4.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai4.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai4.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai4.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai4.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai4.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai4.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai4.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+	cout << "Obiectul macheta hai1" << endl << endl;
+	cout << "Numarul de mese incluse este : " << hai1.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai1.getNumarMeseIncluse(); i++)
+	{
+		cout << hai1.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai1.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai1.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai1.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai1.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai1.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai1.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai1.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai1.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai1.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai1.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai1.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai1.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+	hai4 = hai1;
+
+	cout << "Obidctul hai4 dupa modificare"<<endl << endl;
+	cout << "Obidctul hai4 inainte de a fi modificat";
+	cout << "Numarul de mese incluse este : " << hai4.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai4.getNumarMeseIncluse(); i++)
+	{
+		cout << hai4.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai4.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai4.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai4.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai4.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai4.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai4.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai4.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai4.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai4.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai4.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai4.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai4.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+	cout << "-----------------Upcasting prin operator =----------------------" << endl;
+
+	 ;
+	 cout << "------------Obiectul h5 inainte de upcasting--------------" << h5 << endl << endl;
+
+	 cout << "--------------------Obiectul hai4 inainte de upcasting -----------------" << endl << endl;
+	 cout << "Numarul de mese incluse este : " << hai4.getNumarMeseIncluse() << endl << endl;
+	 cout << "Lista de mese incluse este: " << endl << endl;
+	 for (int i = 0; i < hai4.getNumarMeseIncluse(); i++)
+	 {
+		 cout << hai4.getListaMeseIncluse()[i] << endl << endl;
+	 }
+	 cout << "Denumirea hotelului este: " << hai4.getDenumireHotel() << endl;
+	 cout << "Adresa hotelului este: " << hai4.getAdresaHotel() << endl;
+	 cout << "Numarul de anjajati este: " << hai4.getNumarAngajati() << endl;
+	 cout << "Numar camere :" << hai4.getNumarCamere() << endl;
+	 cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai4.getAreMicDejunInclus() << endl;
+	 cout << "Pretul pe camera/zi este: " << hai4.getPretCameraPeZi() << endl;
+	 cout << "Anul deschiderii hotelului eate: " << hai4.getAnDeschidereHotel() << endl;
+	 cout << "Nume manager Hotel este: " << hai4.getNumeManagerHotel() << endl;
+	 cout << "Numarul de servicii disponibile :" << hai4.getnumarServiciiDisponibile() << endl;
+	 cout << "Preturi servicii :" << endl;
+	 for (int i = 0; i < hai4.getnumarServiciiDisponibile(); i++) {
+		 cout << "Pret: " << hai4.getpreturiServicii()[i] << endl;
+		 cout << "Denumire Servicii: " << hai4.getNumeServicii()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+	 h5 = hai4;
+	 cout << "------------Obiectul h5 dupa upcasting--------------" << h5 << endl << endl;
+	 cout << "--------------------Obiectul hai4 dupa upcasting -----------------" << endl << endl;
+	 cout << "Numarul de mese incluse este : " << hai4.getNumarMeseIncluse() << endl << endl;
+	 cout << "Lista de mese incluse este: " << endl << endl;
+	 for (int i = 0; i < hai4.getNumarMeseIncluse(); i++)
+	 {
+		 cout << hai4.getListaMeseIncluse()[i] << endl << endl;
+	 }
+	 cout << "Denumirea hotelului este: " << hai4.getDenumireHotel() << endl;
+	 cout << "Adresa hotelului este: " << hai4.getAdresaHotel() << endl;
+	 cout << "Numarul de anjajati este: " << hai4.getNumarAngajati() << endl;
+	 cout << "Numar camere :" << hai4.getNumarCamere() << endl;
+	 cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai4.getAreMicDejunInclus() << endl;
+	 cout << "Pretul pe camera/zi este: " << hai4.getPretCameraPeZi() << endl;
+	 cout << "Anul deschiderii hotelului eate: " << hai4.getAnDeschidereHotel() << endl;
+	 cout << "Nume manager Hotel este: " << hai4.getNumeManagerHotel() << endl;
+	 cout << "Numarul de servicii disponibile :" << hai4.getnumarServiciiDisponibile() << endl;
+	 cout << "Preturi servicii :" << endl;
+	 for (int i = 0; i < hai4.getnumarServiciiDisponibile(); i++) {
+		 cout << "Pret: " << hai4.getpreturiServicii()[i] << endl;
+		 cout << "Denumire Servicii: " << hai4.getNumeServicii()[i] << endl;
+	 }
+	 cout << endl << endl;
+	
+	cout << "-----------------Downcasting----------------------" << endl;
+	cout << "------Obiectul h1 inainte de downcasting------" << h1 << endl;
+	
+	HotelCuAllInclusive hai5 = h1;
+	cout << "------Obiectul h1 dupa downcasting------" << h1 << endl;
+	cout << "Obiectul hai5 dupa downcasting ------------------------" << endl;
+	cout << "Numarul de mese incluse este : " << hai5.getNumarMeseIncluse() << endl << endl;
+	cout << "Lista de mese incluse este: " << endl << endl;
+	for (int i = 0; i < hai5.getNumarMeseIncluse(); i++)
+	{
+		cout << hai5.getListaMeseIncluse()[i] << endl << endl;
+	}
+	cout << "Denumirea hotelului este: " << hai5.getDenumireHotel() << endl;
+	cout << "Adresa hotelului este: " << hai5.getAdresaHotel() << endl;
+	cout << "Numarul de anjajati este: " << hai5.getNumarAngajati() << endl;
+	cout << "Numar camere :" << hai5.getNumarCamere() << endl;
+	cout << "Are mic dejun inclus? (0 pentru Nu , 1 pentru DA)  " << hai5.getAreMicDejunInclus() << endl;
+	cout << "Pretul pe camera/zi este: " << hai5.getPretCameraPeZi() << endl;
+	cout << "Anul deschiderii hotelului eate: " << hai5.getAnDeschidereHotel() << endl;
+	cout << "Nume manager Hotel este: " << hai5.getNumeManagerHotel() << endl;
+	cout << "Numarul de servicii disponibile :" << hai5.getnumarServiciiDisponibile() << endl;
+	cout << "Preturi servicii :" << endl;
+	for (int i = 0; i < hai5.getnumarServiciiDisponibile(); i++) {
+		cout << "Pret: " << hai5.getpreturiServicii()[i] << endl;
+		cout << "Denumire Servicii: " << hai5.getNumeServicii()[i] << endl;
+	}
+	cout << endl << endl;
+
+	cout << "Pretul minim al obiectului hai5 " << hai5.PretMinim() << endl;
+	cout << "Operatorul hai1 este egal cu hai5?" << (hai5 == hai1) << endl;
 
 
+	cout << "----------Operator <<-------------" << endl;
+	cout << hai5;
+	cout << "----------Operator >>-------------" << endl;
+	/*cin >> hai4;*/
+	cout << hai4;
 }
 
 
