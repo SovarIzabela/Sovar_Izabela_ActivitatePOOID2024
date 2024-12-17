@@ -288,7 +288,7 @@ public:
 
 	
 
-	TraseuMontan& operator=(TraseuMontan& obiectMatrice)
+	TraseuMontan& operator=(const TraseuMontan& obiectMatrice)
 	{
 		if (this != &obiectMatrice)
 		{
@@ -468,8 +468,7 @@ public:
 
 	}
 	
-	// sa compare 2 obiecte pe baza atributului lungimeKmTraseu
-
+	
 	bool operator<=(const TraseuMontan&obj)
 	{
 		if (this->lungimeKmTraseu <= obj.lungimeKmTraseu)
@@ -524,12 +523,9 @@ public:
 		return ok;
 	}
 
-
-	//operatorul << de afisare obiect pe consola
-
+	
 	 
-
-	friend ostream& operator<<(ostream& out, const TraseuMontan& obj)
+		friend ostream& operator<<(ostream& out, const TraseuMontan& obj)
 	{
 		out << "Denumirea traseului este : " << obj.denumireTraseu << endl;
 		out << "Lungimea traseului in km este : " << obj.lungimeKmTraseu << endl;
@@ -939,6 +935,92 @@ public:
 	}
 
 
+	TraseuMontanCultural(const TraseuMontanCultural& tmc):TraseuMontan(tmc)
+	{
+		
+
+		this->numarPuncteCulturale = tmc.numarPuncteCulturale;
+		this->denumirePuncteCulturale = new string[this->numarPuncteCulturale];
+		for (int i = 0; i < this->numarPuncteCulturale; i++)
+		{
+			this->denumirePuncteCulturale[i] = tmc.denumirePuncteCulturale[i];
+		}
+
+
+	}
+
+	TraseuMontanCultural& operator=(const TraseuMontanCultural&tmc)
+	{
+		if(this!=&tmc)
+		{
+			TraseuMontan::operator=(tmc);
+
+			if (this->denumirePuncteCulturale != NULL)
+			{
+				delete[]this->denumirePuncteCulturale;
+			}
+
+			this->numarPuncteCulturale = tmc.numarPuncteCulturale;
+			this->denumirePuncteCulturale = new string[this->numarPuncteCulturale];
+			for (int i = 0; i < this->numarPuncteCulturale; i++)
+			{
+				this->denumirePuncteCulturale[i] = tmc.denumirePuncteCulturale[i];
+			}
+		}
+
+		return *this;
+
+	}
+
+	TraseuMontanCultural(const TraseuMontan& tmc1) :TraseuMontan(tmc1)
+	{
+		this->numarPuncteCulturale = 3;
+		this->denumirePuncteCulturale = new string[3];
+		this->denumirePuncteCulturale[0] = "castel 1 ";
+		this->denumirePuncteCulturale[1] = "castel 2 ";
+		this->denumirePuncteCulturale[2] = "castel 3 ";
+
+	}
+
+	friend ostream& operator<<(ostream& out, TraseuMontanCultural& obj)
+	{
+
+		out << "Numar puncte culturale este: " << obj.numarPuncteCulturale << endl;
+		out << "Denumirea punctelor culturale : ";
+		for (int i = 0; i < obj.numarPuncteCulturale; i++)
+		{
+			out << obj.denumirePuncteCulturale[i]<<endl;
+		}
+		out << (TraseuMontan&)obj;
+
+		return out;
+
+
+	}
+
+	friend istream& operator>>(istream& in, TraseuMontanCultural& obj)
+	{
+		if (obj.denumirePuncteCulturale != NULL)
+		{
+			delete[]obj.denumirePuncteCulturale;
+		}
+
+		cout << "Introduceti numar puncte culturale ";
+		in >> obj.numarPuncteCulturale;
+		cout << "Introduceti denumirea punctelor culturale de pe traseu: " << endl;
+		obj.denumirePuncteCulturale = new string[obj.numarPuncteCulturale];
+		for (int i = 0; i < obj.numarPuncteCulturale; i++)
+		{
+			in >> obj.denumirePuncteCulturale[i];
+		}
+
+		in >> (TraseuMontan&)obj;
+
+		return in;
+
+	}
+
+
 };
 	
 
@@ -1063,8 +1145,6 @@ void main()
 	tm1.adaugaEchipaLaInceput("SalvamontSinaia");
 	tm1.afiseaza();
 	cout << endl << endl;
-
-	//operatori
 
 	cout << "Lungimea traseului pentru obiectul tm1: " << tm1.getLungimeKmTraseu() << endl << endl;
 	cout << "Lungimea traseului pentru obiectul tm5 : " << tm5.getLungimeKmTraseu() << endl << endl;
@@ -1200,7 +1280,7 @@ void main()
 	string echipeSalvare4[] = { "SalvamontFagaras", "SalvamontNeamt" };
 	tmc1.setEchipeSalvare(2, echipeSalvare4);
 	int altitudini7[] = { 1200, 2000 };
-	tm1.setAltitudini(2, altitudini7);
+	tmc1.setAltitudini(2, altitudini7);
 
 	cout << "Numarul de puncte culturale este: " << tmc1.getNumarPuncteCulturale() << endl;
 	cout << "Denumirea puctelor culturale este : ";
@@ -1230,6 +1310,243 @@ void main()
 
 	cout << endl << endl;
 
+
+
+	cout << "-----------------------Constructorul de copiere-----------" << endl;
+	cout << "-----Obiectul tmc1------- " << endl << endl;
+	cout << "Numarul de puncte culturale este: " << tmc1.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : ";
+	for (int i = 0; i < tmc1.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc1.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc1.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc1.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc1.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc1.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc1.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc1.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc1.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc1.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc1.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc1.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc1.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc1.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+	TraseuMontanCultural tmc3 = tmc1;
+
+	cout << "-----Obiectul tmc3------- " << endl << endl;
+
+	cout << "Numarul de puncte culturale este: " << tmc3.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : ";
+	for (int i = 0; i < tmc3.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc3.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc3.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc3.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc3.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc3.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc3.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc3.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc3.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc3.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc3.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc3.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc3.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	cout << "-----------------------Operatorul =-----------" << endl;
+
+	cout << "--------------Obiectul tmc2----------------" << endl << endl;
+	cout << "Numarul de puncte culturale este: " << tmc2.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc2.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc2.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc2.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc2.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc2.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc2.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc2.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc2.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc2.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc2.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc2.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc2.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc2.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc2.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	tmc3 = tmc2;
+
+	cout << "-------------------------------Obiectul tmc3 copiat dupa tmc2--------------" << endl << endl;
+	cout << "Numarul de puncte culturale este: " << tmc3.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc3.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc3.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc3.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc3.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc3.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc3.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc3.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc3.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc3.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc3.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc3.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc3.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	cout << "------------------upcasting-----------------------------" << endl;
+
+	cout << "-------------obiectul tm1 inainte de upcasting----------- " << endl;
+	cout << tm1;
+	cout << "-------------------------------Obiectul tmc3 inainte de upcasting--------------" << endl << endl;
+	cout << "Numarul de puncte culturale este: " << tmc3.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc3.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc3.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc3.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc3.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc3.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc3.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc3.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc3.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc3.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc3.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc3.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc3.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	tm1 = tmc3;
+
+
+	cout << "-------------obiectul tm1 dupa de upcasting----------- " << endl;
+	cout << tm1;
+	cout << "-------------------------------Obiectul tmc3 dupa upcasting--------------" << endl << endl;
+	cout << "Numarul de puncte culturale este: " << tmc3.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc3.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc3.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc3.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc3.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc3.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc3.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc3.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc3.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc3.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc3.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc3.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc3.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc3.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+
+	cout << "--------------Downcasting---------------------" << endl << endl;
+	cout << "----------Obiectul tm1----------------" << endl;
+	cout << tm1;
+	TraseuMontanCultural tmc4 = tm1;
+
+	cout << "----------Obiectul tmc4 dupa downcasting----------------" << endl;
+	cout << "Numarul de puncte culturale este: " << tmc4.getNumarPuncteCulturale() << endl;
+	cout << "Denumirea puctelor culturale este : " << endl;
+	for (int i = 0; i < tmc4.getNumarPuncteCulturale(); i++)
+	{
+		cout << tmc4.getDenumirePuncteCulturale()[i] << endl;
+	}
+	cout << "Denumirea traseului:" << tmc4.getDenumireTraseu() << endl;
+	cout << "Lungime traseu:" << tmc4.getLungimeKmTraseu() << endl;
+	cout << "Durata Traseu ore:" << tmc4.getDurataTraseuOre() << endl;
+	cout << "Prezinta Risc Avalansa? (0-NU/1-DA) " << tmc4.getPrezintaRiscAvalansa() << endl;
+	cout << "Altitudinea Maxima este " << tmc4.getAltitudineMaxima() << endl;
+	cout << "Dificultate traseu" << tmc4.getDificultateTraseu() << endl;
+	cout << "Numar echipe Salvare" << tmc4.getNrEchipeSalvare() << endl;
+	cout << "Echipe Salvare : " << endl;
+	for (int i = 0; i < tmc4.getNrEchipeSalvare(); i++)
+	{
+		cout << "echipe" << tmc4.getEchipeSalvare()[i] << endl;
+	}
+	cout << "Numar puncte altitudine" << tmc4.getNumarPuncteAltitudini() << endl;
+
+	cout << "Altitudini " << endl;
+	for (int i = 0; i < tmc4.getNumarPuncteAltitudini(); i++)
+	{
+		cout << "Altitudini" << tmc4.getAltitudini()[i] << endl;
+	}
+
+	cout << endl << endl;
+	
+	cout << "Traseul este periculos? " << tmc4(1200) << endl;
+	cout << "Traseul tmc4 este complet egal cu tmc1? " << ((tmc4 == tmc1) ) << endl << endl;
+
+	cout << "------Obiectul tmc1-------" << endl;
+	cout << tmc1;
+
+	cin >> tmc1;
+
+	cout << "------Obiectul tmc1 dupa ce a fost intreodus de la tastatura-------" << endl;
+	cout << tmc1;
 
 }
 
