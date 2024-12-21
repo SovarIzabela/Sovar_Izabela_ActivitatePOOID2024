@@ -826,6 +826,88 @@ public:
 		}
 	}
 
+
+	preparatIndian(preparatIndian& pi):Preparat(pi)
+	{
+		this->nrIngredienteIndiene = pi.nrIngredienteIndiene;
+		this->denumireCondimenteIndiene = new string[this->nrIngredienteIndiene];
+		this->cantitateIngredienteIndiene = new float[this->nrIngredienteIndiene];
+		for (int i = 0; i < this->nrIngredienteIndiene; i++)
+		{
+			this->denumireCondimenteIndiene[i] = pi.denumireCondimenteIndiene[i];
+			this->cantitateIngredienteIndiene[i] =pi.cantitateIngredienteIndiene[i];
+		}
+
+	}
+
+	preparatIndian& operator=(preparatIndian& pi)
+	{
+		if(this!= (&pi))
+		{
+			Preparat::operator=(pi);
+			if (this->denumireCondimenteIndiene != NULL)
+			{
+				delete[]this->denumireCondimenteIndiene;
+			}
+
+			if (this->cantitateIngredienteIndiene != NULL)
+			{
+				delete[] this->cantitateIngredienteIndiene;
+			}
+
+			this->nrIngredienteIndiene = pi.nrIngredienteIndiene;
+			this->denumireCondimenteIndiene = new string[this->nrIngredienteIndiene];
+			this->cantitateIngredienteIndiene = new float[this->nrIngredienteIndiene];
+			for (int i = 0; i < this->nrIngredienteIndiene; i++)
+			{
+				this->denumireCondimenteIndiene[i] = pi.denumireCondimenteIndiene[i];
+				this->cantitateIngredienteIndiene[i] = pi.cantitateIngredienteIndiene[i];
+			}
+		}
+
+		return *this;
+
+	}
+
+	friend ostream& operator<<(ostream& out, preparatIndian& pi)
+	{
+		/*int nrIngredienteIndiene;
+		string* denumireCondimenteIndiene;
+		float* cantitateIngredienteIndiene;*/
+
+		
+		out << "Numarul de ingrediente este : " << pi.nrIngredienteIndiene << endl;
+		out << "Denumirea ingredientelor si cantitatea acestora este : " << endl;
+		for (int i = 0; i < pi.nrIngredienteIndiene; i++)
+		{
+			out << pi.denumireCondimenteIndiene[i] << endl;
+			out << pi.cantitateIngredienteIndiene[i] << endl;
+		}
+
+		out << (Preparat&)pi;
+
+		return out;
+	}
+		
+	friend istream& operator>>(istream& in, preparatIndian& pi)
+	{
+
+		cout << "Introduceti numarul de ingrediente : ";
+		in >> pi.nrIngredienteIndiene;
+		cout << "Ingtroduceti denumirea ingredientelor si cantitatea acestora : " << endl;
+		for (int i = 0; i < pi.nrIngredienteIndiene; i++)
+		{
+			cout << "Introduceti denumirea : ";
+			in >> pi.denumireCondimenteIndiene[i];
+			cout << "Introduceti cantitatea: ";
+			in >> pi.cantitateIngredienteIndiene[i];
+		}
+
+		in >> (Preparat&)pi;
+
+		return in;
+	}
+
 };
 
 void main()
@@ -1030,4 +1112,90 @@ void main()
 		cout << "Gramaj ingredient: " << pi1.getCantitateCondimenteIndiene()[i] << endl;
 	}
 
+	cout << "-------obiectul pi1-------" << endl;
+
+	cout << "Numarul de ingrediente indiene este : " << pi1.getNumarIngredienteIndiene() << endl;
+	cout << "denumirea ingredientelor si pretul acestora : " << endl;
+	for (int i = 0; i < pi1.getNumarIngredienteIndiene(); i++)
+	{
+		cout << "Denumire ingredient: " << pi1.getDenumireCondimenteIndiene()[i] << endl;
+		cout << "Gramaj ingredient: " << pi1.getCantitateCondimenteIndiene()[i] << endl;
+	}
+	cout << "denumire preparat " << pi1.getDenumirePreparat() << endl;
+	cout << "Tip mancare: " << pi1.getTipMancare() << endl;
+	cout << "Pretul Preparatului: " << pi1.getPretPreparat() << endl;
+	cout << "Contine alergeni? " << pi1.getContineAlergeni() << endl;
+	cout << "Codul preparatului este: " << pi1.getCodPreparat() << endl;
+	cout << "Numele restaurantului este : " << pi1.getNumeRestaurant() << endl;
+	cout << "Numarul de ingrediente este : " << pi1.getNumarIngrediente() << endl;
+	cout << "Lista de ingrediente si pretul acestora: " << endl;
+	for (int i = 0; i < pi1.getNumarIngrediente(); i++)
+	{
+		cout << "Ingredient : " << pi1.getListaIngrediente()[i] << endl;
+		cout << "Pret Ingredient: " << pi1.getPretIngrediente()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+	preparatIndian p13 = pi1;
+
+	cout << "--------------Obiectul nou creat P13-----------" << endl;
+	cout << "Numarul de ingrediente indiene este : " << p13.getNumarIngredienteIndiene() << endl;
+	cout << "denumirea ingredientelor si pretul acestora : " << endl;
+	for (int i = 0; i < p13.getNumarIngredienteIndiene(); i++)
+	{
+		cout << "Denumire ingredient: " << p13.getDenumireCondimenteIndiene()[i] << endl;
+		cout << "Gramaj ingredient: " << p13.getCantitateCondimenteIndiene()[i] << endl;
+	}
+	cout << "denumire preparat " << p13.getDenumirePreparat() << endl;
+	cout << "Tip mancare: " << p13.getTipMancare() << endl;
+	cout << "Pretul Preparatului: " << p13.getPretPreparat() << endl;
+	cout << "Contine alergeni? " << p13.getContineAlergeni() << endl;
+	cout << "Codul preparatului este: " << p13.getCodPreparat() << endl;
+	cout << "Numele restaurantului este : " << p13.getNumeRestaurant() << endl;
+	cout << "Numarul de ingrediente este : " << p13.getNumarIngrediente() << endl;
+	cout << "Lista de ingrediente si pretul acestora: " << endl;
+	for (int i = 0; i < p13.getNumarIngrediente(); i++)
+	{
+		cout << "Ingredient : " << p13.getListaIngrediente()[i] << endl;
+		cout << "Pret Ingredient: " << p13.getPretIngrediente()[i] << endl;
+	}
+
+	cout << endl << endl;
+
+
+	p13 = p2;
+
+	cout << "Obiectul p13 dupa ce a fost copiat dupa obiectul p2" << endl;
+
+	cout << "Numarul de ingrediente indiene este : " << p13.getNumarIngredienteIndiene() << endl;
+	cout << "denumirea ingredientelor si pretul acestora : " << endl;
+	for (int i = 0; i < p13.getNumarIngredienteIndiene(); i++)
+	{
+		cout << "Denumire ingredient: " << p13.getDenumireCondimenteIndiene()[i] << endl;
+		cout << "Gramaj ingredient: " << p13.getCantitateCondimenteIndiene()[i] << endl;
+	}
+	cout << "denumire preparat " << p13.getDenumirePreparat() << endl;
+	cout << "Tip mancare: " << p13.getTipMancare() << endl;
+	cout << "Pretul Preparatului: " << p13.getPretPreparat() << endl;
+	cout << "Contine alergeni? " << p13.getContineAlergeni() << endl;
+	cout << "Codul preparatului este: " << p13.getCodPreparat() << endl;
+	cout << "Numele restaurantului este : " << p13.getNumeRestaurant() << endl;
+	cout << "Numarul de ingrediente este : " << p13.getNumarIngrediente() << endl;
+	cout << "Lista de ingrediente si pretul acestora: " << endl;
+	for (int i = 0; i < p13.getNumarIngrediente(); i++)
+	{
+		cout << "Ingredient : " << p13.getListaIngrediente()[i] << endl;
+		cout << "Pret Ingredient: " << p13.getPretIngrediente()[i] << endl;
+	}
+
+	cout << endl << endl;
+	cout << "------operatorul<< din clasa derivata----------" << endl;
+	cout << p13;
+
+	cout << "------operatorul>> din clasa derivata----------" << endl;
+	/*cin >> p13;*/
+
+	cout << "-----Obiectul p13 dupa ce a fost reintrodus de la tastatura-------" << endl;
+	cout << p13;
 }
