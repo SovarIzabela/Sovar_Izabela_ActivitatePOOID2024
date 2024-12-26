@@ -630,7 +630,7 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 
 	}
 
-	void afiseazaObiect()
+	virtual void afiseazaObiect()
 	{
 		cout << "Numele hotelului este : " << this->denumireHotel << endl;
 		cout << "Adresa Hotelului este: " << this->adresaHotel << endl;
@@ -917,6 +917,10 @@ for (int i = 0; i < copieObiect.numarServiciiDisponibile; i++)
 		}
 	}
 
+	virtual void afiseazamesaj()
+	{
+		cout << "Sunt in clasa Hotel" << endl;
+	}
 
 };
 
@@ -1086,6 +1090,37 @@ public:
 		return in;
 
 	}
+
+	 void afiseazamesaj()
+	{
+		cout << "Sunt in clasa Hotel cu All inclusive" << endl;
+	}
+
+	 void afiseazaObiect()
+	 {
+		 
+		 cout << "Numarul de mese incluse este" << this->numarMeseIncluse << endl;
+		 for (int i = 0; i < this->numarMeseIncluse; i++)
+		 {
+			 cout << "Numarul de mese incluse: " << this->listaMeseIncluse[i] << endl;
+		 }
+		 cout << "Numele hotelului este : " << this->denumireHotel << endl;
+		 cout << "Adresa Hotelului este: " << this->adresaHotel << endl;
+		 cout << "Numarul de angajati este : " << this->numarAngajati << endl;
+		 cout << " Numarul de camere este : " << this->numarCamere << endl;
+		 cout << "Hotelul are mic dejun inclus ? " << (this->areMicDejunInclus ? "DA" : "NU") << endl;
+		 cout << "Pretul unei camere pe zi este: " << this->pretCameraPeZi << endl;
+		 cout << "Anul deschiderii hotelului este : " << this->anDeschidereHotel << endl;
+		 cout << "Managerul hotelui este : " << this->numeManagerHotel << endl;
+		 cout << "Numarul servicii disponibile: " << this->numarServiciiDisponibile << endl;
+
+		 cout << "Servicii si preturi: " << endl;
+		 for (int i = 0; i < numarServiciiDisponibile; i++)
+		 {
+			 cout << "Preturile sunt: " << this->preturiServicii[i] << endl;
+			 cout << "Nume serviciu: " << this->numeServicii[i] << endl;
+		 }
+	 }
 
 
 
@@ -1575,6 +1610,27 @@ void main() {
 	cout << "----------Operator >>-------------" << endl;
 	/*cin >> hai4;*/
 	cout << hai4;
+
+
+	cout << " ----------------------EarlyBiding--------- " << endl;
+	cout << "-----------------------------Virtualizare-------" << endl;
+	h1.afiseazamesaj();
+	hai4.afiseazamesaj();
+	hai3.afiseazaObiect();
+
+	
+
+	cout << " ----------------------LateBiding-------- - " << endl;
+
+	Hotel* pointerHotel;
+	HotelCuAllInclusive* pointerHotelALL;
+
+	pointerHotelALL = new HotelCuAllInclusive(hai4);
+	cout << pointerHotelALL << endl;
+	cout << *pointerHotelALL << endl;
+
+	pointerHotel = pointerHotelALL;
+
+	pointerHotel->afiseazamesaj();
+	pointerHotelALL->afiseazamesaj();
 }
-
-
