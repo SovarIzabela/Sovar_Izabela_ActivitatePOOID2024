@@ -1021,6 +1021,138 @@ public:
 	}
 
 
+
+
+};
+
+class excursiiMontane
+{
+	string numeAgentie;
+	int nrTraseeMontane;
+	TraseuMontan** vectorPointerTraseu;
+public:
+	excursiiMontane()
+	{
+		this->numeAgentie = "anonim";
+		this->nrTraseeMontane = 0;
+		this->vectorPointerTraseu = nullptr;
+	}
+
+	excursiiMontane(string numeAgentie, int nrTraseeMontane, TraseuMontan** vectorPointerTraseu)
+	{
+		this->numeAgentie = numeAgentie;
+		this->nrTraseeMontane = nrTraseeMontane;
+		this->vectorPointerTraseu = new TraseuMontan*[this->nrTraseeMontane];
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*vectorPointerTraseu[i]); 
+		}
+	}
+
+	~excursiiMontane()
+	{
+
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+		
+		delete[] this->vectorPointerTraseu;
+		
+	}
+
+	string getnumeAgentie()
+	{
+		return this->numeAgentie;
+	}
+	int getnrTraseeMontane()
+	{
+		return this->nrTraseeMontane;
+	}
+
+	TraseuMontan** getvectorPointerTraseu()
+	{
+		return this->vectorPointerTraseu;
+	}
+
+
+	void setNumeAgentie(string NumeNouAgentie)
+	{
+		this->numeAgentie = NumeNouAgentie;
+	}
+
+	void setPointeriTraseeMontane(int nrTraseeMontaneNou, TraseuMontan** vectorPointerTraseuNou)
+	{
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+
+		delete[] this->vectorPointerTraseu;
+
+		this->nrTraseeMontane = nrTraseeMontaneNou;
+		this->vectorPointerTraseu = new TraseuMontan*[this->nrTraseeMontane];
+
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*vectorPointerTraseuNou[i]);
+		}
+	}
+
+	excursiiMontane(const excursiiMontane& obj)
+	{
+		this->numeAgentie = obj.numeAgentie;
+		this->nrTraseeMontane = obj.nrTraseeMontane;
+		this->vectorPointerTraseu = new TraseuMontan * [this->nrTraseeMontane];
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*obj.vectorPointerTraseu[i]);
+		}
+	}
+	
+
+	excursiiMontane& operator=(excursiiMontane& obj)
+	{
+		if(this!=&obj)
+		{
+			for (int i = 0; i < this->nrTraseeMontane; i++)
+			{
+				delete this->vectorPointerTraseu[i];
+			}
+
+			delete[] this->vectorPointerTraseu;
+
+			this->numeAgentie = obj.numeAgentie;
+			this->nrTraseeMontane = obj.nrTraseeMontane;
+			this->vectorPointerTraseu = new TraseuMontan * [this->nrTraseeMontane];
+			for (int i = 0; i < this->nrTraseeMontane; i++)
+			{
+				this->vectorPointerTraseu[i] = new TraseuMontan(*obj.vectorPointerTraseu[i]);
+			}
+		}
+
+		return *this;
+	}
+
+	void adaugaElementNou(TraseuMontan* traseuNou)
+	{
+		excursiiMontane copie = *this;
+		for (int i = 0; i < this->nrTraseeMontane; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+
+		delete[] this->vectorPointerTraseu;
+
+		this->nrTraseeMontane++;
+		this->vectorPointerTraseu = new TraseuMontan*[this->nrTraseeMontane];
+		for (int i = 0; i < copie.nrTraseeMontane; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*copie.vectorPointerTraseu[i]);
+		}
+		this->vectorPointerTraseu[this->nrTraseeMontane - 1] = new TraseuMontan(*traseuNou);
+	}
+
 };
 	
 
@@ -1103,7 +1235,7 @@ void main()
 
 	TraseuMontan tm10(tm6);
 
-	cout << ".....................Valoare obiect copiat tm10 dupa tm6............................." << endl<<endl;
+	cout << ".....................Valoare obiect copiat tm10 dupa tm6............................." << endl << endl;
 
 	tm10.afiseaza();
 
@@ -1124,7 +1256,7 @@ void main()
 
 	cout << "Exista altitudini mai mari de 2000 m pe traseul tm5 (1-DA ; 0-NU): " << tm5.verificareAltitudine(2000) << endl << endl;
 	cout << "Exista altitudini mai mari de 2500 m pe traseul tm5 (1-DA ; 0-NU): " << tm5.verificareAltitudine(2500) << endl << endl;
-	
+
 	cout << ".......................Obiectul tm5 inainte de modificare ultimei echipe......................................." << endl << endl;
 	tm5.afiseaza();
 	tm5.inlocuiesteUltimaEchipaSalvare("SALVAMONT NEAMT");
@@ -1148,7 +1280,7 @@ void main()
 
 	cout << "Lungimea traseului pentru obiectul tm1: " << tm1.getLungimeKmTraseu() << endl << endl;
 	cout << "Lungimea traseului pentru obiectul tm5 : " << tm5.getLungimeKmTraseu() << endl << endl;
-	cout << "Lungimea traseului pentru Obiectul tm1 <= decat lungimea traseului m5 ? " << ((tm1 <= tm5) ? "DA" : "NU" )<< endl << endl;
+	cout << "Lungimea traseului pentru Obiectul tm1 <= decat lungimea traseului m5 ? " << ((tm1 <= tm5) ? "DA" : "NU") << endl << endl;
 
 
 	cout << ".......................Obiectul tm10 ......................................................" << endl << endl;
@@ -1156,12 +1288,12 @@ void main()
 	cout << ".......................Obiectul tm5 ......................................................." << endl << endl;
 	tm1.afiseaza();
 	cout << "Tm1 si tm10 sunt egale ? " << ((tm10 == tm1) ? "DA" : "NU") << endl << endl;
-	cout << "...................................operatorul <<........................................................."<<endl<<endl;
+	cout << "...................................operatorul <<........................................................." << endl << endl;
 	cout << "Obiectul tm10" << endl << tm10 << endl << endl;
 	cout << "...................................operatorul >>........................................................." << endl << endl;
 	cout << "obiectul tm5 inainte sa fie citit de la tastatura........." << endl;
 	/*cin >> tm5*/;
-	cout << "obiectul tm5 dupa ce a fost citit de la tastatura........." <<endl<<tm5<< endl;
+	cout << "obiectul tm5 dupa ce a fost citit de la tastatura........." << endl << tm5 << endl;
 
 	cout << "Operator []" << endl << endl;
 
@@ -1182,7 +1314,7 @@ void main()
 	cout << "-------------------------------------Fisiere Text-----------------------------" << endl << endl;
 
 	cout << endl << endl;
-	
+
 	ofstream f1("FisierTXT", ios::out);
 	f1 << tm2;
 	f1.close();
@@ -1204,7 +1336,7 @@ void main()
 
 	tm3.citireBinar(f4);
 	f4.close();
-	cout << "tm3 dupa " << tm3 << endl<<endl;
+	cout << "tm3 dupa " << tm3 << endl << endl;
 
 	cout << "-------------------------Traseu montan cultural----------------------" << endl << endl;
 
@@ -1269,7 +1401,7 @@ void main()
 	}
 
 	cout << endl << endl;
-	
+
 	string puncteCulturale[] = { "castel peles", "castel pelisor" };
 	tmc1.setDenumirePuncteCulturale(2, puncteCulturale);
 	tmc1.setDenumireTraseu("Bucegi");
@@ -1536,17 +1668,134 @@ void main()
 	}
 
 	cout << endl << endl;
-	
+
 	cout << "Traseul este periculos? " << tmc4(1200) << endl;
-	cout << "Traseul tmc4 este complet egal cu tmc1? " << ((tmc4 == tmc1) ) << endl << endl;
+	cout << "Traseul tmc4 este complet egal cu tmc1? " << ((tmc4 == tmc1)) << endl << endl;
 
 	cout << "------Obiectul tmc1-------" << endl;
 	cout << tmc1;
 
-	cin >> tmc1;
+	/*cin >> tmc1;*/
 
 	cout << "------Obiectul tmc1 dupa ce a fost intreodus de la tastatura-------" << endl;
 	cout << tmc1;
+	cout << "---------------Relatia HAS-A(Vector de pointeri la obiecte)--------------- " << endl << endl;
+	/*string numeAgentie;
+	int nrTraseeMontane;
+	TraseuMontan** vectorPointerTraseu;*/
+	excursiiMontane e1;
+	cout << "-----------------Obiectul e1-----------------" << endl << endl;
+	cout << "Nume Agentie: " << e1.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e1.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e1.getnrTraseeMontane(); i++)
+	{
+		cout << *e1.getvectorPointerTraseu()[i] << endl << endl;
+	}
+
+	cout << endl << endl;
+	TraseuMontan** vector1;
+	vector1 = new TraseuMontan * [2];
+	vector1[0] = new TraseuMontan(tm1);
+	vector1[1] = new TraseuMontan(tm10);
+	excursiiMontane e2("ExcursiiMontaneDe1ZI", 2, vector1);
+
+	cout << "-----------------Obiectul e2-----------------" << endl << endl;
+	cout << "Nume Agentie: " << e2.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e2.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e2.getnrTraseeMontane(); i++)
+	{
+		cout << *e2.getvectorPointerTraseu()[i] << endl << endl;
+	}
+
+	e1.setNumeAgentie("ExcursiiMontane");
+
+	TraseuMontan** vector2;
+	vector2 = new TraseuMontan * [3];
+	vector2[0] = new TraseuMontan(tm3);
+	vector2[1] = new TraseuMontan(tm5);
+	vector2[2] = new TraseuMontan(tm1);
+	e1.setPointeriTraseeMontane(3, vector2);
+
+
+	cout << "-----------------Obiectul e1 dupa modificare-----------------" << endl << endl;
+	cout << "Nume Agentie: " << e1.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e1.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e1.getnrTraseeMontane(); i++)
+	{
+		cout << *e1.getvectorPointerTraseu()[i] << endl << endl;
+	}
+	cout << "-----------------Obiectul macheta e1 -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e1.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e1.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e1.getnrTraseeMontane(); i++)
+	{
+		cout << *e1.getvectorPointerTraseu()[i] << endl << endl;
+	}
+	excursiiMontane e3 = e1;
+
+	cout << "-----------------Obiectul nou creat e3 -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e3.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e3.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e3.getnrTraseeMontane(); i++)
+	{
+		cout << *e3.getvectorPointerTraseu()[i] << endl << endl;
+	}
+	cout << "-----------------Obiectul e2 inainte de modificare -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e2.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e2.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e2.getnrTraseeMontane(); i++)
+	{
+		cout << *e2.getvectorPointerTraseu()[i] << endl << endl;
+
+	}
+	cout << "-----------------Obiectul macheta e3 -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e3.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e3.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e3.getnrTraseeMontane(); i++)
+	{
+		cout << *e3.getvectorPointerTraseu()[i] << endl << endl;
+		
+
+	}
+
+	e2 = e3;
+
+	cout << "-----------------Obiectul e2 dupa modificare -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e2.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e2.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e2.getnrTraseeMontane(); i++)
+	{
+		cout << *e2.getvectorPointerTraseu()[i] << endl << endl;
+
+	}
+
+	cout << "-----------------Obiectul e2 inainte de a adauga un nou element-----------------" << endl << endl;
+	cout << "Nume Agentie: " << e2.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e2.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e2.getnrTraseeMontane(); i++)
+	{
+		cout << *e2.getvectorPointerTraseu()[i] << endl << endl;
+
+	}
+	e2.adaugaElementNou(&tm3);
+
+	cout << "-----------------Obiectul e2 dupa modificare -----------------" << endl << endl;
+	cout << "Nume Agentie: " << e2.getnumeAgentie() << endl;
+	cout << "Numarul de trasee Montane este: " << e2.getnrTraseeMontane() << endl;
+	cout << "Traseele Montane sunt " << endl;
+	for (int i = 0; i < e2.getnrTraseeMontane(); i++)
+	{
+		cout << *e2.getvectorPointerTraseu()[i] << endl << endl;
+
+	}
 
 }
-
