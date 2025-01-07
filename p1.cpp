@@ -323,7 +323,7 @@ public:
 		{
 			delete[] this->numeServicii;
 		}
-		cout << "AICI S-A APELAT DESTRUCTORUL" << endl;
+		
 	}
 
 	
@@ -1127,6 +1127,199 @@ public:
 
 };
 
+//has-a de tipul one-to-many (vector de obiecte)
+
+class agentieTurism
+{
+private:
+	string numeAgentie;
+	int nrHotel;
+	Hotel* vectorHotel;
+public:
+	agentieTurism()
+	{
+		this->numeAgentie = "necunoscut";
+		this->nrHotel = 0;
+		this->vectorHotel = nullptr;
+
+	}
+
+	agentieTurism(string numeAgentie, int nrHotel, Hotel* vectorHotel)
+	{
+		this->numeAgentie = numeAgentie;
+		this->nrHotel = nrHotel;
+		this->vectorHotel = new Hotel[this->nrHotel];
+		for (int i = 0; i < this->nrHotel; i++)
+		{
+			this->vectorHotel[i] = vectorHotel[i];
+		}
+
+	}
+
+	string getNumeAgentie()
+	{
+		return this->numeAgentie;
+	}
+
+	int getNrHotel()
+	{
+		return this->nrHotel;
+	}
+
+	Hotel* getvectorHotel()
+	{
+		return this->vectorHotel;
+	}
+
+	void setNumeAgentie(string NumeNouAgentie)
+	{
+		this->numeAgentie = NumeNouAgentie;
+	}
+
+	void setHoteluri(int nrHotelNou, Hotel* vectorHotelNou)
+	{
+		if (this->vectorHotel != NULL)
+		{
+			delete[] this->vectorHotel;
+		}
+
+		this->nrHotel = nrHotelNou;
+
+		this->vectorHotel = new Hotel[this->nrHotel];
+		for (int i = 0; i < this->nrHotel; i++)
+		{
+			this->vectorHotel[i] = vectorHotelNou[i];
+		}
+
+	}
+
+	agentieTurism(const agentieTurism& a)
+	{
+		this->numeAgentie = a.numeAgentie;
+		this->nrHotel = a.nrHotel;
+		this->vectorHotel = new Hotel[this->nrHotel];
+		for (int i = 0; i < this->nrHotel; i++)
+		{
+			this->vectorHotel[i] = a.vectorHotel[i];
+		}
+
+	}
+
+	agentieTurism& operator=(const agentieTurism& a)
+	{
+		if (this != &a)
+		{
+			if (this->vectorHotel != NULL)
+			{
+				delete[] this->vectorHotel;
+			}
+
+			this->numeAgentie = a.numeAgentie;
+			this->nrHotel = a.nrHotel;
+			this->vectorHotel = new Hotel[this->nrHotel];
+			for (int i = 0; i < this->nrHotel; i++)
+			{
+				this->vectorHotel[i] = a.vectorHotel[i];
+			}
+		}
+
+		return *this;
+	}
+
+	~agentieTurism()
+	{
+		if (this->vectorHotel != NULL)
+		{
+			delete[] this->vectorHotel;
+		}
+	}
+
+
+	void adaugaHotelInAgentie(Hotel HotelNou)
+	{
+		agentieTurism copie= *this;
+
+
+
+		if (this->vectorHotel != NULL)
+		{
+			delete[] this->vectorHotel;
+		}
+
+		this->nrHotel++;
+
+		this->vectorHotel = new Hotel[this->nrHotel];
+
+		for (int i = 0; i < copie.nrHotel; i++)
+		{
+			this->vectorHotel[i] = copie.vectorHotel[i];
+		}
+
+		this->vectorHotel[this->nrHotel - 1] = HotelNou;
+	}
+
+	friend ostream&operator<<(ostream& out,const agentieTurism& a)
+	{
+		out << "Nume: " << a.numeAgentie << endl;
+		out << "Numar Hotel: " << a.nrHotel;
+		out << "hoteluri" << endl << endl;
+		for (int i = 0; i < a.nrHotel; i++)
+		{
+			cout << a.vectorHotel[i] << endl << endl;
+		}
+
+		return out;
+
+	}
+
+	friend istream& operator>>(istream& in, agentieTurism& a)
+	{
+		cout << "introduceti numele agentiei: " << endl;
+		in >> a.numeAgentie;
+
+		if (a.vectorHotel != NULL)
+		{
+			delete[] a.vectorHotel;
+		}
+		cout << "introduceti numaru de hoteluri: " << endl;
+		in >> a.nrHotel;
+		a.vectorHotel = new Hotel[a.nrHotel];
+		cout << " Introduceti hotelurile : " << endl;
+		
+		for (int i = 0; i < a.nrHotel; i++)
+		{
+			in >> a.vectorHotel[i];
+		}
+
+		return in;
+	}
+
+	agentieTurism& operator-=(int pozitieDeEliminat)
+	{
+		agentieTurism copie = *this;
+		if (this->vectorHotel != NULL)
+		{
+			delete[] this->vectorHotel;
+		}
+
+		this->nrHotel--;
+
+		this->vectorHotel = new Hotel[this->nrHotel];
+
+		for (int i = 0; i < pozitieDeEliminat; i++)
+		{
+			this->vectorHotel[i] = copie.vectorHotel[i];
+		}
+		for (int i = pozitieDeEliminat+1; i < copie.nrHotel; i++)
+		{
+			this->vectorHotel[i-1] = copie.vectorHotel[i];
+		}
+
+		return *this;
+	}
+
+};
+
 void main() {
 
 	float preturi1[] = { 100.20, 50.6 };
@@ -1633,4 +1826,142 @@ void main() {
 
 	pointerHotel->afiseazamesaj();
 	pointerHotelALL->afiseazamesaj();
+
+	cout << "-----------------Relatie HAS-A one-to-many cu vector de obiecte-----------" << endl;
+
+	agentieTurism a1;
+
+	cout << "Nume agentie" << a1.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a1.getNrHotel() << endl;
+	cout << "Hoteluri:" ;
+
+	for (int i = 0; i < a1.getNrHotel(); i++)
+	{
+		cout << a1.getvectorHotel()[i] << endl << endl;
+	}
+
+	cout << endl << endl;
+
+	Hotel vectorHoteluri1[] = { h1, h5 };
+
+	agentieTurism a2("DirectBooking", 2, vectorHoteluri1);
+
+	cout << "Nume agentie" << a2.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a2.getNrHotel() << endl;
+	cout << "Hoteluri: ";
+
+	for (int i = 0; i < a2.getNrHotel(); i++)
+	{
+		cout << a2.getvectorHotel()[i] << endl << endl;
+	}
+
+	cout << endl << endl;
+
+	a1.setNumeAgentie("ChristianTour");
+
+	Hotel vectorHoteluri2[] = { h7, h10 };
+	a1.setHoteluri(2, vectorHoteluri2);
+
+	cout << "Nume agentie" << a1.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a1.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a1.getNrHotel(); i++)
+	{
+		cout << a1.getvectorHotel()[i] << endl << endl;
+	}
+
+	agentieTurism a3(a2);
+
+	cout << "-----Obiectul a2-------" << endl;
+	cout << "Nume agentie" << a2.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a2.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a2.getNrHotel(); i++)
+	{
+		cout << a2.getvectorHotel()[i] << endl << endl;
+	}
+	cout << endl;
+	cout << "-----Obiectul nou creat a3-------" << endl;
+	cout << "Nume agentie" << a3.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a3.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a3.getNrHotel(); i++)
+	{
+		cout << a3.getvectorHotel()[i] << endl << endl;
+	}
+	cout << endl;
+
+	cout << "Obiectul a1 inainte de a fi modificat " << endl;
+	cout << "Nume agentie" << a1.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a1.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a1.getNrHotel(); i++)
+	{
+		cout << a1.getvectorHotel()[i] << endl << endl;
+	}
+	a1 = a2;
+
+	cout << "Obiectul macheta a2 " << endl;
+	cout << "Nume agentie" << a2.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a2.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a2.getNrHotel(); i++)
+	{
+		cout << a2.getvectorHotel()[i] << endl << endl;
+	}
+	cout << "Obiectul a1 inainte de a fi modificat " << endl;
+	cout << "Nume agentie" << a1.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a1.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a1.getNrHotel(); i++)
+	{
+		cout << a1.getvectorHotel()[i] << endl << endl;
+	}
+
+	a1.adaugaHotelInAgentie(h8);
+
+	cout << "Obiectul a1 dupa ce a fost  modificat " << endl;
+	cout << "Nume agentie" << a1.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a1.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a1.getNrHotel(); i++)
+	{
+		cout << a1.getvectorHotel()[i] << endl << endl;
+	}
+
+	cout << "-------Operatori << si >> ------------------" << endl;
+
+	cout << "------Obiectul a3------" << endl<<a3 << endl;
+
+	//cin >> a1;
+
+	cout << "Obiectul a1 dupa ce a fost introdus de la tastatura" << a1<<endl;
+	cout << "----------------Obiectul  a3-------------------" << endl;
+	cout << "Nume agentie" << a3.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a3.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a3.getNrHotel(); i++)
+	{
+		cout << a3.getvectorHotel()[i] << endl << endl;
+	}
+	cout << endl;
+	a3 -= 0;
+	cout << "-----Obiectul a3 dupa ce am eliminat o pozitie-------" << endl;
+	cout << "Nume agentie" << a3.getNumeAgentie() << endl;
+	cout << "Numer de Hoteluri" << a3.getNrHotel() << endl;
+	cout << "Hoteluri:";
+
+	for (int i = 0; i < a3.getNrHotel(); i++)
+	{
+		cout << a3.getvectorHotel()[i] << endl << endl;
+	}
+	cout << endl;
 }
