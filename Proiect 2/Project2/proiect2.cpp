@@ -1154,6 +1154,127 @@ public:
 	}
 
 };
+
+class AgentieTurism
+{
+	string numeAgentie;
+	int nrTrasee;
+	TraseuMontan** vectorPointerTraseu;
+
+public:
+	AgentieTurism()
+	{
+		this->numeAgentie = "Necunoscut";
+		this->nrTrasee = 0;
+		this->vectorPointerTraseu = NULL;
+	}
+
+	AgentieTurism(string numeAgentie,int nrTrasee,TraseuMontan** vectorPointerTraseu)
+	{
+		this->numeAgentie = numeAgentie;
+		this->nrTrasee = nrTrasee;
+		this->vectorPointerTraseu = new TraseuMontan * [this->nrTrasee];
+		for (int i = 0; i < this->nrTrasee; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*vectorPointerTraseu[i]);
+		}
+
+	}
+
+	~AgentieTurism()
+	{
+		for (int i = 0; i < this->nrTrasee; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+
+		delete[]this->vectorPointerTraseu;
+	}
+
+	/*string numeAgentie;
+	int nrTrasee;
+	TraseuMontan** vectorPointerTraseu;*/
+
+	string getNumeAgentie()
+	{
+		return this->numeAgentie;
+	}
+
+	int getNrtrasee()
+	{
+		return this->nrTrasee;
+	}
+
+	TraseuMontan** getvectorPointerTraseu()
+	{
+		return this->vectorPointerTraseu;
+	}
+
+	void setNumeAgentie(string numeNouAgentie)
+	{
+		this->numeAgentie = numeNouAgentie;
+	}
+
+	void setPointerTraseu(int nrNouTrasee, TraseuMontan** vectorNouPointerTraseu)
+	{
+		for (int i = 0; i < this->nrTrasee; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+
+		delete[] this->vectorPointerTraseu;
+
+		this->nrTrasee = nrNouTrasee;
+
+		this->vectorPointerTraseu = new TraseuMontan * [this->nrTrasee];
+		for (int i = 0; i < nrTrasee; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*vectorNouPointerTraseu[i]);
+		}
+
+
+
+	}
+
+	AgentieTurism(const AgentieTurism& a)
+	{
+		this->numeAgentie = a.numeAgentie;
+		this->nrTrasee = a.nrTrasee;
+		this->vectorPointerTraseu = new TraseuMontan * [this->nrTrasee];
+		for (int i = 0; i < this->nrTrasee; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*a.vectorPointerTraseu[i]);
+		}
+
+	}
+
+	AgentieTurism& operator=(const AgentieTurism& a)
+	{
+		if (this != &a)
+		{
+			for (int i = 0; i < this->nrTrasee; i++)
+			{
+				delete this->vectorPointerTraseu[i];
+			}
+
+			delete[] this->vectorPointerTraseu;
+
+			this->numeAgentie = a.numeAgentie;
+			this->nrTrasee = a.nrTrasee;
+			this->vectorPointerTraseu = new TraseuMontan * [this->nrTrasee];
+			for (int i = 0; i < this->nrTrasee; i++)
+			{
+				this->vectorPointerTraseu[i] = new TraseuMontan(*a.vectorPointerTraseu[i]);
+			}
+
+		}
+
+		return *this;
+
+	}
+
+
+};
 	
 
 void main()
@@ -1798,4 +1919,97 @@ void main()
 
 	}
 
+	cout << "------Relatia has-a (vector de pointeri la obiecte clasa AGENTIE--------" << endl;
+
+	AgentieTurism a1;
+	cout << "Obiectul a1" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+	TraseuMontan** vectorTrasee1;
+	vectorTrasee1 = new TraseuMontan * [2];
+	vectorTrasee1[0] = new TraseuMontan(tm1);
+	vectorTrasee1[1] = new TraseuMontan(tm2);
+	AgentieTurism a2 = {"DirectBooking", 2, vectorTrasee1};
+
+	cout << "Obiectul a2" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a2.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a2.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a2.getNrtrasee(); i++)
+	{
+		cout << *a2.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+	a1.setNumeAgentie("HelloHoliday");
+	TraseuMontan** vectorTraseu2;
+	vectorTraseu2 = new TraseuMontan * [2];
+	vectorTraseu2[0] = new TraseuMontan( tm10 );
+	vectorTraseu2[1] = new TraseuMontan(tm6);
+	a1.setPointerTraseu(2, vectorTraseu2);
+	cout << "-----Obiectul a1 dupa ce a fost modificat----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+
+	AgentieTurism a3 = a2;
+	cout << "-----Obiectul a3 dupa ce a fost copiat dupa a2----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a3.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a3.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a3.getNrtrasee(); i++)
+	{
+		cout << *a3.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+	cout << "Operatorul = " << endl;
+	cout << "-----Obiectul mcheta a3 ----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a3.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a3.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a3.getNrtrasee(); i++)
+	{
+		cout << *a3.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+	cout << "-----Obiectul a1 inainte de modificare----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+	a1 = a3;
+
+	cout << "-----Obiectul a1 dupa ce a fost copiat----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
 }
