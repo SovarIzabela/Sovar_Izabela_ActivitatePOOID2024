@@ -910,6 +910,195 @@ public:
 
 };
 
+class Restaurant
+{
+
+	string numeRestaurant;
+	int nrPreparat;
+	Preparat* vectorPreparat;
+public:
+	Restaurant()
+	{
+		this->numeRestaurant = "Necunoscut";
+		this->nrPreparat = 0;
+		this->vectorPreparat = NULL;
+	}
+
+	Restaurant(string numeRestaurant, int nrPreparat, Preparat* vectorPreparat)
+	{
+		this->numeRestaurant = numeRestaurant;
+		this->nrPreparat = nrPreparat;
+		this->vectorPreparat = new Preparat[this->nrPreparat];
+		for (int i = 0; i < this->nrPreparat; i++)
+		{
+			this->vectorPreparat[i] = vectorPreparat[i];
+		}
+	}
+
+	~Restaurant()
+	{
+		if (this->vectorPreparat != NULL)
+		{
+			delete[]this->vectorPreparat;
+		}
+	}
+
+	/*string numeRestaurant;
+	int nrPreparat;
+	Preparat* vectorPreparat;*/
+
+	string getnumeRestaurant()
+	{
+		return this->numeRestaurant;
+	}
+
+	int getNrPreparat()
+	{
+		return this->nrPreparat;
+	}
+	Preparat* getVectorPreparat()
+	{
+		return this->vectorPreparat;
+	}
+
+	void setNumeRestaurant(string numeRestaurantNou)
+	{
+		this->numeRestaurant = numeRestaurantNou;
+
+	}
+
+	void setPreparate(int nrPreparatNou, Preparat*vectorPreparatNou)
+	{
+		if (this->vectorPreparat != NULL)
+		{
+			delete[]this->vectorPreparat;
+		}
+
+		this->nrPreparat = nrPreparatNou;
+		this->vectorPreparat = new Preparat[this->nrPreparat];
+		for (int i = 0; i < this->nrPreparat; i++)
+		{
+			vectorPreparat[i] = vectorPreparatNou[i];
+		}
+
+
+
+	}
+
+	Restaurant(const Restaurant& obiectMacheta)
+	{
+		this->numeRestaurant = obiectMacheta.numeRestaurant;
+		this->nrPreparat = obiectMacheta.nrPreparat;
+		this->vectorPreparat = new Preparat[this->nrPreparat];
+		for (int i = 0; i < this->nrPreparat; i++)
+		{
+			this->vectorPreparat[i] = obiectMacheta.vectorPreparat[i];
+		}
+	}
+
+	Restaurant& operator=(const Restaurant& obiectMacheta)
+	{
+		if(this!=&obiectMacheta)
+		{
+			if (this->vectorPreparat != NULL)
+			{
+				delete[]this->vectorPreparat;
+			}
+			this->numeRestaurant = obiectMacheta.numeRestaurant;
+			this->nrPreparat = obiectMacheta.nrPreparat;
+			this->vectorPreparat = new Preparat[this->nrPreparat];
+			for (int i = 0; i < this->nrPreparat; i++)
+			{
+				this->vectorPreparat[i] = obiectMacheta.vectorPreparat[i];
+			}
+		}
+		return*this;
+
+	}
+
+
+	void adaugaElementInVector(Preparat preparatAdaugat)
+	{
+		Restaurant copie = *this;
+
+		if (this->vectorPreparat != NULL)
+		{
+			delete[]this->vectorPreparat;
+		}
+
+		this->nrPreparat++;
+
+		this->vectorPreparat = new Preparat[this->nrPreparat];
+
+		for (int i = 0; i < copie.nrPreparat; i++)
+		{
+			this->vectorPreparat[i] = copie.vectorPreparat[i];
+		}
+
+		this->vectorPreparat[this->nrPreparat-1] = preparatAdaugat;
+
+	}
+
+	friend ostream& operator<<(ostream& out, Restaurant& r)
+	{
+		cout << "Introduceti numele restaurantului : " << r.numeRestaurant << endl;
+		cout << "Introduceti numarul de Preparate : " << r.nrPreparat << endl;
+		cout << "Preparatele sunt : ";
+		for (int i = 0; i < r.nrPreparat; i++)
+		{
+			cout << r.vectorPreparat[i] << endl;
+		}
+		return out;
+
+	}
+
+	friend istream& operator>>(istream& in, Restaurant& r)
+	{
+		cout << "Introdiceti numele restarurantului: ";
+		in >> r.numeRestaurant;
+		cout << "Introduceti numarul de Preparate : ";
+		in >> r.nrPreparat;
+		cout << "Introduceti preparatele : ";
+		r.vectorPreparat = new Preparat[r.nrPreparat];
+		for (int i = 0; i < r.nrPreparat; i++)
+		{
+			in >> r.vectorPreparat[i];
+		}
+
+		return in;
+
+	}
+
+	Restaurant& operator-=(int pozitieDeEliminat)
+	{
+		Restaurant copie = *this;
+		if (this->vectorPreparat != NULL)
+		{
+			delete[]this->vectorPreparat;
+		}
+
+		this->nrPreparat--;
+
+		this->vectorPreparat = new Preparat[this->nrPreparat];
+
+		for (int i = 0; i < pozitieDeEliminat; i++)
+		{
+			this->vectorPreparat[i] = copie.vectorPreparat[i];
+		}
+		for (int i = pozitieDeEliminat + 1; i < copie.nrPreparat; i++)
+		{
+			this->vectorPreparat[i - 1] = copie.vectorPreparat[i];
+		}
+
+		return *this;
+
+
+	}
+
+
+
+};
+
 void main()
 {
 	string listaingrediente1[] = { "oua", "ulei", "sare" };
@@ -918,7 +1107,7 @@ void main()
 
 
 	string listaingrediente2[] = { "rosii", "castraveti", "pui", "branza", "ceapa", "dressing" };
-	float pretIngredient2[] = { 1.0, 1.0, 5.10, 2.0, 0.5, 2 };
+	float pretIngredient2[] = { 1.0, 1.0, 5.10, 2.0, 0.5, 2.0 };
 	Preparat m2("salata Cesar", 'A', 35, 1, 124, "Mahala", 6, listaingrediente2, pretIngredient2);
 	cout << "denumire preparat " << m2.getDenumirePreparat() << endl;
 	cout << "Tip mancare: " << m2.getTipMancare() << endl;
@@ -1198,4 +1387,112 @@ void main()
 
 	cout << "-----Obiectul p13 dupa ce a fost reintrodus de la tastatura-------" << endl;
 	cout << p13;
+
+	cout << "--------Clasa Restaurant - relatia HAS-A-----------------" << endl << endl;
+
+	Restaurant r1;
+	cout << "Numele Restaurantului este : " << r1.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r1.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r1.getNrPreparat(); i++)
+	{
+		cout << r1.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+
+	Preparat preparate1[] = { m3,m4 };
+	Restaurant r2 = { "Happy", 2, preparate1 };
+	cout << "Numele Restaurantului este : " << r2.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r2.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r2.getNrPreparat(); i++)
+	{
+		cout << r2.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	r1.setNumeRestaurant("Duman");
+
+	Preparat preparate2[] = { m1,m2 };
+	r1.setPreparate(2, preparate2);
+
+	cout << "Numele Restaurantului este : " << r1.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r1.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r1.getNrPreparat(); i++)
+	{
+		cout << r1.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	cout << "-----------Obiectul macheta R2--------" << endl;
+	cout << "Numele Restaurantului este : " << r2.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r2.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r2.getNrPreparat(); i++)
+	{
+		cout << r2.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	Restaurant r3(r2);
+	cout << "-----Obiectul r3 dupa ce a fost copiat dupa r2-----" << endl;
+	cout << "Numele Restaurantului este : " << r3.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r3.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r3.getNrPreparat(); i++)
+	{
+		cout << r3.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	Restaurant r4;
+
+	r4 = r3;
+
+	cout << "-----Obiectul r4 dupa ce a fost copiat dupa r3-----" << endl;
+	cout << "Numele Restaurantului este : " << r4.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r4.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r4.getNrPreparat(); i++)
+	{
+		cout << r4.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	r4.adaugaElementInVector(m3);
+
+	cout << "-----Obiectul r4 dupa ce a fost adaugat un element-----" << endl;
+	cout << "Numele Restaurantului este : " << r4.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r4.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r4.getNrPreparat(); i++)
+	{
+		cout << r4.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
+
+	cout << "------------Operator <<-------------------" << endl;
+
+	cout << r4;
+
+	Restaurant r5;
+
+	cout << "------------Operator >>-------------------" << endl;
+
+	/*cin >> r5;*/
+
+	cout << "--------------Obiectul r5 dupa ce a fost introdus de la tastaura-------------------" << r5<<endl;
+	cout << "--------Operator -=-------------" << endl;
+	r4 -= (1);
+	cout << "-----Obiectul r4 dupa ce a fost eliminat un element-----" << endl;
+	cout << "Numele Restaurantului este : " << r4.getnumeRestaurant() << endl;
+	cout << "Numarul de Preparate este : " << r4.getNrPreparat() << endl;
+	cout << "Preparate: " << endl;
+	for (int i = 0; i < r4.getNrPreparat(); i++)
+	{
+		cout << r4.getVectorPreparat()[i];
+	}
+	cout << endl << endl << endl;
 }
