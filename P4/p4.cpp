@@ -823,6 +823,214 @@ public:
 	 }
  };
 
+ class cafenea
+ {
+	 string denumirecafenea;
+	 int nrPrepaartCafea;
+	 preparatCafea** vectorPointer;
+ public:
+	 cafenea()
+	 {
+		 this->denumirecafenea = "necunoscut";
+		 this->nrPrepaartCafea = 0;
+		 this->vectorPointer = NULL;
+	 }
+
+	 cafenea(string denumirecafenea, int nrPrepaartCafea, preparatCafea** vectorPointer)
+	 {
+		 this->denumirecafenea = denumirecafenea;
+		 this->nrPrepaartCafea = nrPrepaartCafea;
+		 this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 this->vectorPointer[i] = new preparatCafea(*vectorPointer[i]);
+		 }
+
+	 }
+
+	 string getDenumireCafenea()
+	 {
+		 return this->denumirecafenea;
+	 }
+	 int getnrPrepaartCafea()
+	 {
+		 return this->nrPrepaartCafea;
+	 }
+
+	 preparatCafea** getvectorPointer()
+	 {
+		 return this->vectorPointer;
+	 }
+
+	 void setdenumirecafenea(string denumireCafeneaNoua)
+	 {
+		 this->denumirecafenea = denumireCafeneaNoua;
+	 }
+
+	 void setVectorCafea(int nrPrepaartCafeaNou, preparatCafea** vectorPointerNou)
+	 {
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 delete this->vectorPointer[i];
+		 }
+
+		 delete[]this->vectorPointer;
+
+		 this->nrPrepaartCafea = nrPrepaartCafeaNou;
+
+		 this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 this->vectorPointer[i] = new preparatCafea(*vectorPointerNou[i]);
+		 }
+
+
+	 }
+
+	 cafenea(const cafenea& c)
+	 {
+		 this->denumirecafenea = c.denumirecafenea;
+		 this->nrPrepaartCafea = c.nrPrepaartCafea;
+		 this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 this->vectorPointer[i] = new preparatCafea(*c.vectorPointer[i]);
+		 }
+	 }
+
+
+	 cafenea&operator = (const cafenea&c)
+	 {
+		 if(this!=&c)
+		 {
+			 for (int i = 0; i < this->nrPrepaartCafea; i++)
+			 {
+				 delete this->vectorPointer[i];
+			 }
+
+			 delete[]this->vectorPointer;
+			 this->denumirecafenea = c.denumirecafenea;
+			 this->nrPrepaartCafea = c.nrPrepaartCafea;
+			 this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+			 for (int i = 0; i < this->nrPrepaartCafea; i++)
+			 {
+				 this->vectorPointer[i] = new preparatCafea(*c.vectorPointer[i]);
+			 }
+		 }
+
+		 return *this;
+
+	 }
+
+	 ~cafenea()
+	 {
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 delete this->vectorPointer[i];
+		 }
+
+		 delete[]this->vectorPointer;
+
+	 }
+
+	 void adaugaElement(preparatCafea* p)
+	 {
+		 cafenea copie = *this;
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 delete this->vectorPointer[i];
+		 }
+
+		 delete[]this->vectorPointer;
+
+		this->nrPrepaartCafea++;
+
+		this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+
+		for (int i = 0; i < copie.nrPrepaartCafea; i++)
+		{
+			this->vectorPointer[i] = new preparatCafea(*copie.vectorPointer[i]);
+		}
+
+		this->vectorPointer[this->nrPrepaartCafea - 1] = new preparatCafea(*p);
+
+
+
+	 }
+
+	 friend ostream& operator<<(ostream& out, cafenea& c)
+	 {
+		 cout << "Numele cafenenelei este : " << c.denumirecafenea << endl;
+		 cout << "Numarul de preparate este : " << c.nrPrepaartCafea << endl;
+		 cout << "Preparatele sunt : " << endl;
+
+		 for (int i = 0; i < c.nrPrepaartCafea; i++)
+		 {
+			 cout << *c.vectorPointer[i];
+		 }
+		 return out;
+	 }
+
+	 friend istream& operator>>(istream& in, cafenea& c)
+	 {
+		 cout << "Introduceti numele cafenelei : ";
+		 in >> c.denumirecafenea;
+		 cout << "Introduceti numarul de preparate : ";
+		 in >> c.nrPrepaartCafea;
+		 cout << "Introduceti preparatele : ";
+
+		 for (int i = 0; i < c.nrPrepaartCafea; i++)
+		 {
+			 delete c.vectorPointer[i];
+		 }
+
+		 delete[]c.vectorPointer;
+
+		 c.vectorPointer = new preparatCafea * [c.nrPrepaartCafea];
+
+		 for (int i = 0; i < c.nrPrepaartCafea; i++)
+		 {
+			 c.vectorPointer[i] = new preparatCafea();
+			 in >>(*c.vectorPointer[i]);
+		 }
+
+		 return in;
+
+
+	 }
+
+	 cafenea& operator-=(int pozitieDeEliminat)
+	 {
+		 cafenea copie = *this;
+
+		 for (int i = 0; i < this->nrPrepaartCafea; i++)
+		 {
+			 delete this->vectorPointer[i];
+		 }
+
+		 delete[]this->vectorPointer;
+
+		 this->nrPrepaartCafea--;
+
+		 this->vectorPointer = new preparatCafea * [this->nrPrepaartCafea];
+
+		 for (int i = 0; i < pozitieDeEliminat; i++)
+		 {
+			 this->vectorPointer[i] = new preparatCafea(*copie.vectorPointer[i]);
+		 }
+
+		 for (int i = pozitieDeEliminat + 1; i < copie.nrPrepaartCafea; i++)
+		 {
+			 this->vectorPointer[i-1] = new preparatCafea(*copie.vectorPointer[i]);
+		 }
+
+		 return *this;
+	 }
+
+
+ };
+
  void main()
  {
 	 string ingrediente1[] = { "lapte","expreso","zahar" };
@@ -853,7 +1061,10 @@ public:
 
 	 preparatCafea p2("expreso", 5, 'T', 10, 0, "RON", "5togo", 2, ingrediente2, gramaj2);
 
+	 string ingrediente7[] = { "expreso","zahar","frisca"};
+	 float gramaj7[] = { 150.0f, 5.0f,0.5f };
 
+	 preparatCafea p3("frapucino", 5, 'T', 10, 0, "RON", "Starbucks", 2, ingrediente7, gramaj7);
 
 	 cout << "............Obiectul p2 inainte de modificari.............." << endl;
 
@@ -1025,5 +1236,120 @@ public:
 
 	 }
 
+	 cout << "------------Clasa Cafenea relatia HAS-A (vector de pointeri la obiecte)-----------" << endl << endl;
+
+	 cafenea c1;
+	 cout << "-----obiectul c1--------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c1.getDenumireCafenea() <<endl;
+	 cout << "Numarul de preparate este  :" << c1.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c1.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c1.getvectorPointer() << endl;
+	 }
+	 cout << endl << endl;
+
+	 preparatCafea** vectorpreparatcafea1;
+	 vectorpreparatcafea1 = new preparatCafea * [2];
+	 vectorpreparatcafea1[0] = new preparatCafea(p1);
+	 vectorpreparatcafea1[1] = new preparatCafea(p2);
+
+	 cafenea c2 = { "tucano", 2, vectorpreparatcafea1 };
+
+	 cout << "-----obiectul c2--------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c2.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c2.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c2.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c2.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+	 preparatCafea** vectorpreparatcafea2;
+	 vectorpreparatcafea2 = new preparatCafea * [2];
+	 vectorpreparatcafea2[0] = new preparatCafea(p1);
+	 vectorpreparatcafea2[1] = new preparatCafea(p2);
+
+	 cafenea c3 = { "ABC", 2, vectorpreparatcafea2 };
+
+	 cout << "-----obiectul c3--------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c3.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c3.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c3.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c3.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+
+	 c1.setdenumirecafenea("iza");
+
+	 preparatCafea** vectorpreparatcafea3;
+	 vectorpreparatcafea3 = new preparatCafea * [2];
+	 vectorpreparatcafea3[0] = new preparatCafea(p1);
+	 vectorpreparatcafea3[1] = new preparatCafea(p3);
+	 c1.setVectorCafea(2, vectorpreparatcafea3);
+
+	 cout << "-----obiectul c1 dupa modificari --------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c1.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c1.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c1.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c1.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+
+	 cafenea c4(c1);
+	 cout << "-----obiectul c4 dupa ce a fost copiat dupa c1 --------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c4.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c4.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c4.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c4.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+	 cout << "-----obiectul c1 inainte de copiere --------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c1.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c1.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c1.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c1.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+	 c1 = c3;
+	 cout << "-----obiectul c1 dupa ce a fost copiat --------------" << endl << endl;
+	 cout << "Denumirea cafenelei este : " << c1.getDenumireCafenea() << endl;
+	 cout << "Numarul de preparate este  :" << c1.getnrPrepaartCafea() << endl;
+	 cout << "Preparatele sunt : ";
+	 for (int i = 0; i < c1.getnrPrepaartCafea(); i++)
+	 {
+		 cout << *c1.getvectorPointer()[i] << endl;
+	 }
+	 cout << endl << endl;
+
+	 cout << "----operatorul <<-----" << endl << endl;
+	 cout << c1;
+
+	 cout << "----operatorul >>-----" << endl << endl;
+	/* cin >> c3;*/
+	 cout << "-----obiectul c3 dupa ce a fost introdus de la tastatura --------------" << c3<<endl << endl;
+	 cout << "-----obiectul c1 inainte de a fi adaugat un element --------------" << endl << endl;
+	 c1.adaugaElement(&p3);
+
+	 cout << "-----obiectul c1 dupa ce a fost adaugat un element --------------" << endl << c1<<endl;
+
+
+
+	 cout << "-----obiectul c1 inainte de a fi sters un element --------------" << endl << endl;
+	 c1 -= (1);
+	 
+	 cout << "-----obiectul c1 dupa ce a fost sters un element --------------" << endl <<c1<< endl;
 
  }
