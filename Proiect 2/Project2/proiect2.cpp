@@ -1273,6 +1273,98 @@ public:
 
 	}
 
+	void adaugaElementInVector(TraseuMontan* t)
+	{
+		AgentieTurism copie = *this;
+
+		
+		for (int i = 0; i < this->nrTrasee; i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+	
+
+		delete[] this->vectorPointerTraseu;
+
+		this->nrTrasee++;
+
+		this->vectorPointerTraseu = new TraseuMontan*[this->nrTrasee];
+		for (int i = 0; i < copie.nrTrasee; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan (*copie.vectorPointerTraseu[i]);
+		}
+
+		this->vectorPointerTraseu[this->nrTrasee - 1] = new TraseuMontan(*t);
+
+	}
+
+	friend ostream& operator<<(ostream& out, const AgentieTurism& a)
+	{
+		out << "Numele agentiei este : " << a.numeAgentie << endl;
+		out << "Numarul de trasee este : " << a.nrTrasee << endl;
+		cout << "Trasee" << endl;
+		for (int i = 0; i < a.nrTrasee; i++)
+		{
+			out << *a.vectorPointerTraseu[i];
+		}
+
+		return out;
+	}
+
+	friend istream& operator>>(istream& in, AgentieTurism& a)
+	{
+		cout << "Introduceti numele agentiei: ";
+		in >> a.numeAgentie;
+		cout << "introduceti numarul de trasee : ";
+		in >> a.nrTrasee;
+		
+		for (int i = 0; i < a.nrTrasee; i++)
+		{
+			delete a.vectorPointerTraseu[i];
+		}
+
+		delete[]a.vectorPointerTraseu;
+
+		cout << "Introduceti traseele";
+		a.vectorPointerTraseu = new TraseuMontan * [a.nrTrasee];
+
+		for (int i = 0; i < a.nrTrasee; i++)
+		{
+			a.vectorPointerTraseu[i] = new TraseuMontan();
+			in >> (*a.vectorPointerTraseu[i]);
+		}
+
+		return in;
+	}
+
+	AgentieTurism& operator-=(int pozitieEliminat)
+	{
+		AgentieTurism copie = *this;
+
+		for(int i=0;i<this->nrTrasee;i++)
+		{
+			delete this->vectorPointerTraseu[i];
+		}
+		
+		delete[]this->vectorPointerTraseu;
+
+		this->nrTrasee--;
+
+		this->vectorPointerTraseu = new TraseuMontan * [this->nrTrasee];
+
+		for (int i = 0; i < pozitieEliminat; i++)
+		{
+			this->vectorPointerTraseu[i] = new TraseuMontan(*copie.vectorPointerTraseu[i]);
+
+		}
+
+		for (int i = pozitieEliminat+1;i<copie.nrTrasee; i++)
+		{
+			this->vectorPointerTraseu[i-1] = new TraseuMontan(*copie.vectorPointerTraseu[i]);
+		}
+		return *this;
+	}
+
 
 };
 	
@@ -2012,4 +2104,48 @@ void main()
 		cout << *a1.getvectorPointerTraseu()[i];
 	}
 	cout << endl << endl;
+
+	cout << "-----Obiectul a1 inainte de adaugare----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+	a1.adaugaElementInVector(&tm10);
+
+	cout << "-----Obiectul a1 dupa adaugare element----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+	//cin >> a1;
+
+	cout << "-----Obiectul a1 dupa ce a fost introdus de la tastatura----" << endl << endl;
+	cout << "Numele agentiei de turism este : " << a1.getNumeAgentie() << endl;
+	cout << "Numarul de trasee este : " << a1.getNrtrasee() << endl;
+	cout << "Traseele sunt : " << endl;
+
+	for (int i = 0; i < a1.getNrtrasee(); i++)
+	{
+		cout << *a1.getvectorPointerTraseu()[i];
+	}
+	cout << endl << endl;
+
+	cout << a1;
+	cout << endl << endl << endl << endl;
+	a1 -= 1;
+	cout << a1;
+	cout << endl << endl << endl << endl;
+
 }
