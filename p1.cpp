@@ -1320,6 +1320,158 @@ public:
 
 };
 
+template<typename tipdata>
+class tara
+{
+	int nrElemente;
+	tipdata* vectorElemente;
+	string denumireTara;
+
+public:
+	tara()
+	{
+		this->nrElemente = 0;
+		this->vectorElemente = nullptr;
+		this->denumireTara = "necunoscut";
+
+	}
+
+
+	tara(int nrElemente, tipdata* vectorElemente, string denumireTara)
+	{
+		this->nrElemente = nrElemente;
+		this->vectorElemente = new tipdata[this->nrElemente];
+		for (int i = 0; i < this->nrElemente; i++)
+		{
+			this->vectorElemente[i] = vectorElemente[i];
+		}
+
+		this->denumireTara = denumireTara;
+	}
+
+	~tara()
+	{
+		if (vectorElemente != NULL)
+		{
+			delete[]this->vectorElemente;
+		}
+	}
+
+	int getnrElemente()
+	{
+		return this->nrElemente;
+	}
+
+	tipdata* getvectorElemente()
+	{
+		return this->vectorElemente;
+	};
+	string getDenumireTara()
+	{
+		return this->denumireTara;
+	}
+
+
+	void setDenumiretara(string denumireTaraNoua)
+	{
+		this->denumireTara = denumireTaraNoua;
+	}
+
+	void setVectorElemente(int nrElementeNou, tipdata* vectorElementeNou)
+	{
+		if (vectorElemente != NULL)
+		{
+			delete[]this->vectorElemente;
+		}
+
+		this->nrElemente = nrElementeNou;
+		this->vectorElemente = new tipdata[this->nrElemente];
+		for (int i = 0; i < this->nrElemente; i++)
+		{
+			this->vectorElemente[i] = vectorElementeNou[i];
+		}
+
+
+
+	}
+
+	tara(const tara& t)
+	{
+		this->nrElemente = t.nrElemente;
+		this->vectorElemente = new tipdata[this->nrElemente];
+		for (int i = 0; i < this->nrElemente; i++)
+		{
+			this->vectorElemente[i] = t.vectorElemente[i];
+		}
+
+		this->denumireTara = t.denumireTara;
+	}
+
+	tara& operator=(const tara& t)
+	{
+		if(this!=&t)
+		{
+			if (vectorElemente != NULL)
+			{
+				delete[]this->vectorElemente;
+			}
+
+			this->nrElemente = t.nrElemente;
+			this->vectorElemente = new tipdata[this->nrElemente];
+			for (int i = 0; i < this->nrElemente; i++)
+			{
+				this->vectorElemente[i] = t.vectorElemente[i];
+			}
+
+			this->denumireTara = t.denumireTara;
+		}
+
+		return*this;
+	}
+
+	friend ostream& operator<<(ostream& out, tara& t)
+	{
+		out << "Numarul de elemente este : " << t.nrElemente << endl;
+		out << "Elementele sunt : " << endl;
+		for (int i = 0; i < t.nrElemente; i++)
+		{
+			out << t.vectorElemente[i] << endl;
+		}
+
+		out << "Denumirea tarii este : " << t.denumireTara << endl;
+		out << endl << endl;
+		
+		return out;
+
+	}
+
+
+	friend istream& operator>>(istream& in, tara& t)
+	{
+
+		if (t.vectorElemente != NULL)
+		{
+			delete[]t.vectorElemente;
+		}
+		cout << "Introduceti numarul de elemente : " << endl;
+		in >> t.nrElemente;
+		t.vectorElemente = new tipdata[t.nrElemente];
+		cout << "Introduceti elementele :" << endl;
+
+		for (int i = 0; i < t.nrElemente; i++)
+		{
+			in >> t.vectorElemente[i];
+		}
+
+		cout << "Introduceti denumirea tarii : " << endl;
+		in >> t.denumireTara;
+
+		return in;
+	}
+
+};
+
+
 void main() {
 
 	float preturi1[] = { 100.20, 50.6 };
@@ -1964,4 +2116,55 @@ void main() {
 		cout << a3.getvectorHotel()[i] << endl << endl;
 	}
 	cout << endl;
+
+	cout << "----------------------CLASE TEMPLATE-----------------------------------------------" << endl << endl << endl;
+
+	tara <Hotel>t1;
+
+	cout << "Numarul de elemente este: " << t1.getnrElemente() << endl;
+	cout << "Elementele sunt :";
+	for (int i = 0; i < t1.getnrElemente(); i++)
+	{
+
+		cout << t1.getvectorElemente()[i] << endl;
+	}
+
+	cout << endl << endl;
+	Hotel listaHotel1[] = { h1,h10 };
+	tara <Hotel>t5 = {2,listaHotel1,"Spania"};
+
+	tara<HotelCuAllInclusive>t2;
+
+	
+	HotelCuAllInclusive listaElemente[] = { hai1, hai3 };
+	tara<HotelCuAllInclusive>t3 = {2, listaElemente, "romania"};
+
+
+	cout << "tara t3" << endl << endl << t3 << endl;
+
+
+	t2.setDenumiretara("Italia");
+	HotelCuAllInclusive  listaElemente1[] = { hai4,hai5 };
+	t2.setVectorElemente(2, listaElemente1);
+	cout << "tara t2" << endl << endl << t2 << endl;
+
+
+	cout << "tara t3" << endl << endl << t3 << endl;
+	
+	tara<HotelCuAllInclusive> t4(t3);
+	cout << "tara t4" << endl << endl << t3 << endl;
+
+	cout << "tara t1" << endl << endl << t1 << endl;
+	cout << "tara t5" << endl << endl << t5 << endl;
+
+	t1 = t5;
+	cout << "tara t5" << endl << endl << t5 << endl;
+	cout << "tara t1" << endl << endl << t1 << endl;
+
+	/*cin >> t1;*/
+
+	cout << "tara t1 dupa ce a fost introdusa de la tastaura" << endl << endl << t1 << endl;
+
+
+
 }
