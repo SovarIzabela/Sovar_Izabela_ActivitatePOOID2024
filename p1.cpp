@@ -2,8 +2,12 @@
 #include <iostream>
 #include<string>
 #include<fstream>
-
+#include<vector>
+#include<list>
+#include<map>
+#include<set>
 using namespace std;
+
 
 
 class Hotel
@@ -2164,6 +2168,101 @@ void main() {
 	/*cin >> t1;*/
 
 	cout << "tara t1 dupa ce a fost introdusa de la tastaura" << endl << endl << t1 << endl;
+
+	cout << "-------CONTAINERE STL----------------------------" << endl << endl;
+
+
+	cout << "-------vector STL----------------------------" << endl << endl;
+	
+	vector<float> vectorSTL;
+
+	vectorSTL.push_back(2.5);
+	vectorSTL.push_back(2.7);
+	vectorSTL.push_back(2.5);
+	vectorSTL.push_back(2.9);
+
+	cout << "Numarul de elemente din vector este : " << vectorSTL.size() << endl;
+	vectorSTL.pop_back();
+
+	for (int i = 0; i < vectorSTL.size(); i++)
+	{
+		cout << vectorSTL[i] << endl;
+	}
+
+	cout << "-------list----------------------------" << endl << endl;
+
+		list<int> listSTL;
+
+	listSTL.push_back(55);
+	listSTL.push_back(100);
+	listSTL.push_back(-55);
+	listSTL.push_back(0);
+	
+	cout << "Numarul de elemente din lista este: " << listSTL.size() << endl << endl;
+	
+	list<int>::iterator it1;
+	cout << "Elementele din lista sunt : " << endl;
+	for (it1 = listSTL.begin(); it1 != listSTL.end(); it1++)
+	{
+		cout << *it1 << endl;
+	}
+
+	listSTL.pop_back();
+	listSTL.pop_back();
+	list<int>::iterator it2;
+	cout << "Elementele din lista sunt : " << endl;
+	for (it2 = listSTL.begin(); it2 != listSTL.end(); it2++)
+	{
+		cout << *it2 << endl;
+	}
+	cout << "-------set----------------------------" << endl << endl;
+
+	set <string> setSTL;
+
+	setSTL.insert("ana");
+	setSTL.insert("Maria");
+	setSTL.insert("Izabela");
+
+
+	cout << "Numarul de elemente din set este : " << setSTL.size() << endl;
+
+	setSTL.erase("ana");
+
+	set <string>::iterator it3;
+	cout << "Elementele din set sunt : ";
+	for (it3 = setSTL.begin(); it3 != setSTL.end(); it3++)
+	{
+		cout << *it3 << endl<<endl;
+	}
+
+	cout << "-------map----------------------------" << endl << endl;
+
+	map<int, Hotel> mapSTL;
+
+	mapSTL.insert(pair<int, Hotel>(001, h1));
+	mapSTL.insert(pair<int, Hotel>(002, h10));
+	mapSTL.insert(pair<int, Hotel>(003, h4));
+
+	cout << "Numarul de elemente din map este:" << mapSTL.size() << endl << endl;
+
+	map< int, Hotel >::iterator it5;
+	for (it5 = mapSTL.begin(); it5 != mapSTL.end(); it5++)
+	{
+		cout << "Cheia de identificare este : " << it5->first << endl;
+		cout << "Elementul este : " << it5->second << endl << endl;
+	}
+
+	
+	mapSTL.erase(001);
+
+
+	map< int, Hotel >::iterator it4;
+	for (it4 = mapSTL.begin(); it4 != mapSTL.end(); it4++)
+	{
+		cout << "Cheia de identificare este : " << it4->first << endl;
+		cout << "Elementul este : " << it4->second << endl << endl;
+	}
+
 
 
 
