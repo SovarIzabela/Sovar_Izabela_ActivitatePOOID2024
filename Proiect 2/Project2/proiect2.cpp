@@ -2,6 +2,10 @@
 #include<iostream>
 #include<string>
 #include<fstream>
+#include<vector>
+#include<list>
+#include<set>
+#include<map>
 using namespace std;
 
 class TraseuMontan {
@@ -472,6 +476,18 @@ public:
 	bool operator<=(const TraseuMontan&obj)
 	{
 		if (this->lungimeKmTraseu <= obj.lungimeKmTraseu)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	static friend bool operator<(const TraseuMontan& obj1,  const TraseuMontan& obj2)
+	{
+		if (obj1.lungimeKmTraseu < obj2.lungimeKmTraseu)
 		{
 			return 1;
 		}
@@ -2147,5 +2163,93 @@ void main()
 	a1 -= 1;
 	cout << a1;
 	cout << endl << endl << endl << endl;
+
+	cout << "-------CONTAINERE STL----------------------------" << endl << endl;
+
+
+	cout << "-------vector STL----------------------------" << endl << endl;
+	
+	vector<TraseuMontan> vectorSTL;
+
+
+	vectorSTL.push_back(tm1);
+	vectorSTL.push_back(tm2);
+	vectorSTL.push_back(tm10);
+
+
+	cout << "Numarul de elemente din vector este  : " << vectorSTL.size() << endl;
+
+	cout << "Elementele sunt : " << endl;
+	for (int i = 0; i < vectorSTL.size(); i++)
+	{
+		cout << vectorSTL[i] << endl;
+	}
+
+	vectorSTL.pop_back();
+	vectorSTL.pop_back();
+
+	cout << "Elementele sunt : " << endl;
+	for (int i = 0; i < vectorSTL.size(); i++)
+	{
+		cout << vectorSTL[i] << endl;
+	}
+
+	cout << "-------list----------------------------" << endl << endl;
+
+	list<TraseuMontanCultural> listSTL;
+	
+	listSTL.push_back(tmc1);
+	listSTL.push_back(tmc3);
+	listSTL.push_back(tmc4);
+	
+	cout << "Numarul de elemente din lista este " << listSTL.size() << endl << endl;
+	listSTL.pop_back();
+
+	list<TraseuMontanCultural>::iterator it1;
+	for (it1 = listSTL.begin(); it1 != listSTL.end(); it1++)
+	{
+		cout << *it1 << endl;
+	}
+
+
+	cout << "-------set----------------------------" << endl << endl;
+
+	set<TraseuMontan> setSTL;
+
+
+    setSTL.insert(tm3);
+	setSTL.insert(tm10);
+	setSTL.insert(tm4);
+
+
+	cout << "Numarul de elemente din lista este " << setSTL.size() << endl << endl;
+	setSTL.erase(tm4);
+	
+	set<TraseuMontan> ::iterator it2;
+		for (it2 = setSTL.begin(); it2 != setSTL.end(); it2++)
+		{
+			cout << *it2 << endl;
+		}
+
+
+	cout << "-------map----------------------------" << endl << endl;
+
+	map<int, TraseuMontan> mapSTL;
+	mapSTL.insert(pair<int, TraseuMontan>(100, tm1));
+	mapSTL.insert(pair<int, TraseuMontan>(101, tm2));
+
+	cout << "Numarul de elemente" << mapSTL.size() << endl;
+
+	mapSTL.erase(100);
+
+	map<int, TraseuMontan>::iterator it3;
+	cout << "Elementele dintr-un map sunt: " << endl;
+	for (it3 = mapSTL.begin(); it3 != mapSTL.end(); it3++)
+	{
+		cout << it3->first << endl;
+		cout << it3->second<< endl;
+	}
+
+
 
 }
